@@ -1,0 +1,543 @@
+# THEMIS Platform Architecture
+
+### Trusted Human-AI Enablement for Matter Intelligence and Safety
+
+*Internal Architecture Document · All 9 core services + 4 architectural additions*
+
+-----
+
+## Table of Contents
+
+1. [Executive Summary](#00-executive-summary)
+1. [Business Case](#01-business-case)
+1. [Platform Name & Rationale](#02-platform-name)
+1. [Platform Vision & Design Principles](#03-vision)
+1. [The Nine Services](#04-nine-services)
+1. [Full Integration Map](#05-integration-map)
+1. [The Three Accountability Axes](#06-accountability-axes)
+1. [Platform Deployment Architecture](#07-deployment)
+1. [Governance Model](#08-governance)
+1. [Consolidated Implementation Roadmap](#09-roadmap)
+1. [Platform Metrics & Success Criteria](#10-metrics)
+1. [The Competitive Moat](#11-moat)
+1. [Architectural Additions](#12-additions)
+1. [External System Integration & Model Providers](#13-external)
+
+-----
+
+## 00  Executive Summary
+
+> *“The legal profession is at an inflection point. AI is already in the building.”*
+
+Attorneys across the firm are using AI tools — for research, drafting, evidence analysis, and strategy. Some of that use is sanctioned and monitored. Much of it is not. The question is no longer whether the firm will use AI. The question is whether AI use will be governed, accountable, and defensible — or whether it will accumulate into a liability the firm cannot see coming.
+
+**THEMIS** is the answer to that question. It is not an AI product. It is the governance, accountability, and quality infrastructure that makes responsible AI use possible at firm scale. Nine integrated services — covering privilege enforcement, interaction policy, content provenance, analyst trust calibration, evidence validity, retrieval quality, external knowledge currency, correction feedback, and reasoning auditability — operating as a unified platform beneath every AI-assisted matter the firm handles.
+
+### What THEMIS Delivers
+
+|Milestone                                 |Capability                                                                                                                                                                                                                                                                                                           |
+|------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|**Day 1** — Safety Gates Live             |No AI interaction touches client data without privilege enforcement (PCES) and policy guardrails (PGS). Privilege log generation is automated. Matter boundary violations are blocked, not discovered in discovery.                                                                                                  |
+|**Month 3** — Chain of Custody Established|Every AI output in every matter has a complete provenance record. Analyst calibration baselines are set. The firm can answer, for any work product paragraph: where did this come from, who touched it, and what model produced it.                                                                                  |
+|**Month 9** — Quality Loops Running       |Analyst corrections are building a proprietary ground truth corpus. Evidence validity is scored and propagated through lineage graphs. The firm’s AI is getting measurably better on its own work — not on generic benchmarks, but on the firm’s specific matters and practice areas.                                |
+|**Month 17** — Full Platform Operational  |External legal developments are mapped to internal evidence automatically. Retrieval quality is monitored and corrected. AI reasoning is auditable at the claim level. The firm can produce, on demand, a complete accountability record for any AI-assisted work product — for clients, bar associations, or courts.|
+
+### The Bottom Line
+
+A firm without THEMIS is using AI on client matters without knowing what privilege boundaries were crossed, what evidence has been superseded, whether analysts are trusting AI appropriately, or whether the reasoning behind AI-assisted conclusions can be defended. A firm with THEMIS has turned that exposure into a governance posture — and that posture into a competitive position.
+
+> **Recommendation:** Authorize Phase 1–2 (Safety Gates) immediately. PCES and PGS together represent an 8-week, bounded investment that eliminates the firm’s most acute AI liability exposure. Phases 3–8 should be approved as a program with staged gate reviews at each phase boundary.
+
+-----
+
+## 01  Business Case
+
+### The Problem: Ungoverned AI Is Already Here
+
+AI adoption in legal practice is not a future event to be planned for. It is a present reality to be managed. The specific failure modes are not theoretical — they have occurred at peer firms:
+
+- **Privilege leakage.** RAG-based AI tools have surfaced content from Matter A in prompts scoped to Matter B. Without matter-scoped retrieval enforcement, this is structurally inevitable.
+- **Fabricated citations.** Attorneys have filed briefs citing cases that do not exist, generated by AI models operating without citation verification. Several have faced bar discipline.
+- **Stale evidence reliance.** Analysts have presented AI-generated summaries of evidence without knowing that the underlying sources had been superseded, contradicted by subsequent filings, or subject to court-ordered reconsideration.
+- **Uncalibrated trust.** Junior associates with limited ability to evaluate AI output quality are accepting AI conclusions at higher rates than senior attorneys — creating systematic quality asymmetry that supervision structures were not designed to catch.
+- **Undocumented AI contribution.** Work product submitted to clients and courts contains AI-generated content with no record of what AI produced it, what evidence it was based on, or whether an attorney independently verified it.
+
+### The Cost of Inaction
+
+|Risk Category               |Mechanism                                                                                                                                                                                                |
+|----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|**Professional Liability**  |Fabricated citations, unsupported conclusions, and undisclosed AI contributions create malpractice exposure. A single significant claim can exceed the multi-year cost of the THEMIS platform.           |
+|**Privilege Exposure**      |A privilege waiver resulting from AI retrieval surfacing confidential communications in an inappropriate context is not recoverable in litigation. Without PCES, this is latent in every RAG interaction.|
+|**Regulatory Risk**         |Bar associations are actively developing AI competence and disclosure requirements. Firms that cannot demonstrate governed AI use face censure, mandatory remediation, and reputational damage.          |
+|**Quality Degradation**     |Without a correction feedback loop (FGTS) and calibration monitoring (TCS), AI quality problems are invisible until they produce client-visible errors.                                                  |
+|**Competitive Displacement**|Sophisticated clients are beginning to ask how outside counsel governs AI use. Firms that cannot answer credibly are at a disadvantage in panel reviews and RFP processes.                               |
+
+### Expected Business Impact
+
+|Impact Type   |Dimension                                 |Expected Outcome                      |Primary Driver              |
+|--------------|------------------------------------------|--------------------------------------|----------------------------|
+|Risk Reduction|Privilege exposure incidents              |Near zero (from latent to governed)   |PCES / AEGIS — Phase 1      |
+|Risk Reduction|AI citation errors in filings             |Eliminated for governed interactions  |PGS / NOMOS — Phase 1-2     |
+|Efficiency    |Evidence review time (large productions)  |25–40% reduction                      |Provenance + RQS — Phase 3-7|
+|Quality       |AI output error rate (firm-specific tasks)|15–30% reduction over 24 months       |FGTS → TCS → RQS flywheel   |
+|Compliance    |Bar association disclosure readiness      |Day-one compliant at mandate          |PCES + PGS + ERAS           |
+|Knowledge     |Institutional expertise capture           |Compounding; first corpus in 18 months|FGTS / ALETHEIA             |
+
+-----
+
+## 02  Platform Name & Rationale
+
+## THEMIS
+
+### Trusted Human-AI Enablement for Matter Intelligence and Safety
+
+In Greek mythology, Themis is the goddess of law, justice, divine order, and proper conduct. She is not the goddess of punishment — she is the goddess of the *right ordering of things*. She embodies the principle that justice requires both knowledge of the law and the wisdom to apply it appropriately. She is also associated with foresight — seeing what is coming and preparing for it.
+
+The name works at three levels:
+
+1. **Immediately legible to attorneys.** Every lawyer knows Themis — she holds the scales on courthouse facades worldwide. The name signals proper legal conduct and the right ordering of AI assistance.
+1. **Substantively accurate.** The acronym captures the trust dimension (TCS, ERAS, FGTS), the matter intelligence dimension (KCS, RQS, TVS), and the safety dimension (PCES, PGS).
+1. **Institutionally distinctive.** No major legal AI platform currently carries this name.
+
+### Service Epithets
+
+|Code      |Full Name                               |Epithet     |Meaning                                       |
+|----------|----------------------------------------|------------|----------------------------------------------|
+|PCES      |Privilege & Consent Enforcement Service |**AEGIS**   |Shield — the protective layer                 |
+|PGS       |Policy & Guardrails Service             |**NOMOS**   |Greek for “law as convention”                 |
+|Provenance|AI Content Provenance Service           |**MOIRAI**  |The Fates — who tracks origins and lineage    |
+|TCS       |Trust Calibration Service               |**MIMIR**   |Norse god of wisdom (already named)           |
+|FGTS      |Feedback & Ground Truth Service         |**ALETHEIA**|Greek for “truth” or “disclosure”             |
+|TVS       |Temporal Validity Service               |**KAIROS**  |Greek for “the right moment”                  |
+|RQS       |Retrieval Quality Service               |**HERMES**  |Messenger — who finds and delivers information|
+|KCS       |Knowledge Currency Service              |**ARGUS**   |The all-seeing — monitors the external world  |
+|ERAS      |Explainability & Reasoning Audit Service|**LOGOS**   |Greek for “reason” / “word”                   |
+
+-----
+
+## 03  Platform Vision & Design Principles
+
+THEMIS is not an AI product. It is the governance, accountability, and quality infrastructure that makes responsible AI use possible at firm scale.
+
+### Six Design Principles
+
+|Principle                        |Description                                                                                                                                                                                        |
+|---------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|**Governance before capability** |Safety gates (PCES, PGS) are deployed before capability services. No AI interaction runs on client data without privilege enforcement and policy guardrails in place.                              |
+|**Provenance as infrastructure** |The Provenance Service is the substrate. Every other service reads from or writes to the provenance graph. Content without provenance does not exist in THEMIS.                                    |
+|**Separation of concerns**       |Each service owns exactly one concern. Services integrate through clean event contracts, not shared databases.                                                                                     |
+|**Immutability of record**       |Audit trails are append-only. Provenance events, policy evaluations, correction events, reasoning captures — none are modified. Corrections produce new records.                                   |
+|**Policy as configuration**      |Firm AI policy is expressed as executable rules in PGS, not as documentation that relies on human compliance. When policy changes, the rule engine changes — without software releases.            |
+|**Value compounds with maturity**|Each service is more valuable with the others operational. FGTS corrections improve TCS calibration and RQS miss detection. KCS events enrich TVS validity propagation. The platform is a flywheel.|
+
+-----
+
+## 04  The Nine Services
+
+### Safety Gates
+
+*Deployed first. Define the safe operating envelope. Nothing runs without these.*
+
+#### PCES / AEGIS — Privilege & Consent Enforcement Service
+
+Data governance at the chunk level. Privilege classification, conflict-of-interest detection, matter scoping, consent tracking. Every retrieval operation is evaluated for privilege type, matter boundary, consent obligations, and CoI relationships before content enters an AI context window.
+
+#### PGS / NOMOS — Policy & Guardrails Service
+
+Interaction governance. Interaction classification, PII detection, policy rule engine, output screening. Governs what kinds of AI interactions are permitted regardless of data. Includes HITL Hold Queue for supervised gates and hard stops for non-overridable blocks.
+
+-----
+
+### Core Infrastructure
+
+*The substrate. Everything reads from or integrates with these.*
+
+#### Provenance / MOIRAI — AI Content Provenance Service
+
+Content chain of custody. Chunk identity (SHA-256 + LSH), spatial metadata, turn-level DAG, prompt lineage (PromptTemplate, AnalystInput, PromptAssembly nodes), three-signal fingerprinting, document assembly tracking, privilege boundary APIs, and append-only event log. The graph store all other services read from.
+
+#### TCS / MIMIR — Trust Calibration Service
+
+Analyst reliance quality. Reliance-Accuracy Index (RAI) scoring, Elo-based AI performance rating, calibration error measurement, over/under-reliance detection, and longitudinal calibration tracking. Feeds from FGTS corrections; outputs to analyst intervention routing.
+
+-----
+
+### Quality Feedback Loops
+
+*Compound value over time. Make the platform smarter.*
+
+#### FGTS / ALETHEIA — Feedback & Ground Truth Service
+
+Correction capture, ground truth corpus, analyst signal model, fine-tuning pipeline feed. Captures reject, edit, partial_edit, flag, and approve_override events. Builds a proprietary training dataset gated by consent architecture (AI_ASSISTED_WORK, AI_TRAINING_ANONYMISED, AI_TRAINING_FULL). Feeds TCS and RQS.
+
+#### TVS / KAIROS — Temporal Validity Service
+
+Evidence currency. Decay functions by content type (step for statutes, exponential for expert reports, aggressive for news), active invalidation from KCS, DAG-propagated validity inheritance, conflict detection and resolution workflow, point-in-time reconstruction. Feeds Brief Validity Report and document editor score bands.
+
+-----
+
+### Operational Intelligence
+
+*Require operational maturity. Most valuable at scale.*
+
+#### RQS / HERMES — Retrieval Quality Service
+
+RAG observability. Precision measurement, TVS-retrieval intersection (low-validity warning before generation), systematic miss detection, retrieval pattern analysis, embedding drift monitoring. Receives RetrievalMissSignal from FGTS; feeds retrieval hardening.
+
+#### KCS / ARGUS — Knowledge Currency Service
+
+External monitoring. Court dockets (PACER), regulatory feeds (Federal Register), legal database citator integration (KeyCite, Shepard’s), confidence-threshold routing, active invalidation events to TVS, matter watch lists. The proactive complement to TVS’s reactive re-evaluation.
+
+-----
+
+### Strategic Capability
+
+*Builds on everything. Professional responsibility infrastructure.*
+
+#### ERAS / LOGOS — Explainability & Reasoning Audit Service
+
+Reasoning capture, claim indexing, confidence signal extraction (definitive/strong/qualified/uncertain), unsupported claim detection, consistency checking, attorney /explain query, client disclosure report generator, professional responsibility surface.
+
+-----
+
+## 05  Full Integration Map
+
+```
+EXTERNAL WORLD                          ANALYST INTERFACE
+  Court Dockets                           Document Editor
+  Regulatory Feeds    ──► KCS/ARGUS       Chat Interface
+  Legal Databases              │          Admin Dashboard
+  News Feeds                   │               │
+                               │               │
+──────────────────────────────────────────────────────────
+                                               │
+              ┌────────────────────────────────▼──────────┐
+              │            SAFETY GATE LAYER              │
+              │  PGS/NOMOS ──────── PCES/AEGIS            │
+              └──────────────────────┬────────────────────┘
+                                     │ approved interactions
+              ┌──────────────────────▼────────────────────┐
+              │          RETRIEVAL & AI LAYER             │
+              │  RAG Retrieval → RQS/HERMES monitors      │
+              │  API Gateway  → Provenance/MOIRAI captures│
+              │  Model        → ERAS/LOGOS captures       │
+              └──────────────────────┬────────────────────┘
+                                     │
+         ┌───────────────────────────┼───────────────────────┐
+         ▼                           ▼                       ▼
+  TVS/KAIROS                 FGTS/ALETHEIA            TCS/MIMIR
+  (validity scoring)         (correction capture)    (calibration)
+         │                           │                       │
+         └───────────────────────────┼───────────────────────┘
+                                     ▼
+                         PROVENANCE / MOIRAI
+                         (central graph — all services read/write)
+                                     │
+                                     ▼
+                            KCS/ARGUS ──► TVS invalidation events
+```
+
+### Service Dependency Matrix
+
+|Service            |Depends On                |Feeds Into                                                  |
+|-------------------|--------------------------|------------------------------------------------------------|
+|PCES / AEGIS       |None                      |Provenance (privilege annotations)                          |
+|PGS / NOMOS        |PCES                      |Provenance (PolicyEvaluationEvents); TCS (interaction class)|
+|Provenance / MOIRAI|PCES, PGS                 |All services (read-only graph access)                       |
+|TCS / MIMIR        |Provenance, PGS           |FGTS (receives AIPerformanceUpdates)                        |
+|FGTS / ALETHEIA    |Provenance, TCS, PCES, PGS|TCS, RQS (signal feeds)                                     |
+|TVS / KAIROS       |Provenance                |KCS (receives invalidation events)                          |
+|RQS / HERMES       |Provenance, TVS, FGTS     |Retrieval layer (reranking signals)                         |
+|KCS / ARGUS        |TVS, Provenance           |TVS (ActiveInvalidationRequests)                            |
+|ERAS / LOGOS       |Provenance, TVS, TCS, PGS |TCS, PGS (reasoning quality signals)                        |
+
+-----
+
+## 06  The Three Accountability Axes
+
+THEMIS provides accountability across three independent axes. The most powerful audit queries combine all three.
+
+### Axis 1 — ORIGIN
+
+**Question:** Where did this content come from?
+**Owner:** Provenance Service (MOIRAI)
+**Answers:** Which exhibit, which analyst session, which model version, which retrieval chunks, how many hops from primary source.
+
+### Axis 2 — CURRENCY
+
+**Question:** Does this evidence still hold?
+**Owner:** TVS (KAIROS) + KCS (ARGUS)
+**Answers:** Current validity score, when it last changed, what caused the change, what the score was at any historical moment.
+
+### Axis 3 — TRUST
+
+**Question:** Was AI trusted appropriately?
+**Owner:** TCS (MIMIR) + FGTS (ALETHEIA) + RQS (HERMES) + ERAS (LOGOS)
+**Answers:** Was the analyst over- or under-relying, was the retrieval context adequate, was the AI’s reasoning complete and supported.
+
+-----
+
+## 07  Platform Deployment Architecture
+
+### Kubernetes Cluster Structure
+
+```
+KUBERNETES CLUSTER
+│
+├── Namespace: themis-gates
+│   ├── pces-deployment      (AEGIS)
+│   └── pgs-deployment       (NOMOS)
+│
+├── Namespace: themis-core
+│   ├── provenance-deployment (MOIRAI)  ← Neo4j graph store
+│   └── tcs-deployment        (MIMIR)   ← PostgreSQL + Redis
+│
+├── Namespace: themis-quality
+│   ├── fgts-deployment       (ALETHEIA)
+│   ├── tvs-deployment        (KAIROS)  ← PostgreSQL + Redis + pgvector
+│   └── rqs-deployment        (HERMES)
+│
+├── Namespace: themis-intelligence
+│   ├── kcs-deployment        (ARGUS)
+│   └── eras-deployment       (LOGOS)   ← Elasticsearch for reasoning index
+│
+├── Namespace: themis-infra
+│   ├── event-broker          (Kafka)
+│   ├── api-gateway           (Kong)
+│   └── secrets-manager       (Vault)
+│
+└── Namespace: themis-observability
+    ├── metrics               (Prometheus + Grafana)
+    ├── tracing               (Jaeger)
+    └── platform-dashboard    (THEMIS admin UI / Intellect module)
+```
+
+### Data Layer
+
+|Store           |Technology        |Purpose                                                                   |
+|----------------|------------------|--------------------------------------------------------------------------|
+|Provenance graph|Neo4j             |Relationship-heavy queries: ancestry traversal, DAG walking, lineage paths|
+|Validity index  |PostgreSQL + Redis|Time-series score history (PG), current score cache (Redis)               |
+|Vector store    |pgvector / Qdrant |Chunk embeddings for semantic conflict detection and retrieval quality    |
+|Reasoning index |Elasticsearch     |Full-text search across chain-of-thought captures and claim text          |
+|Event log       |Kafka             |Async inter-service communication; replay capability for all event types  |
+|Secrets         |HashiCorp Vault   |External source credentials (KCS), API keys, model credentials            |
+
+-----
+
+## 08  Governance Model
+
+### AI Governance Committee
+
+**Composition:** General Counsel (chair), Chief Information Officer, two senior practice group partners, one junior associate representative, platform owner.
+**Responsibilities:** Platform-level policy, PGS global rule approval, ERAS audit reports, firm AI compliance posture.
+
+### Service Ownership
+
+|Service            |Owner                                        |Responsibilities                                             |
+|-------------------|---------------------------------------------|-------------------------------------------------------------|
+|PCES / AEGIS       |Professional Responsibility / Ethics Counsel |Privilege rules, CoI graph, consent tracking                 |
+|PGS / NOMOS        |AI Governance Committee                      |Policy rule authoring, approval workflow, global rule changes|
+|Provenance / MOIRAI|Technology / Platform Engineering            |Infrastructure, event schema, graph store operations         |
+|TCS / MIMIR        |Knowledge Management / Training              |Calibration thresholds, analyst intervention routing         |
+|FGTS / ALETHEIA    |Quality Assurance / Knowledge Management     |Corpus curation standards, fine-tuning approval              |
+|TVS / KAIROS       |Technology / Practice Groups                 |Decay profile configuration, conflict resolution SLAs        |
+|RQS / HERMES       |Technology / Knowledge Management            |Retrieval model governance, miss pattern remediation         |
+|KCS / ARGUS        |Knowledge Management / Practice Groups       |Source registry, watch list standards, monitoring SLAs       |
+|ERAS / LOGOS       |Professional Responsibility / Practice Groups|Reasoning quality standards, disclosure policy               |
+
+-----
+
+## 09  Consolidated Implementation Roadmap
+
+**Total timeline: 17 months (66 weeks) · 4 phase pairs**
+
+### Phase 1–2: Safety Gates *(Weeks 1–8)*
+
+- PCES / AEGIS: privilege classification, matter scoping, CoI detection, consent tracking
+- PGS / NOMOS: interaction classification, PII detection, policy rule engine, output screening
+- Both services wired to API gateway; no client-data AI interaction permitted without both
+- Privilege log export operational; policy authoring UI deployed; AI Governance Committee constituted
+
+### Phase 3–4: Core Infrastructure *(Weeks 9–28)*
+
+- Provenance / MOIRAI: full 4-phase build — ingestion, interaction DAG, transport, document assembly
+- TCS / MIMIR: RAI scoring, Elo baseline, calibration dashboard, analyst intervention workflows
+- End of Phase 4: complete chain of custody for all AI interactions; calibration baselines established
+
+### Phase 5–6: Quality Feedback Loops *(Weeks 29–46)*
+
+- FGTS / ALETHEIA: correction capture, ground truth corpus, analyst signal model, TCS/RQS feeds
+- TVS / KAIROS: decay engine, DAG propagation, conflict detection, point-in-time reconstruction
+- TVS validity scores surfaced in document editor; Brief Validity Report operational
+
+### Phase 7–8: Intelligence & Audit *(Weeks 47–66)*
+
+- RQS / HERMES: retrieval observability, miss detection, TVS-retrieval intersection, drift monitoring
+- KCS / ARGUS: court docket integration, regulatory feeds, TVS invalidation event pipeline
+- ERAS / LOGOS: reasoning capture, claim indexing, professional responsibility surface
+- Full platform operational: all three accountability axes live across all nine services
+
+-----
+
+## 10  Platform Metrics & Success Criteria
+
+|Metric                |Description                                      |Target                                                     |
+|----------------------|-------------------------------------------------|-----------------------------------------------------------|
+|Privilege filter rate |% of retrieval requests filtered by PCES         |< 2% false positive rate; 0% privilege exposure incidents  |
+|Policy block rate     |% of interactions blocked by PGS                 |Trending down as analyst behavior adapts to policy         |
+|Provenance coverage   |% of AI outputs with complete lineage            |> 99% within 60 days of Provenance Service launch          |
+|Calibration error     |Mean analyst calibration error (TCS)             |Trending toward 0 over analyst cohort lifetime             |
+|Corpus validity       |% of active case chunks with score > 0.75        |Tracked per matter; low-validity matters flagged for review|
+|Retrieval precision   |Rolling precision per query class                |Baseline established; deviation > 15pp triggers alert      |
+|Open conflicts        |Count of unresolved TVS conflict events          |0 conflicts > 5 business days old                          |
+|Unsupported claim rate|% of AI claims with no retrieved evidence backing|< 10% target for evidence_analysis class                   |
+
+-----
+
+## 11  The Competitive Moat
+
+### The Ground Truth Corpus
+
+FGTS builds a proprietary dataset of AI errors and corrections specific to the firm’s practice areas. No commercial model is trained on this data. Fine-tuning produces models that outperform generic alternatives on firm-specific work. This advantage grows with every matter.
+
+### Calibration History
+
+TCS accumulates longitudinal analyst performance data. The firm knows, at the cohort and individual level, where analysts over- and under-trust AI by matter type. This institutional knowledge informs training, supervision, and work assignment in ways competitors without THEMIS cannot replicate.
+
+### The Validity Graph
+
+The TVS validity graph, fed by KCS external monitoring, represents the firm’s real-time picture of evidence currency across all active matters. Competitors relying on manual evidence review cannot match the speed or completeness of automated validity tracking at scale.
+
+### Client Trust as Differentiator
+
+A firm that can demonstrate to clients — credibly, with documented evidence — that its AI use is governed, its evidence is current, and its reasoning is auditable has a differentiated value proposition. As AI disclosure obligations evolve, that demonstration capability becomes a prerequisite for certain client relationships.
+
+### Regulatory Positioning
+
+THEMIS is built ahead of regulatory requirements. Firms that have ERAS, PCES, and PGS operational when disclosure and privilege requirements crystallize are compliant on day one. Firms building after the mandate face operational disruption and potential liability exposure.
+
+-----
+
+## 12  Architectural Additions
+
+### 12.1  Data Sovereignty & Regional Residency
+
+The platform deployment architecture must support multi-jurisdictional data residency for EU, UK, and other regulated jurisdictions. **This is a Day 0 design decision** — regional topology cannot be retrofitted.
+
+**Required changes:**
+
+- **Regional cluster topology:** Hub-and-spoke architecture — control-plane cluster (non-data-bearing) and regional data-plane clusters (EU, UK, US, APAC). No matter data transits the control plane.
+- **Jurisdictional metadata:** Every chunk record gains a `data_jurisdiction` field. PCES enforces this as a retrieval filter.
+- **Model provider routing:** AI API calls route to endpoints within the same regional boundary as the matter data.
+- **Cross-region analytics:** Platform-level metrics may be aggregated centrally only after PII and matter-identifying content is stripped.
+
+### 12.2  Financial Governance Service (FGS / PLUTUS)
+
+Dedicated service tracking token consumption and API costs at matter and client level.
+
+**Three capabilities:**
+
+1. **Cost Attribution** — Every TurnCompleted event is priced against a versioned rate card (model × token type × date). Output: cost-per-turn, per-session, per-matter, per-client.
+1. **Budget Governance** — Matters get a soft ceiling (alert at 80%) and hard ceiling (blocks AI until supervising attorney approves increase). Hard ceiling integrates with HITL Hold Queue.
+1. **Anomaly Detection** — Flags sessions spending 10× the matter average, single queries exceeding weekly matter totals, or retrieval loops that appear to iterate without converging.
+
+**Billing models supported:** disbursement (pass-through at cost), fee-based (marked up), absorbed (firm overhead). Per-matter configuration.
+
+**Build placement:** Phase 1 — cost attribution must be live from the first governed AI interaction.
+
+### 12.3  Client-Facing Transparency Portal
+
+**Sequencing constraint:** Internal accountability infrastructure must be mature and reliable before external exposure. Client Attestation API boundary designed in Phase 3; portal launches Phase 5+.
+
+**Client Attestation API — four attestation types:**
+
+|Type                |Content                                                                                         |
+|--------------------|------------------------------------------------------------------------------------------------|
+|Origin attestation  |Source documents used, ingestion dates, AI interaction count, hop distance from primary sources |
+|Currency attestation|Validity score at delivery, contested/low-validity sources, external developments since delivery|
+|AI usage attestation|Whether AI was used, model families, interaction classes, governance gate confirmation          |
+|Certification hash  |Cryptographic hash of deliverable content + provenance graph snapshot at delivery               |
+
+**Not exposed:** Attorney prompt content, system prompt configuration, analyst identities, internal calibration scores, retrieval quality metrics, work product content.
+
+### 12.4  Human-in-the-Loop Workflow Orchestration
+
+The PGS REQUIRE_APPROVAL action requires a complete workflow. **Two distinct mechanisms:**
+
+**Supervised Gates (REQUIRE_APPROVAL):**
+
+- Hold Record created: interaction state, trigger rule, matter context, requestor identity, timestamp
+- Reviewer assignment: mapped by trigger category × interaction class (privilege → supervising attorney; CoI → ethics counsel)
+- SLA clock: 2 hours for privilege, 30 minutes for CoI, 4 hours for policy
+- Approval Record: immutable event written to Provenance Service on every resolution
+- Release mechanism: approved interaction re-enters generation pipeline with approval event attached
+
+**Hard Stops (BLOCK — no override):**
+
+- Active adverse-party CoI on a current client
+- Sealed matter boundary violation
+- Budget hard ceiling without supervising attorney authorisation
+- Litigation hold privilege block on an active hold
+
+Hard stops require formal out-of-band process involving ethics counsel (CoI) or court order (sealed matter). Cannot be cleared by a single attorney approval.
+
+**Build placement:** Hold Queue is a Phase 2 deliverable — REQUIRE_APPROVAL must have a resolution path before Phase 2 is complete.
+
+-----
+
+## 13  External System Integration & Model Providers
+
+### Upstream Systems
+
+|System                       |Example                         |Integration Role                                                                                                                         |
+|-----------------------------|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+|Document Management System   |iManage, NetDocuments           |Primary evidence ingestion source. THEMIS subscribes to document creation/update events. Authoritative source of matter scoping metadata.|
+|Matter Management            |Aderant, Elite                  |Authoritative source of matter_id, client_id, matter_type, jurisdiction, responsible attorney. Matter status changes propagate to THEMIS.|
+|Identity & Access Management |Okta, Azure AD                  |User identity, role, and group membership. THEMIS is a relying party only — does not manage identity.                                    |
+|eDiscovery Platform          |Relativity, Everlaw             |Bidirectional. THEMIS ingests processed evidence exports; exports provenance records and validity scores back for coding workflows.      |
+|Court Docket & Legal Database|PACER, Westlaw, Lexis, Bloomberg|KCS subscribes to these feeds. Read-only from THEMIS perspective. Source reliability scores configured per provider.                     |
+|Email & Communication Archive|Microsoft 365 archive           |Ingested as a distinct modality with thread-level spatial metadata. Requires explicit attorney authorisation per matter.                 |
+
+### Downstream Systems
+
+|System                      |Example                                |Integration Role                                                                                                             |
+|----------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+|Billing / Financial System  |Aderant, Elite                         |FGS cost attribution records consumed for disbursement or fee-based AI cost pass-through.                                    |
+|Document Editor             |Microsoft Word, proprietary drafting UI|Receives provenance annotations, validity scores, ERAS reasoning data via THEMIS Query API. Renders inline margin indicators.|
+|Client Portal               |Client-facing web application (Phase 5)|Consumes Client Attestation API. Cryptographic certification hash verification.                                              |
+|Compliance & Audit Dashboard|Intellect (internal BI platform)       |Consumes Chain of Custody API and FGS reporting. Primary surface for AI Governance Committee.                                |
+|Litigation Hold System      |Exterro, Kcura Legal Hold              |THEMIS provenance records frozen on hold activation. TVS monitoring continues for held matters indefinitely.                 |
+|Bar Association Disclosure  |Jurisdiction-specific portals (future) |ERAS structured disclosure data in jurisdiction-configurable formats.                                                        |
+
+### Model Provider Layer
+
+|Provider / Model Type              |Role                                                                                                                                                                           |
+|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|**Anthropic (Claude)**             |Primary provider for long-context reasoning: evidence analysis, complex legal research synthesis, ERAS chain-of-thought capture. EU and US regional endpoints available.       |
+|**Azure OpenAI**                   |Enterprise deployment where Azure regional infrastructure satisfies data residency requirements. Primary path for Microsoft 365 integration scenarios.                         |
+|**Self-hosted / fine-tuned models**|Phase 6 onwards. FGTS ground truth corpus feeds fine-tuning pipeline producing firm-specific model weights deployed as self-hosted endpoints within regional cluster.          |
+|**Embedding models**               |Separate from generation models. Used by RQS vector store and ERAS reasoning index. Embedding model version stored per chunk; changes require AI Governance Committee approval.|
+
+### Model Provider Governance
+
+|Concern                    |Governance Mechanism                                                                                                                          |
+|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------|
+|Model version pinning      |Production interactions use pinned model versions. Version changes are governance events — tested, approved, and deployed deliberately.       |
+|Training data contamination|No client matter content may be used for training. ZDR agreements where available. Explicit data processing agreements required.              |
+|Provider outage handling   |Fallback provider configuration in API gateway. Fallback must satisfy same data residency requirements as primary.                            |
+|Cost visibility            |FGS rate cards maintained per provider per model. Pricing changes are versioned configuration updates.                                        |
+|Regional routing           |Gateway routes model API calls to endpoints within the same regional boundary as the matter data. Cross-region model calls blocked at gateway.|
+
+-----
+
+## Closing
+
+THEMIS is a 17-month investment in a platform that will define how the firm practices law in the AI era. The safety gates alone justify the first 8 weeks. Every phase beyond that builds a compounding institutional advantage that is not replicable from outside the firm.
+
+> The question is not whether to build it. It is how fast.
+
+-----
+
+*Part of the THEMIS Platform Series · Internal Architecture Document*
+*Companion documents: Service architecture documents for each of the 9 core services + HADES + FGS*
