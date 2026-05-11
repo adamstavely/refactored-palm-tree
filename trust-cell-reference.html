@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Trust Cell — Platform Reference</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1B3A5C;--teal:#1A9E8C;--teal-dark:#0D6B5E;--blue:#2E5FAD;
+  --purple:#6D4FB5;--amber:#9A6800;--red:#8B2222;--green:#157A6B;
+  --navy-l:#EEF2F8;--teal-l:#E6F5F3;--blue-l:#EEF3FF;
+  --purple-l:#F2EEFD;--amber-l:#FFF7E8;--red-l:#FBF0F0;--green-l:#E6F5F2;
+  --text:#1A1A2E;--sub:#3A4560;--muted:#5A6480;--border:#D0D8E8;
+  --bg:#F2F5FA;--card:#FFFFFF;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+
+/* ── NAV ─────────────────────────────────────── */
+#topnav{position:sticky;top:0;z-index:100;background:var(--navy);display:flex;align-items:center;gap:2px;padding:0 12px;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+#topnav h2{color:#fff;font-size:13px;font-weight:700;white-space:nowrap;padding:10px 16px 10px 4px;border-right:1px solid rgba(255,255,255,.15);margin-right:8px;letter-spacing:.04em}
+.tab-btn{background:none;border:none;color:rgba(255,255,255,.65);padding:12px 14px;cursor:pointer;font-size:12.5px;font-weight:500;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap}
+.tab-btn:hover{color:#fff;background:rgba(255,255,255,.07)}
+.tab-btn.active{color:#fff;border-bottom-color:var(--teal);background:rgba(255,255,255,.08)}
+
+/* ── LAYOUT ──────────────────────────────────── */
+.section{display:none;padding:28px 32px 40px;max-width:1300px;margin:0 auto}
+.section.active{display:block}
+.section-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.section-sub{color:var(--muted);font-size:13px;margin-bottom:24px}
+
+/* ── CARDS & GRIDS ───────────────────────────── */
+.grid{display:grid;gap:14px}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;position:relative}
+.card-accent{border-top:4px solid var(--navy)}
+.card h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.card p{font-size:12.5px;color:var(--sub);line-height:1.55}
+.layer-header{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;padding:6px 12px;border-radius:4px;margin-bottom:10px;display:inline-block}
+.badge{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:3px;margin:2px 2px 0 0;letter-spacing:.04em}
+.tag{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;border:1px solid currentColor;margin:1px}
+
+/* SERVICE CARD */
+.svc-card{border-left:4px solid;border-radius:6px;padding:14px;background:#fff;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.svc-code{font-size:17px;font-weight:800;letter-spacing:.02em}
+.svc-name{font-size:11.5px;color:var(--sub);margin:2px 0 6px}
+.svc-epithet{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;opacity:.8}
+.svc-fn{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:8px}
+.svc-io{font-size:11px;color:var(--muted);line-height:1.5}
+.svc-io strong{color:var(--sub);font-weight:600}
+.phase-pill{font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;float:right;letter-spacing:.06em}
+
+/* ── ORG CHART CSS ───────────────────────────── */
+.org-tree{display:flex;flex-direction:column;align-items:center;gap:0}
+.org-level{display:flex;justify-content:center;gap:12px;position:relative;width:100%}
+.org-node{border-radius:8px;padding:12px 16px;text-align:center;min-width:140px;max-width:180px;position:relative;font-size:12px}
+.org-node .role{font-weight:700;font-size:12.5px;margin-bottom:3px}
+.org-node .desc{font-size:10.5px;opacity:.8;line-height:1.4}
+.org-connector{width:2px;height:28px;background:var(--border);margin:0 auto}
+.org-branch{display:flex;justify-content:center;gap:0;position:relative}
+.org-branch::before{content:'';position:absolute;top:0;left:10%;right:10%;height:2px;background:var(--border)}
+.org-branch-col{display:flex;flex-direction:column;align-items:center;gap:0;flex:1}
+.org-branch-col::before{content:'';width:2px;height:24px;background:var(--border)}
+.org-team-box{border:2px solid;border-radius:10px;padding:12px;width:100%;text-align:center}
+.org-team-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px}
+.org-members{display:flex;flex-direction:column;gap:4px}
+.org-member{font-size:11px;padding:4px 8px;border-radius:4px;text-align:left;line-height:1.3}
+.org-member strong{display:block;font-weight:600}
+.org-member span{font-size:10px;opacity:.75}
+.ext-box{border:1.5px dashed;border-radius:6px;padding:8px 12px;font-size:11px;text-align:center;color:var(--muted)}
+
+/* ── OPERATING MODEL ─────────────────────────── */
+.track-row{display:grid;grid-template-columns:140px 1fr;gap:0;margin-bottom:12px;border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+.track-label-col{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:16px 12px;text-align:center;font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.track-content-col{background:#fff;padding:14px 18px}
+.track-content-col h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.track-content-col p{font-size:12px;color:var(--sub);line-height:1.55}
+.cadence-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:20px}
+.cadence-col{border-radius:8px;padding:12px;border:1px solid var(--border)}
+.cadence-col h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;color:var(--navy)}
+.cadence-item{font-size:11px;color:var(--sub);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.4}
+.cadence-item:last-child{border-bottom:none}
+.decision-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:12px}
+.decision-table th{background:var(--navy);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
+.decision-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.45}
+.decision-table tr:nth-child(even) td{background:var(--bg)}
+
+/* ── ATHENA UI MOCKUP ────────────────────────── */
+.athena-shell{background:#1A1A2E;border-radius:10px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.3);font-family:'SF Mono',monospace}
+.athena-topbar{background:#111827;padding:8px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #2D3748}
+.athena-topbar .mode-badge{background:#1A9E8C;color:#fff;font-size:9px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:.08em}
+.athena-topbar .stat-pill{background:#2D3748;color:#9CA3AF;font-size:9px;padding:2px 8px;border-radius:3px}
+.athena-topbar .stat-pill.warn{background:#7A3A00;color:#FCD34D}
+.athena-topbar .stat-pill.flag{background:#4A2222;color:#FCA5A5}
+.athena-intent-bar{background:#1E3A5C;padding:6px 16px;font-size:10px;color:#93C5FD;border-bottom:1px solid #2D3748}
+.athena-body{display:grid;grid-template-columns:1fr 260px;min-height:360px}
+.athena-chat{padding:16px;overflow:auto;border-right:1px solid #2D3748}
+.athena-msg{margin-bottom:14px}
+.athena-msg.user .bubble{background:#2D3748;color:#E5E7EB;padding:8px 12px;border-radius:6px;font-size:11.5px;line-height:1.5}
+.athena-msg.ai .bubble{background:#111827;border:1px solid #374151;color:#E5E7EB;padding:10px 12px;border-radius:6px;font-size:11.5px;line-height:1.6}
+.claim-span{display:inline;border-bottom:2px solid;padding:0 2px;border-radius:2px;cursor:pointer;position:relative}
+.claim-badge{display:inline-block;font-size:8.5px;font-weight:700;padding:1px 5px;border-radius:2px;margin:0 2px;vertical-align:middle;letter-spacing:.04em}
+.src-badge{display:inline-block;font-size:8px;font-weight:700;padding:1px 5px;border-radius:2px;margin:0 1px;vertical-align:middle;letter-spacing:.06em;border:1px solid}
+.counter-panel{background:#1E2D3D;border:1px solid #374151;border-radius:4px;margin-top:8px;padding:8px 10px;font-size:10.5px;color:#9CA3AF;line-height:1.5}
+.counter-panel details summary{color:#93C5FD;cursor:pointer;font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.athena-queue{padding:12px;background:#0F1520}
+.queue-header{font-size:10px;font-weight:700;color:#9CA3AF;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;display:flex;justify-content:space-between}
+.queue-item{background:#1A2335;border:1px solid #2D3748;border-radius:5px;padding:8px 10px;margin-bottom:8px;cursor:pointer}
+.queue-item .qi-claim{font-size:10.5px;color:#E5E7EB;line-height:1.4;margin-bottom:4px}
+.queue-item .qi-meta{font-size:9px;color:#6B7280;display:flex;gap:6px;align-items:center}
+.queue-item .qi-actions{display:flex;gap:4px;margin-top:6px}
+.qi-btn{font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid;cursor:pointer;font-weight:600}
+
+/* ── INTERVENTIONS ───────────────────────────── */
+.cat-group{margin-bottom:20px}
+.cat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;padding:6px 12px;border-radius:4px;margin-bottom:10px;display:inline-flex;align-items:center;gap:6px}
+.iv-card{border:1px solid var(--border);border-radius:7px;margin-bottom:8px;overflow:hidden}
+.iv-card summary{padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;background:#fff;list-style:none;user-select:none}
+.iv-card summary::-webkit-details-marker{display:none}
+.iv-card summary::after{content:'▸';margin-left:auto;font-size:11px;color:var(--muted);transition:transform .2s}
+.iv-card[open] summary::after{transform:rotate(90deg)}
+.iv-num{font-size:11px;font-weight:800;color:var(--muted);min-width:20px}
+.iv-name{font-size:13px;font-weight:700;color:var(--navy);flex:1}
+.iv-cat-pill{font-size:9px;font-weight:600;padding:2px 7px;border-radius:3px;letter-spacing:.06em;white-space:nowrap}
+.iv-body{padding:12px 16px 14px;background:var(--bg);border-top:1px solid var(--border)}
+.iv-body h5{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:10px 0 4px}
+.iv-body h5:first-child{margin-top:0}
+.iv-body p{font-size:12px;color:var(--sub);line-height:1.55}
+.iv-body ul{padding-left:16px;margin:4px 0}
+.iv-body li{font-size:12px;color:var(--sub);line-height:1.55;margin:3px 0}
+.svc-pills{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.svc-pill{font-size:9.5px;font-weight:600;padding:2px 7px;border-radius:3px;background:var(--purple-l);color:var(--purple)}
+
+/* ── SEQUENCE DIAGRAM ────────────────────────── */
+.mermaid-wrap{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px;overflow:auto}
+.mermaid{font-size:11px}
+
+/* ── MISC ────────────────────────────────────── */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.info-row{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px}
+.info-row:last-child{border-bottom:none}
+.info-label{color:var(--muted);font-weight:600;min-width:140px;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.ext-partner{border:1.5px dashed var(--border);border-radius:6px;padding:10px 14px}
+.ext-partner h4{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.ext-partner p{font-size:11.5px;color:var(--sub)}
+h3.subsec{font-size:15px;font-weight:700;color:var(--navy);margin:20px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--border)}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:1fr 1fr}.grid-2{grid-template-columns:1fr}.cadence-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<nav id="topnav">
+  <h2>AI Trust Cell</h2>
+  <button class="tab-btn active" onclick="show('exec',this)">Executive Summary</button>
+  <button class="tab-btn" onclick="show('platform',this)">Platform Services</button>
+  <button class="tab-btn" onclick="show('intelligence',this)">Intelligence Layer</button>
+  <button class="tab-btn" onclick="show('org',this)">Team Structure</button>
+  <button class="tab-btn" onclick="show('opmodel',this)">Operating Model</button>
+  <button class="tab-btn" onclick="show('athena',this)">ATHENA Interface</button>
+  <button class="tab-btn" onclick="show('sequence',this)">Session Flow</button>
+  <button class="tab-btn" onclick="show('catalog',this)">Interventions</button>
+  <button class="tab-btn" onclick="show('refs',this)">References</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 0 — EXECUTIVE SUMMARY
+══════════════════════════════════════════════════════════ -->
+<div class="section active" id="exec">
+<div class="section-title">Executive Summary</div>
+<div class="section-sub">The case for governed AI in legal practice — platform overview, urgent need, and scope of this program.</div>
+
+<!-- Hero stat row -->
+<div class="grid grid-4" style="margin-bottom:28px">
+ <div class="card" style="border-top:4px solid #B84040;text-align:center">
+  <div style="font-size:36px;font-weight:800;color:#B84040;line-height:1.1">Now</div>
+  <p style="margin-top:6px;font-size:12px">AI is already in use across the firm — sanctioned and unsanctioned. The governance question is not whether. It is how fast.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #1B3A5C;text-align:center">
+  <div style="font-size:36px;font-weight:800;color:#1B3A5C;line-height:1.1">13</div>
+  <p style="margin-top:6px;font-size:12px">THEMIS services governing privilege, policy, provenance, calibration, feedback, validity, retrieval, currency, and reasoning audit.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #1A9E8C;text-align:center">
+  <div style="font-size:36px;font-weight:800;color:#1A9E8C;line-height:1.1">28</div>
+  <p style="margin-top:6px;font-size:12px">ATHENA interventions targeting sycophancy, automation bias, vigilance decrement, anchoring, and confirmation bias in legal analysis.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #6D4FB5;text-align:center">
+  <div style="font-size:36px;font-weight:800;color:#6D4FB5;line-height:1.1">21</div>
+  <p style="margin-top:6px;font-size:12px">Person AI Trust Cell across three specialized teams: Research and Red Team, THEMIS Platform, and Intelligence Layer.</p>
+ </div>
+</div>
+
+<!-- The Problem -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+ <div>
+  <h3 class="subsec">The Problem</h3>
+  <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:14px">AI adoption in legal practice is not a future event to be planned for. It is a present reality to be managed. Attorneys use AI-assisted research tools, large language models for drafting, and AI-summarized evidence review daily — with or without firm authorization, and in most firms, without the infrastructure to make it safe.</p>
+  <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:14px">The specific failure modes are not theoretical. They have occurred at peer firms and been reported publicly.</p>
+  <div class="grid grid-2" style="gap:10px">
+   <div class="card" style="border-left:4px solid #B84040;padding:12px"><h4 style="color:#B84040;font-size:12px">Privilege Leakage</h4><p>RAG-based tools have surfaced Matter A content in prompts scoped to Matter B. Without matter-scoped retrieval enforcement, this is structurally inevitable.</p></div>
+   <div class="card" style="border-left:4px solid #B84040;padding:12px"><h4 style="color:#B84040;font-size:12px">Fabricated Citations</h4><p>Attorneys have filed briefs citing cases that do not exist. Several have faced bar discipline. AI models hallucinate citations with high fluency and apparent confidence.</p></div>
+   <div class="card" style="border-left:4px solid #B84040;padding:12px"><h4 style="color:#B84040;font-size:12px">Stale Evidence</h4><p>Analysts have presented AI-generated summaries without knowing that the underlying sources had been superseded, contradicted, or subject to court-ordered reconsideration.</p></div>
+   <div class="card" style="border-left:4px solid #B84040;padding:12px"><h4 style="color:#B84040;font-size:12px">Uncalibrated Trust</h4><p>Junior associates with limited ability to evaluate AI output quality are accepting AI conclusions at higher rates than senior attorneys — systematic quality asymmetry invisible to supervision.</p></div>
+  </div>
+ </div>
+ <div>
+  <h3 class="subsec">The Urgent Need</h3>
+  <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:14px">Three converging pressures make this urgent rather than important.</p>
+  <div class="track-row" style="margin-bottom:10px"><div class="track-label-col" style="background:#B84040;color:#fff;font-size:10px;padding:12px 8px">Professional Liability</div><div class="track-content-col" style="padding:12px 16px"><h4 style="font-size:12px">Bar discipline is already occurring</h4><p>Fabricated citations, unsupported legal conclusions, and undisclosed AI contributions create malpractice exposure that has materialized at peer firms. A single significant matter where AI-generated content was relied upon without verification can exceed the multi-year cost of this platform in a single claim.</p></div></div>
+  <div class="track-row" style="margin-bottom:10px"><div class="track-label-col" style="background:#9A6800;color:#fff;font-size:10px;padding:12px 8px">Regulatory Timing</div><div class="track-content-col" style="padding:12px 16px"><h4 style="font-size:12px">Bar associations are moving now</h4><p>Bar associations in multiple jurisdictions are actively developing AI competence and disclosure requirements. Firms that have PCES, PGS, and ERAS operational before disclosure requirements are mandated are compliant on day one. Firms building these capabilities after the mandate are in remediation mode under scrutiny.</p></div></div>
+  <div class="track-row"><div class="track-label-col" style="background:#1B3A5C;color:#fff;font-size:10px;padding:12px 8px">Competitive Position</div><div class="track-content-col" style="padding:12px 16px"><h4 style="font-size:12px">Clients are beginning to ask</h4><p>Sophisticated clients — financial institutions, major corporates, government agencies — are beginning to ask how outside counsel governs AI use. A firm that cannot answer that question credibly is at a disadvantage in panel reviews and RFP processes against firms that can demonstrate governed AI posture.</p></div></div>
+ </div>
+</div>
+
+<!-- What We've Built -->
+<h3 class="subsec">What This Program Has Designed</h3>
+<div class="grid grid-3" style="margin-bottom:24px">
+ <div class="card" style="border-top:4px solid #1A9E8C">
+  <h4 style="color:#1A9E8C">ATHENA</h4>
+  <p style="margin-top:6px;margin-bottom:10px">Calibrated analysis interface. 28 interventions across 8 categories targeting the specific cognitive failure modes that make AI-assisted legal work dangerous: sycophancy, automation bias, vigilance decrement, anchoring, and confirmation bias.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:4px">
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Session intent declaration</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Intention gate</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">8 source type badges</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Calibrated confidence</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Verification queue</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Compliance gaming detection</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Multi-analyst framework</span>
+   <span class="badge" style="background:#E6F5F3;color:#0D6B5E">Pressure-aware session mode</span>
+  </div>
+ </div>
+ <div class="card" style="border-top:4px solid #1B3A5C">
+  <h4 style="color:#1B3A5C">THEMIS</h4>
+  <p style="margin-top:6px;margin-bottom:10px">Trusted Human-AI Enablement for Matter Intelligence and Safety. 13 integrated services providing governance, accountability, and quality infrastructure across three accountability axes: Origin (provenance), Currency (TVS + KCS), and Trust (TCS + FGTS + RQS + ERAS).</p>
+  <div style="display:flex;flex-wrap:wrap;gap:4px">
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">PCES / AEGIS</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">PGS / NOMOS</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">Provenance / MOIRAI</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">TCS / MIMIR</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">FGTS / ALETHEIA</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">CVS / VERITAS</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">MAS / EIDOLON</span>
+   <span class="badge" style="background:#EEF2F8;color:#1B3A5C">DPS / CODEX</span>
+  </div>
+ </div>
+ <div class="card" style="border-top:4px solid #6D4FB5">
+  <h4 style="color:#6D4FB5">AI Trust Cell</h4>
+  <p style="margin-top:6px;margin-bottom:10px">21-person specialized organization across three teams with a triple mandate: deliver ATHENA and THEMIS, research calibration and human factors science, and govern AI standards across the firm. Research independence is structural, not aspirational.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:4px">
+   <span class="badge" style="background:#F2EEFD;color:#4A2FA8">Research + Red Team · 7</span>
+   <span class="badge" style="background:#EEF3FF;color:#1A3A80">Platform Team · 7</span>
+   <span class="badge" style="background:#E6F5F3;color:#0A4A40">Intelligence Team · 6</span>
+   <span class="badge" style="background:#F2EEFD;color:#4A2FA8">Max 40% delivery capacity</span>
+   <span class="badge" style="background:#F2EEFD;color:#4A2FA8">Research track protected</span>
+  </div>
+ </div>
+</div>
+
+<!-- Roadmap -->
+<h3 class="subsec">17-Month Implementation Roadmap</h3>
+<div class="grid grid-4">
+ <div class="card" style="border-top:4px solid #1B3A5C">
+  <span class="badge" style="background:#1B3A5C;color:#fff">Phase 1–2 · Weeks 1–8</span>
+  <h4 style="margin-top:10px;color:#1B3A5C">Safety Gates</h4>
+  <p style="margin-top:6px">PCES/AEGIS and PGS/NOMOS deployed. No AI interaction touches client data without privilege enforcement and policy guardrails. Privilege log generation automated. AI Governance Committee constituted.</p>
+  <p style="margin-top:8px;font-size:11px;color:#8B2222;font-weight:600">Eliminates acute privilege and policy liability from day one.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #0D6B5E">
+  <span class="badge" style="background:#0D6B5E;color:#fff">Phase 3–4 · Weeks 9–28</span>
+  <h4 style="margin-top:10px;color:#0D6B5E">Core Infrastructure</h4>
+  <p style="margin-top:6px">Provenance/MOIRAI with cryptographic attestation. TCS/MIMIR calibration baselines. CVS/VERITAS citation verification. MDS/KRONOS model drift detection. DPS/CODEX document provenance.</p>
+  <p style="margin-top:8px;font-size:11px;color:#8B2222;font-weight:600">Complete chain of custody for every AI interaction. Answerable to any audit.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #9A6800">
+  <span class="badge" style="background:#9A6800;color:#fff">Phase 5–6 · Weeks 29–46</span>
+  <h4 style="margin-top:10px;color:#9A6800">Quality Loops</h4>
+  <p style="margin-top:6px">FGTS/ALETHEIA with quality weighting. TVS/KAIROS validity propagation. IAS/SCUDO adversarial screening. MAS/EIDOLON media authenticity. Proprietary ground truth corpus begins.</p>
+  <p style="margin-top:8px;font-size:11px;color:#8B2222;font-weight:600">Platform's AI gets measurably better on firm-specific matters.</p>
+ </div>
+ <div class="card" style="border-top:4px solid #4A2FA8">
+  <span class="badge" style="background:#4A2FA8;color:#fff">Phase 7–8 · Weeks 47–66</span>
+  <h4 style="margin-top:10px;color:#4A2FA8">Intelligence and Audit</h4>
+  <p style="margin-top:6px">KCS/ARGUS external currency. RQS/HERMES retrieval observability. ERAS/LOGOS reasoning auditability. TVS ground truth corpus validity extension.</p>
+  <p style="margin-top:8px;font-size:11px;color:#8B2222;font-weight:600">Full professional responsibility audit surface. Bar-compliant on day one of mandate.</p>
+ </div>
+</div>
+
+<div class="divider"></div>
+<div style="background:#1B3A5C;border-radius:8px;padding:20px 24px;color:#fff">
+ <h4 style="font-size:14px;margin-bottom:8px;color:#7DD3C8">The Bottom Line</h4>
+ <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,.85)">A firm without THEMIS is using AI on client matters without knowing what privilege boundaries were crossed, what evidence has been superseded, whether analysts are trusting AI appropriately, or whether the reasoning behind AI-assisted conclusions can be defended. A firm with THEMIS has turned that exposure into a governance posture — and that posture into a competitive position. The safety gates alone justify the first eight weeks. Every phase beyond that builds a compounding institutional advantage that is not replicable from outside the firm.</p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1 — PLATFORM SERVICES
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="platform">
+<div class="section-title">THEMIS Platform Services</div>
+<div class="section-sub">13 services across 4 deployment namespaces. 9 original + 5 from Addendum A + 3 architectural extensions.</div>
+
+<script>
+const SVCS=[
+ {code:'PCES',ep:'AEGIS',name:'Privilege & Consent Enforcement',layer:'Safety Gates',ns:'themis-gates',phase:'1-2',col:'#1B3A5C',lcol:'#EEF2F8',fn:'Privilege classification, CoI detection, matter scoping, consent tracking, privilege log generation.',input:'Every request + session context + matter scope',output:'Privilege annotations to MOIRAI · Gate decision to PGS'},
+ {code:'PGS',ep:'NOMOS',name:'Policy & Guardrails',layer:'Safety Gates',ns:'themis-gates',phase:'1-2',col:'#1B3A5C',lcol:'#EEF2F8',fn:'Interaction classification, PII detection, policy rule engine, output screening, export policy enforcement, Deadline-Critical hardening.',input:'Privilege-cleared interactions from PCES',output:'PolicyEvaluationEvents to MOIRAI · Approved interactions to inference'},
+ {code:'Provenance',ep:'MOIRAI',name:'AI Content Provenance',layer:'Core Infrastructure',ns:'themis-core',phase:'3-4',col:'#0D6B5E',lcol:'#E6F5F3',fn:'Turn-level provenance DAG. Cryptographic event signing via Vault. SHA-256 hash chaining. RFC 3161 TSA anchoring every 24h. Verification API: single event, range, full chain audit.',input:'All signed events from Kafka',output:'Provenance graph queries to all consumers'},
+ {code:'TCS',ep:'MIMIR',name:'Trust Calibration Service',layer:'Core Infrastructure',ns:'themis-core',phase:'3-4',col:'#0D6B5E',lcol:'#E6F5F3',fn:'Domain-specific calibration models per (claim type, domain, model version, source type). RAI Engine across 7 behavioral streams. Gaming probability score. Cold start state machine. Bayesian prior initialization. Modality-stratified calibration.',input:'Correction signals from FGTS · Behavioral telemetry · Analyst calibration events',output:'Calibrated confidence scores to ATHENA · RAI scores · Gaming probability score'},
+ {code:'DPS',ep:'CODEX',name:'Document Provenance Service',layer:'Core Infrastructure',ns:'themis-core',phase:'3-4',col:'#0D6B5E',lcol:'#E6F5F3',fn:'Paragraph-level AI attribution. Document lifecycle events: AIContentInsertedEvent, ContentEditedEvent (edit depth scoring), DocumentOpenedEvent (TVS currency check), DocumentFinalizedEvent. Kafka write buffer. Redis provenance panel cache. P95 <100ms.',input:'Document events from authoring solution · ATHENA export payloads',output:'Provenance panel state to authoring solution · Batched events to Kafka'},
+ {code:'FGTS',ep:'ALETHEIA',name:'Feedback & Ground Truth',layer:'Quality Layer',ns:'themis-quality',phase:'5-6',col:'#9A6800',lcol:'#FFF7E8',fn:'Ground truth corpus. 5-factor correction confidence weighting (domain RAI, gaming score, pressure mode, supervisory confirmation, peer agreement). Human review queue. Corpus versioning and rollback. Fine-tuning pipeline feed.',input:'Typed verification outcomes from ATHENA (8 action types) · TVS decay events',output:'Weighted correction signals to TCS · Corpus snapshots to Kafka'},
+ {code:'TVS',ep:'KAIROS',name:'Temporal Validity Service',layer:'Quality Layer',ns:'themis-quality',phase:'5-6',col:'#9A6800',lcol:'#FFF7E8',fn:'Decay functions and DAG propagation through MOIRAI lineage. Point-in-time reconstruction. Ground truth corpus validity extension — CorpusItemValidityDecayEvents to FGTS when KCS invalidates an underlying source.',input:'ActiveInvalidationRequests from KCS · Provenance DAG from MOIRAI',output:'ValidityChangeEvents and CorpusItemValidityDecayEvents · Source validity state to DPS'},
+ {code:'RQS',ep:'HERMES',name:'Retrieval Quality Service',layer:'Quality Layer',ns:'themis-quality',phase:'7-8',col:'#9A6800',lcol:'#FFF7E8',fn:'Rolling precision per query class. Miss detection. TVS-retrieval intersection (superseded evidence in retrieval). Embedding drift monitoring. Retrieval reranking signals.',input:'Retrieval trace and chunk match scores from MIMIR',output:'Miss signals and synthesis failure routing to FGTS · Reranking signals to retrieval layer'},
+ {code:'CVS',ep:'VERITAS',name:'Citation Verification Service',layer:'Quality Layer',ns:'themis-quality',phase:'3-4',col:'#9A6800',lcol:'#FFF7E8',fn:'Generation-time citation resolution against Westlaw and Lexis. Hard interrupt on Not Found — response held before analyst sees it. Verified / Unresolved / Not Found per citation. Redis cache TTL: 24h Verified, 4h Unresolved, 1h Not Found.',input:'Response text from inference gateway',output:'Citation manifest to response pipeline · CitationVerificationEvents to Kafka'},
+ {code:'IAS',ep:'SCUDO',name:'Input Adversarial Screening',layer:'Quality Layer',ns:'themis-quality',phase:'5-6',col:'#9A6800',lcol:'#FFF7E8',fn:'Pre-screens retrieved chunks at ingestion before retrieval pool. Three layers: signature taxonomy matching, embedding similarity against injection corpus, heuristic scoring on imperative-directive patterns. Risk score 0–1. Quarantine above 0.85.',input:'Retrieved chunks from MIMIR before retrieval pool entry',output:'Sanitised chunk pool · InjectionScreeningEvents to Kafka'},
+ {code:'MAS',ep:'EIDOLON',name:'Media Authenticity Service',layer:'Quality Layer',ns:'themis-quality',phase:'5-6',col:'#9A6800',lcol:'#FFF7E8',fn:'Ensemble classifiers per modality: video (deepfake, temporal, metadata), audio (voice synthesis, speaker verification), image (GAN, EXIF, steganography), OCR (per-region confidence scoring). Derivative artifact tagging for transcripts. Versioned model registry.',input:'Media artifacts at ingestion',output:'Authenticity risk scores · MediaAuthenticityEvents to Kafka · TRANSCRIPT derivative tags'},
+ {code:'KCS',ep:'ARGUS',name:'Knowledge Currency Service',layer:'Intelligence Layer',ns:'themis-intelligence',phase:'7-8',col:'#4A2FA8',lcol:'#EEEBFF',fn:'External currency monitoring. Court dockets, regulatory feeds, legal databases. Identifies invalidation events relevant to active matters and FGTS corpus items. Matter watch list management.',input:'External legal information sources',output:'ActiveInvalidationRequests to TVS · Watch list matches to AI Governance Committee'},
+ {code:'ERAS',ep:'LOGOS',name:'Explainability & Reasoning Audit',layer:'Intelligence Layer',ns:'themis-intelligence',phase:'7-8',col:'#4A2FA8',lcol:'#EEEBFF',fn:'Per-turn reasoning capture. Claim-level indexing in Elasticsearch. Unsupported claim detection (claims with no retrieved evidence backing). Confidence signals. Professional responsibility surface for bar/court disclosure.',input:'Turn content from inference gateway · Context from MOIRAI',output:'Reasoning quality signals to TCS · Reasoning records to Kafka · Reasoning captures to ATHENA inspector'},
+ {code:'MDS',ep:'KRONOS',name:'Model Drift Service',layer:'Intelligence Layer',ns:'themis-intelligence',phase:'3-4',col:'#4A2FA8',lcol:'#EEEBFF',fn:'Vendor version endpoint polling every 4h. Fires ModelVersionChangeEvents on detection. Identifies active matters using the prior version. Re-validation requests to TCS. Matter-level version pinning. Pin release requires AI Governance Committee acknowledgment.',input:'Vendor API version endpoints · Active session records from MOIRAI',output:'ModelVersionChangeEvents to Kafka · Re-validation requests to TCS · Version pin enforcement to inference gateway'},
+];
+const LAYERS=['Safety Gates','Core Infrastructure','Quality Layer','Intelligence Layer'];
+const LCOLORS={'Safety Gates':'#1B3A5C','Core Infrastructure':'#0D6B5E','Quality Layer':'#9A6800','Intelligence Layer':'#4A2FA8'};
+document.addEventListener('DOMContentLoaded',()=>{
+ const el=document.getElementById('svc-grid');
+ LAYERS.forEach(layer=>{
+  const svcs=SVCS.filter(s=>s.layer===layer);
+  const h=document.createElement('div');
+  h.style.cssText='margin-bottom:4px';
+  h.innerHTML=`<span class="layer-header" style="background:${LCOLORS[layer]};color:#fff">${layer} &nbsp;·&nbsp; ${svcs.length} services</span>`;
+  el.appendChild(h);
+  const grid=document.createElement('div');
+  grid.className='grid grid-3';
+  grid.style.marginBottom='22px';
+  svcs.forEach(s=>{
+   grid.innerHTML+=`<div class="svc-card" style="border-left-color:${s.col}">
+    <span class="phase-pill" style="background:${s.lcol};color:${s.col}">Phase ${s.phase}</span>
+    <div class="svc-code" style="color:${s.col}">${s.code} <span style="font-size:11px;font-weight:500;color:${s.col};opacity:.7">/ ${s.ep}</span></div>
+    <div class="svc-name">${s.name}</div>
+    <div class="svc-fn">${s.fn}</div>
+    <div class="svc-io"><strong>In:</strong> ${s.input}</div>
+    <div class="svc-io"><strong>Out:</strong> ${s.output}</div>
+    <div style="margin-top:6px"><span class="badge" style="background:${s.lcol};color:${s.col}">${s.ns}</span></div>
+   </div>`;
+  });
+  el.appendChild(grid);
+ });
+
+ const extEl=document.getElementById('ext-grid');
+ const exts=[
+  {title:'Cryptographic Attestation',col:'#1B3A5C',desc:'Event signing via Vault (per-service key pairs), SHA-256 hash chaining (prev_event_hash), RFC 3161 TSA external anchoring every 24h. Applied to Provenance/MOIRAI write path and all 13 services. Phase 3-4 constraint — no retrofit path.'},
+  {title:'FGTS Corpus Quality Weighting',col:'#9A6800',desc:'5-factor correction confidence weight in TCS/MIMIR. Human review queue for low-weight corrections. Corpus versioning and rollback. Supervisory override retroactive weight adjustment wired from DPS (Intervention 27). Phase 5-6.'},
+  {title:'TVS Ground Truth Corpus Validity',col:'#4A2FA8',desc:'TVS/KAIROS scope extended to cover FGTS corpus alongside active matter evidence. KCS invalidation events now propagate CorpusItemValidityDecayEvents to FGTS. Separate decay profiles for corpus vs. evidence. Phase 7-8.'},
+ ];
+ exts.forEach(e=>{
+  extEl.innerHTML+=`<div class="card" style="border-left:4px solid ${e.col}"><h4 style="color:${e.col}">${e.title}</h4><p>${e.desc}</p></div>`;
+ });
+});
+</script>
+
+<div id="svc-grid"></div>
+
+<h3 class="subsec">Architectural Extensions (No new services)</h3>
+<div class="grid grid-3" id="ext-grid"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 2 — INTELLIGENCE LAYER
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="intelligence">
+<div class="section-title">THEMIS Intelligence Layer</div>
+<div class="section-sub">Six services that transform THEMIS from a governance platform into an intelligence platform. Year 2–3 build sequence. Proprietary to the firm — built on its own matter history, correction corpus, and institutional knowledge.</div>
+
+<!-- Strategic framing -->
+<div style="background:#1B3A5C;border-radius:8px;padding:20px 24px;color:#fff;margin-bottom:28px">
+ <h4 style="font-size:14px;margin-bottom:10px;color:#7DD3C8">The Strategic Shift</h4>
+ <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,.85);margin-bottom:10px">The THEMIS governance foundation answers: <em>was this AI use appropriate and accountable?</em> The intelligence layer answers: <em>what does the firm know, what should it do, and what does it need before it knows to ask?</em></p>
+ <p style="font-size:13px;line-height:1.7;color:rgba(255,255,255,.85)">Governance infrastructure is necessary but not sufficient for competitive advantage. Every firm that builds THEMIS Phase 1–5 will have a governed AI platform. These six services are what make the platform proprietary — they are built on the firm's own matter history, correction corpus, and institutional knowledge. No vendor can replicate them. They compound in value with every matter the firm handles.</p>
+</div>
+
+<!-- Service summary table -->
+<h3 class="subsec">Service Summary</h3>
+<table class="decision-table" style="margin-bottom:28px">
+ <tr><th>Service</th><th>Epithet</th><th>Build Phase</th><th>Core Capability</th></tr>
+ <tr><td><strong style="color:#1B3A5C">SCRIBE</strong></td><td>The Recorder</td><td><span class="badge" style="background:#EEF2F8;color:#1B3A5C">Yr 2 Q1–Q2</span></td><td>Semantic version diff with legal meaning awareness. AI contribution tracking across document versions. Provision disappearance detection.</td></tr>
+ <tr><td><strong style="color:#0D6B5E">STOA</strong></td><td>The Forum</td><td><span class="badge" style="background:#E6F5F3;color:#0D6B5E">Yr 2 Q1–Q2</span></td><td>Multi-step legal research orchestration with documented methodology trail. Query decomposition, source triangulation, validity-aware synthesis.</td></tr>
+ <tr><td><strong style="color:#9A6800">ORACLE</strong></td><td>The Foreseer</td><td><span class="badge" style="background:#FFF7E8;color:#9A6800">Yr 2 Q3–Q4</span></td><td>Predictive intelligence from firm's historical matter outcomes. Opposing counsel profiles, judge analytics, timeline modeling. Requires 200+ matters.</td></tr>
+ <tr><td><strong style="color:#4A2FA8">MIRROR</strong></td><td>The Reflector</td><td><span class="badge" style="background:#EEEBFF;color:#4A2FA8">Yr 2 Q3</span></td><td>Similar matter identification across six dimensions. Outcome-linked comparison, complication pattern surfacing, attorney experience matching. Requires 50+ matters.</td></tr>
+ <tr><td><strong style="color:#157A6B">MNEMOSYNE</strong></td><td>The Memory</td><td><span class="badge" style="background:#E6F5F3;color:#157A6B">Yr 3 Q1</span></td><td>Institutional knowledge graph from FGTS corrections, ORACLE outcomes, MIRROR similarity. Expertise locator. Contextual push surfacing. Requires FGTS + ORACLE + MIRROR operational.</td></tr>
+ <tr><td><strong style="color:#8B2222">PYTHIA</strong></td><td>The Prophet</td><td><span class="badge" style="background:#FBF0F0;color:#8B2222">Yr 3 Q2+</span></td><td>Predictive research surfacing before attorney asks. Lifecycle stage modeling from MIRROR set. Evidence gap detection. Matter intelligence brief. Requires MIRROR + MNEMOSYNE + STOA.</td></tr>
+</table>
+
+<!-- Service cards -->
+<h3 class="subsec">Service Specifications</h3>
+
+<!-- SCRIBE -->
+<div class="svc-card" style="border-left-color:#1B3A5C;margin-bottom:16px">
+ <span class="phase-pill" style="background:#EEF2F8;color:#1B3A5C">Year 2 · Q1–Q2</span>
+ <div class="svc-code" style="color:#1B3A5C">SCRIBE <span style="font-size:11px;font-weight:500;opacity:.7">— Document Version & Semantic Diff Intelligence</span></div>
+ <div class="svc-epithet" style="color:#1B3A5C">The Recorder — keeper of what changed and why</div>
+ <div class="svc-fn" style="margin-bottom:12px">Tracks substantive changes across document versions with AI-assisted semantic understanding. Distinguishes edits that changed legal meaning from edits that changed style, flags provisions that disappeared without explanation, and identifies where AI-generated content in earlier versions was silently modified in later ones. Not track-changes — semantic diff with legal meaning awareness, integrated with the THEMIS provenance graph.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Semantic diff engine</strong> — Classifies each change: substantive (alters legal meaning), structural (reorganizes), or stylistic (phrasing only)</li>
+    <li><strong>AI contribution tracking</strong> — Shows which clauses contain AI-generated content and whether changes moved toward or away from the AI's original output</li>
+    <li><strong>Provision disappearance detection</strong> — Flags provisions absent in a later version without a corresponding replacement or deletion note</li>
+    <li><strong>Cross-matter clause library</strong> — Queryable library of clause variations across matters with TVS validity scoring</li>
+    <li><strong>Version validity inheritance</strong> — Tracks how validity scores change across versions and which changes caused declines</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> Provenance/MOIRAI · TVS/KAIROS · ERAS/LOGOS · FGTS/ALETHEIA (corpus)</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> MNEMOSYNE · STOA · Client attestation</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">Reads from MOIRAI's provenance graph to identify AI-contributed content per version. Writes VersionDiff records back as edges between document node versions. TVS validity scores inform the semantic diff classifier — a clause change referencing a low-validity source is flagged differently.</div>
+  </div>
+ </div>
+</div>
+
+<!-- STOA -->
+<div class="svc-card" style="border-left-color:#0D6B5E;margin-bottom:16px">
+ <span class="phase-pill" style="background:#E6F5F3;color:#0D6B5E">Year 2 · Q1–Q2</span>
+ <div class="svc-code" style="color:#0D6B5E">STOA <span style="font-size:11px;font-weight:500;opacity:.7">— Legal Research Orchestration</span></div>
+ <div class="svc-epithet" style="color:#0D6B5E">The Forum — where structured legal reasoning is assembled</div>
+ <div class="svc-fn" style="margin-bottom:12px">Structures legal research as documented multi-step workflows. Where a single RAG call retrieves and synthesizes, STOA orchestrates: query decomposition, iterative refinement, sub-question routing, source triangulation, and synthesis — with a complete research trail showing every step from initial question to final answer. ERAS captures the reasoning; STOA captures the methodology. The distinction matters when an attorney must explain how they arrived at a legal position.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Query decomposition</strong> — Breaks legal research into sub-questions across five types: threshold, factual, precedential, jurisdiction, current-law</li>
+    <li><strong>Q-RAG integration</strong> — Multi-step retrieval for each sub-question with full retrieval trajectory logging</li>
+    <li><strong>Source triangulation</strong> — Cross-references sources across sub-questions, flags TVS conflicts between sources retrieved for different sub-questions</li>
+    <li><strong>Research trail documentation</strong> — Structured memo: question tree, sources per sub-question, TVS validity scores at research time, synthesis logic</li>
+    <li><strong>Iterative refinement</strong> — Multi-turn research sessions with refinement logic logged for full reconstructability</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> RQS/HERMES (Q-RAG) · Provenance/MOIRAI · TVS/KAIROS · ERAS/LOGOS · KCS/ARGUS</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> MNEMOSYNE · PYTHIA · SCRIBE · Client research trail attestation</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">Every STOA research session produces MOIRAI provenance records — the research trail is a first-class provenance artifact. KCS consulted on whether retrieved authority has been affected by recent external developments before synthesis is delivered.</div>
+  </div>
+ </div>
+</div>
+
+<!-- ORACLE -->
+<div class="svc-card" style="border-left-color:#9A6800;margin-bottom:16px">
+ <span class="phase-pill" style="background:#FFF7E8;color:#9A6800">Year 2 · Q3–Q4</span>
+ <div class="svc-code" style="color:#9A6800">ORACLE <span style="font-size:11px;font-weight:500;opacity:.7">— Matter Outcome Intelligence</span></div>
+ <div class="svc-epithet" style="color:#9A6800">The Foreseer — patterns that predict what comes next</div>
+ <div class="svc-fn" style="margin-bottom:12px">Surfaces predictive intelligence from the firm's historical matter outcomes. Every pattern is transparent, attributable, and traceable to specific historical matters — not a black box model score but an auditable signal. "Three prior matters with this opposing counsel settled at 60 days before trial at 40% of initial demand" is the kind of intelligence ORACLE produces. Requires 200+ historical matters for statistical significance.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Outcome pattern modeling</strong> — Settlement timing, trial rates, summary judgment success stratified by matter type, opposing party, jurisdiction, legal theory</li>
+    <li><strong>Opposing counsel intelligence</strong> — Structured profiles: litigation vs. settlement tendency, discovery aggressiveness, motion practice, expert witness preferences</li>
+    <li><strong>Judge and tribunal analytics</strong> — Grant rates on motion types, evidentiary rulings, scheduling patterns, discovery dispute tendencies</li>
+    <li><strong>Timeline and resource modeling</strong> — Expected phases, resource requirements, cost trajectories based on actual firm experience</li>
+    <li><strong>Transparent signal attribution</strong> — Every insight shows the underlying matters driving it — attorneys can evaluate comparability themselves</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> Provenance/MOIRAI · FGTS/ALETHEIA · TCS/MIMIR · KCS/ARGUS · MIRROR</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> MNEMOSYNE · PYTHIA · Client outcome intelligence · INTELLECT</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">FGTS correction patterns inform which ORACLE predictions were trusted vs. overridden by attorneys — providing a feedback signal that improves model accuracy. TCS calibration data identifies attorneys systematically over- or under-weighting ORACLE signals.</div>
+  </div>
+ </div>
+</div>
+
+<!-- MIRROR -->
+<div class="svc-card" style="border-left-color:#4A2FA8;margin-bottom:16px">
+ <span class="phase-pill" style="background:#EEEBFF;color:#4A2FA8">Year 2 · Q3</span>
+ <div class="svc-code" style="color:#4A2FA8">MIRROR <span style="font-size:11px;font-weight:500;opacity:.7">— Similar Matter Intelligence</span></div>
+ <div class="svc-epithet" style="color:#4A2FA8">The Reflector — shows you where you have been before</div>
+ <div class="svc-fn" style="margin-bottom:12px">Identifies the most similar historical matters in the firm's corpus for any active matter — by legal theory, industry sector, opposing party profile, regulatory context, and evidentiary pattern. Shows what worked, what didn't, and what unexpected complications arose. Makes institutional experience searchable and comparable rather than dependent on whether the right partner happens to be available to take a call. Improves continuously from a minimum of 50 matters.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Multi-dimensional similarity</strong> — Six dimensions: legal theory, industry, opposing party profile, regulatory context, evidentiary pattern, jurisdiction. Each dimension weighted by matter type.</li>
+    <li><strong>Outcome-linked comparison</strong> — Similar matters shown with outcomes: settlement amount, timeline, resource consumption, decisive strategic moves</li>
+    <li><strong>Complication pattern surfacing</strong> — Discovery disputes, expert witness challenges, privilege issues that arose in similar matters but are not yet apparent in the active matter</li>
+    <li><strong>Attorney experience matching</strong> — Maps which attorneys have actual prior experience in the most similar matters for informed staffing</li>
+    <li><strong>Continuous similarity refresh</strong> — Re-runs similarity scoring as the active matter's profile evolves with new facts and legal theories</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> Provenance/MOIRAI · RQS/HERMES · TVS/KAIROS · STOA</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> ORACLE · MNEMOSYNE · PYTHIA · INTELLECT</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">MIRROR's similarity engine uses embeddings from the RQS vector store. MOIRAI provenance records provide full matter history including AI interaction patterns. TVS validity scores on historical matter documents inform comparison quality — a similar matter with low-validity documents is a weaker comparable.</div>
+  </div>
+ </div>
+</div>
+
+<!-- MNEMOSYNE -->
+<div class="svc-card" style="border-left-color:#157A6B;margin-bottom:16px">
+ <span class="phase-pill" style="background:#E6F5F3;color:#157A6B">Year 3 · Q1</span>
+ <div class="svc-code" style="color:#157A6B">MNEMOSYNE <span style="font-size:11px;font-weight:500;opacity:.7">— Institutional Memory Service</span></div>
+ <div class="svc-epithet" style="color:#157A6B">The Memory — mother of all the Muses; keeper of what was known</div>
+ <div class="svc-fn" style="margin-bottom:12px">Captures, structures, and makes queryable the tacit institutional knowledge that currently exists only in the minds of experienced attorneys — and walks out the door when they leave. Aggregates signal from FGTS correction patterns, ORACLE outcome analysis, MIRROR similarity intelligence, and STOA research trails to build a structured, searchable institutional memory. Surfaces that knowledge when and where it is relevant, without requiring attorneys to know it exists. Cannot be built until FGTS corpus is mature and ORACLE and MIRROR are operational.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Tacit knowledge extraction</strong> — Mines FGTS correction patterns for implicit knowledge — systematic attorney overrides encode what experienced attorneys know that the model doesn't</li>
+    <li><strong>Knowledge graph construction</strong> — Matter types, legal theories, successful strategies, opposing behavior, judge tendencies, expert witness performance — all attributable to source data</li>
+    <li><strong>Expertise locator</strong> — Maps attorney expertise to specific knowledge domains from their matter history and FGTS correction patterns, not just stated practice area</li>
+    <li><strong>Contextual knowledge surfacing</strong> — Pushes relevant knowledge into active matters without requiring attorneys to search — receives when context indicates applicability</li>
+    <li><strong>Knowledge decay tracking</strong> — TVS-style decay modeling applied to institutional knowledge records — flags stale knowledge, prioritizes fresh signals</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> FGTS/ALETHEIA · ORACLE · MIRROR · STOA · Provenance/MOIRAI · TVS/KAIROS</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> PYTHIA · INTELLECT · Client expertise attestation</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">MNEMOSYNE is the synthesis layer above FGTS, ORACLE, and MIRROR — it aggregates rather than generates. Writes its knowledge graph to INTELLECT as the primary institutional intelligence surface.</div>
+  </div>
+ </div>
+</div>
+
+<!-- PYTHIA -->
+<div class="svc-card" style="border-left-color:#8B2222;margin-bottom:28px">
+ <span class="phase-pill" style="background:#FBF0F0;color:#8B2222">Year 3 · Q2+</span>
+ <div class="svc-code" style="color:#8B2222">PYTHIA <span style="font-size:11px;font-weight:500;opacity:.7">— Predictive Research Intelligence</span></div>
+ <div class="svc-epithet" style="color:#8B2222">The Prophet — surfaces what you need before you ask</div>
+ <div class="svc-fn" style="margin-bottom:12px">Anticipates what research, evidence, and intelligence a matter team will need before they know to ask for it. As a matter progresses through its lifecycle — complaint, discovery, motion practice, trial preparation — PYTHIA surfaces the research and evidence most likely to be needed at each stage, based on MIRROR's similar matter set and MNEMOSYNE's institutional knowledge about how those matters developed. The difference between an analyst pulling information when asked and a system that anticipates what you need next.</div>
+ <div class="grid grid-2" style="gap:10px;margin-bottom:12px">
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Core Capabilities</div>
+   <ul style="font-size:12px;color:var(--sub);padding-left:16px;line-height:1.6">
+    <li><strong>Lifecycle stage modeling</strong> — Identifies current matter stage, models what typically happens next based on MIRROR's similar matter set, produces forward-looking intelligence brief</li>
+    <li><strong>Proactive research surfacing</strong> — Pre-executes via STOA the research most likely to be relevant based on stage and profile — results are ready when the attorney needs them</li>
+    <li><strong>Evidence gap detection</strong> — Compares current matter evidence corpus against what similar matters had assembled at the same stage, surfaces missing evidence categories</li>
+    <li><strong>Deadline anticipation</strong> — Surfaces upcoming deadlines with the lead time MIRROR and ORACLE suggest is needed for the specific work required at this stage</li>
+    <li><strong>Matter intelligence brief</strong> — Daily or weekly synthesis: external changes (KCS), evidence validity status (TVS), ORACLE outcome trajectory, PYTHIA next recommendations</li>
+   </ul>
+  </div>
+  <div>
+   <div style="font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Integration</div>
+   <div class="svc-io"><strong>Depends on:</strong> MIRROR · MNEMOSYNE · STOA · ORACLE · KCS/ARGUS · TVS/KAIROS</div>
+   <div class="svc-io" style="margin-top:6px"><strong>Feeds into:</strong> Analyst tool matter sidebar · INTELLECT matter intelligence feed · Client</div>
+   <div style="margin-top:10px;font-size:12px;color:var(--sub);line-height:1.55">PYTHIA is the most downstream service — requires nearly everything else operational to deliver full value. The matter intelligence brief it produces is the primary surface through which all intelligence services speak to the attorney in a unified, actionable format.</div>
+  </div>
+ </div>
+</div>
+
+<!-- Intelligence Flywheel -->
+<h3 class="subsec">The Intelligence Flywheel</h3>
+<div style="background:#0F1E30;border-radius:10px;padding:24px 28px;margin-bottom:20px">
+ <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;position:relative">
+  <div style="position:absolute;top:50%;left:0;right:0;height:2px;background:rgba(255,255,255,.15)"></div>
+  <div style="text-align:center;padding:0 12px">
+   <div style="background:#1B3A5C;border-radius:8px;padding:14px;margin-bottom:8px">
+    <div style="font-size:13px;font-weight:700;color:#7DD3C8;margin-bottom:4px">SCRIBE + STOA</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.7)">Document & research intelligence. Extends provenance and retrieval infrastructure.</div>
+   </div>
+   <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.1em">YEAR 2 Q1–Q2</div>
+  </div>
+  <div style="text-align:center;padding:0 12px">
+   <div style="background:#2A1A6B;border-radius:8px;padding:14px;margin-bottom:8px">
+    <div style="font-size:13px;font-weight:700;color:#C4B5FD;margin-bottom:4px">MIRROR + ORACLE</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.7)">Matter intelligence. Requires 50+ matters (MIRROR), 200+ matters (ORACLE).</div>
+   </div>
+   <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.1em">YEAR 2 Q3–Q4</div>
+  </div>
+  <div style="text-align:center;padding:0 12px">
+   <div style="background:#0A3B2E;border-radius:8px;padding:14px;margin-bottom:8px">
+    <div style="font-size:13px;font-weight:700;color:#6EE7B7;margin-bottom:4px">MNEMOSYNE + PYTHIA</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.7)">Institutional intelligence. Aggregates from all prior services. Full value requires everything upstream.</div>
+   </div>
+   <div style="font-size:10px;color:rgba(255,255,255,.4);font-weight:600;letter-spacing:.1em">YEAR 3</div>
+  </div>
+ </div>
+ <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,.1)">
+  <p style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.7;text-align:center">Every matter that flows through the platform adds to the intelligence layer. FGTS accumulates corrections. MIRROR adds a comparable. ORACLE refines its outcome models. MNEMOSYNE extracts new institutional knowledge. PYTHIA becomes more accurate. The flywheel is self-reinforcing — and it is built on the firm's own data, which no external vendor can replicate.</p>
+ </div>
+</div>
+
+<div style="background:#1B3A5C;border-radius:8px;padding:16px 20px;color:#fff">
+ <h4 style="font-size:13px;margin-bottom:6px;color:#7DD3C8">The Compounding Advantage</h4>
+ <p style="font-size:12.5px;line-height:1.65;color:rgba(255,255,255,.85)">At Month 36, the firm has a platform that gets smarter with every matter it handles. Competitors using generic AI tools start from zero on each matter. The firm using THEMIS and the intelligence layer starts from the accumulated knowledge of every matter it has ever handled — and the system knows how to apply that knowledge to the matter at hand. That gap widens every year. It cannot be closed by any external vendor because it is built on the firm's own data, the firm's own corrections, and the firm's own institutional knowledge.</p>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 3 — TEAM STRUCTURE
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="org">
+<div class="section-title">Team Structure</div>
+<div class="section-sub">21 people across three teams + Cell Lead + 1 embedded specialist. Three-team architecture: Research/Red Team · Platform · Intelligence.</div>
+
+<div style="display:flex;justify-content:center;margin-bottom:32px">
+ <div style="width:100%;max-width:1100px">
+  <!-- Cell Lead -->
+  <div style="display:flex;justify-content:center;margin-bottom:0">
+   <div class="org-node" style="background:#1B3A5C;color:#fff;min-width:280px;border-radius:10px;border:3px solid #1A9E8C">
+    <div class="role">Cell Lead</div>
+    <div class="desc">Principal AI Trust Architect · Triple mandate: Research · Delivery · Governance · Reports to CTO</div>
+   </div>
+  </div>
+  <div class="org-connector"></div>
+
+  <!-- Three teams horizontal bar -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;position:relative">
+   <!-- Connecting bar -->
+   <div style="position:absolute;top:0;left:17%;right:17%;height:2px;background:var(--border)"></div>
+   <div style="position:absolute;top:0;left:calc(17%);width:2px;height:24px;background:var(--border)"></div>
+   <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:24px;background:var(--border)"></div>
+   <div style="position:absolute;top:0;right:calc(17%);width:2px;height:24px;background:var(--border)"></div>
+
+   <!-- Research team -->
+   <div style="padding-top:24px">
+    <div class="org-team-box" style="border-color:#6D4FB5;background:var(--purple-l)">
+     <div class="org-team-label" style="color:#6D4FB5">Research & Red Team · 7 people</div>
+     <div class="org-members">
+      <div class="org-member" style="background:#6D4FB5;color:#fff"><strong>Research + Red Team Lead</strong><span>Principal Researcher</span></div>
+      <div class="org-member" style="background:#F2EEFD;color:#3A1F8C"><strong>HF Researcher</strong><span>Foundational behavioral science</span></div>
+      <div class="org-member" style="background:#F2EEFD;color:#3A1F8C"><strong>HF Researcher</strong><span>Applied intervention design</span></div>
+      <div class="org-member" style="background:#F2EEFD;color:#3A1F8C"><strong>Research Analyst</strong><span>Domain expert · operational validity</span></div>
+      <div class="org-member" style="background:#F2EEFD;color:#3A1F8C"><strong>Corpus Quality Specialist</strong><span>FGTS review queue · cold start task set</span></div>
+      <div class="org-member" style="background:#7A1818;color:#fff"><strong>Red Team Evaluator</strong><span>Model · prompt · agent</span></div>
+      <div class="org-member" style="background:#7A1818;color:#fff"><strong>Red Team Evaluator</strong><span>Platform adversarial</span></div>
+     </div>
+    </div>
+   </div>
+
+   <!-- Platform team -->
+   <div style="padding-top:24px">
+    <div class="org-team-box" style="border-color:#2E5FAD;background:var(--blue-l)">
+     <div class="org-team-label" style="color:#2E5FAD">THEMIS Platform Team · 7 + 1 embedded</div>
+     <div class="org-members">
+      <div class="org-member" style="background:#2E5FAD;color:#fff"><strong>Engineering Lead</strong><span>Staff / Principal Engineer</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Platform Engineer</strong><span>PCES · PGS</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Platform Engineer</strong><span>Provenance · MOIRAI</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Platform Engineer</strong><span>DPS · CODEX</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Backend Engineer</strong><span>Session · Telemetry</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Data Engineer</strong><span>Integrations — CVS · MDS · KCS</span></div>
+      <div class="org-member" style="background:#EEF3FF;color:#1A3A80"><strong>Interface + Integration Eng</strong><span>ATHENA build</span></div>
+      <div class="org-member" style="background:#D0D8E8;color:#2E5FAD;border:1.5px dashed #2E5FAD"><strong>Security · PKI Specialist</strong><span>Embedded · cryptographic attestation</span></div>
+     </div>
+    </div>
+   </div>
+
+   <!-- Intelligence team -->
+   <div style="padding-top:24px">
+    <div class="org-team-box" style="border-color:#157A6B;background:var(--teal-l)">
+     <div class="org-team-label" style="color:#157A6B">Intelligence Layer Team · 6 people</div>
+     <div class="org-members">
+      <div class="org-member" style="background:#157A6B;color:#fff"><strong>Intelligence ML Lead</strong><span>Staff ML Engineer</span></div>
+      <div class="org-member" style="background:#E6F5F3;color:#0A4A40"><strong>Calibration Engineer</strong><span>TCS · MIMIR pipeline</span></div>
+      <div class="org-member" style="background:#E6F5F3;color:#0A4A40"><strong>ML Engineer</strong><span>FGTS · RQS · ERAS</span></div>
+      <div class="org-member" style="background:#E6F5F3;color:#0A4A40"><strong>Media Forensics Engineer</strong><span>Video · Audio — MAS · EIDOLON</span></div>
+      <div class="org-member" style="background:#E6F5F3;color:#0A4A40"><strong>Media Forensics Engineer</strong><span>Image · OCR — MAS · EIDOLON</span></div>
+      <div class="org-member" style="background:#E6F5F3;color:#0A4A40"><strong>Classifier + NLP Engineer</strong><span>IAS · Classifiers · Semantic similarity</span></div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- External relationships -->
+  <div class="divider" style="margin-top:32px"></div>
+  <div class="section-sub" style="margin-bottom:12px">External and Partner Relationships</div>
+  <div class="grid grid-4">
+   <div class="ext-partner"><h4>Ethics Advisory Board</h4><p>External · Quarterly review · Data practices and evaluation methodology oversight → Cell Lead</p></div>
+   <div class="ext-partner"><h4>Model Vendors</h4><p>Formal technical partnerships · Early eval access · Safety escalation path → Cell Lead</p></div>
+   <div class="ext-partner"><h4>Norse Groups</h4><p>Shared services: Inference Gateway, MIMIR retrieval · Trust cell specifies, Norse builds → Engineering Lead</p></div>
+   <div class="ext-partner"><h4>Academic Partners</h4><p>HCI research · Peer review · Joint research protocols · Data sharing agreements → Research + Red Team Lead</p></div>
+  </div>
+ </div>
+</div>
+
+<h3 class="subsec">Headcount Summary</h3>
+<table class="decision-table" style="max-width:600px">
+ <tr><th>Team</th><th style="text-align:center">Permanent</th><th style="text-align:center">Embedded</th></tr>
+ <tr><td>Cell Lead</td><td style="text-align:center">1</td><td style="text-align:center">—</td></tr>
+ <tr><td>Research and Red Team</td><td style="text-align:center">7</td><td style="text-align:center">—</td></tr>
+ <tr><td>THEMIS Platform Team</td><td style="text-align:center">7</td><td style="text-align:center">1 (Security/PKI)</td></tr>
+ <tr><td>Intelligence Layer Team</td><td style="text-align:center">6</td><td style="text-align:center">—</td></tr>
+ <tr><td><strong>Total</strong></td><td style="text-align:center"><strong>21</strong></td><td style="text-align:center"><strong>1</strong></td></tr>
+</table>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 4 — OPERATING MODEL
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="opmodel">
+<div class="section-title">Operating Model</div>
+<div class="section-sub">Three parallel tracks · Cross-team coordination mechanisms · Decision rights · Cadence structure</div>
+
+<h3 class="subsec">Three Tracks</h3>
+<div class="track-row"><div class="track-label-col" style="background:#6D4FB5;color:#fff">Research Track</div><div class="track-content-col"><h4>8–12 week research cycles · Pre-registered methodology</h4><p>Research and Red Team only. Research question locked before any data collected. Null results are valid outputs. Reports reviewed by Ethics Advisory Board before reaching leadership. Research team never takes sprint tickets. Independence is structural, not aspirational.</p></div></div>
+<div class="track-row"><div class="track-label-col" style="background:#2E5FAD;color:#fff">Delivery Track</div><div class="track-content-col"><h4>2-week synchronized sprints · Platform and Intelligence teams</h4><p>Same sprint start/end dates across both engineering teams. Three swim lanes: roadmap (phase gate sequenced), red team response (severity-classified, never deprioritized below one sprint for P1), technical health (15–20% minimum per sprint). Intelligence team also runs model development stream (4–6 week model iterations, deployed when quality thresholds met, not on sprint boundary).</p></div></div>
+<div class="track-row"><div class="track-label-col" style="background:#8B2222;color:#fff">Evaluation Track</div><div class="track-content-col"><h4>Continuous · Monthly report to Cell Lead and CTO simultaneously</h4><p>Two Red Team Evaluators run independent programs: Model/Prompt/Agent (continuous adversarial battery, monthly systematic sweep, full evaluation on every MDS-detected version change) and Platform Adversarial (IAS taxonomy monthly testing, MAS classifier evaluation bimonthly per modality, CVS adversarial patterns monthly, cryptographic chain quarterly). Not filtered through engineering team leads.</p></div></div>
+
+<h3 class="subsec">Cadence Structure</h3>
+<div class="cadence-grid">
+ <div class="cadence-col" style="background:#EEF2F8;border-color:#C0CCE0"><h4 style="color:#1B3A5C">Daily</h4><div class="cadence-item">Each team runs its own standup</div><div class="cadence-item">No cross-team daily ritual</div></div>
+ <div class="cadence-col" style="background:#EEF3FF;border-color:#B0C4E8"><h4 style="color:#2E5FAD">Biweekly</h4><div class="cadence-item">Platform sprint review + planning</div><div class="cadence-item">Intelligence sprint review + planning</div><div class="cadence-item">Research midpoint check-in</div><div class="cadence-item">Engineering Lead + ML Lead bilateral (30 min, service contract dependencies only)</div></div>
+ <div class="cadence-col" style="background:#FFF7E8;border-color:#E0C880"><h4 style="color:#9A6800">Monthly</h4><div class="cadence-item">Cell-wide sync: all team leads + Cell Lead</div><div class="cadence-item">Red Team monthly report → Cell Lead + CTO (simultaneous)</div><div class="cadence-item">Corpus Quality metrics report</div><div class="cadence-item">Ethics Advisory Board written summary</div></div>
+ <div class="cadence-col" style="background:#F2EEFD;border-color:#C8B8F0"><h4 style="color:#4A2FA8">Quarterly</h4><div class="cadence-item">Ethics Advisory Board review (data practices, methodology)</div><div class="cadence-item">AI Governance Committee: red team findings, corpus quality, PGS policy changes</div><div class="cadence-item">Research cycle completion: findings brief</div><div class="cadence-item">CTO operating model review</div></div>
+ <div class="cadence-col" style="background:#E6F5F3;border-color:#A0D0C8"><h4 style="color:#0D6B5E">Annually</h4><div class="cadence-item">Full charter review</div><div class="cadence-item">Academic partner joint review</div><div class="cadence-item">Intervention catalog standards review</div><div class="cadence-item">Cryptographic chain full audit + certificate</div></div>
+</div>
+
+<h3 class="subsec">Decision Rights</h3>
+<table class="decision-table">
+ <tr><th>Authority level</th><th>Owner</th><th>Examples</th></tr>
+ <tr><td>Each team independently</td><td>Team Lead</td><td>Research agenda and methodology (R+RT) · THEMIS service architecture and APIs (Platform) · Calibration model design and training (Intelligence)</td></tr>
+ <tr><td>Cross-team agreement required</td><td>Engineering Lead + Intelligence ML Lead</td><td>TCS/MIMIR service contract changes · New THEMIS service proposals · Changes to ATHENA intervention design affecting calibration architecture · FGTS corpus quality threshold changes</td></tr>
+ <tr><td>Cell Lead decision</td><td>Cell Lead</td><td>Capacity reallocation between teams · New external partnerships · Platform-wide standards changes · Emergency response to P0 red team findings</td></tr>
+ <tr><td>AI Governance Committee</td><td>Governance Committee</td><td>PGS policy rule changes · New interaction class definitions · Red team findings with firm-wide liability implications · FGTS corpus rollback decisions · MDS version pin release</td></tr>
+</table>
+
+<h3 class="subsec">Cross-Team Coordination Mechanisms</h3>
+<div class="grid grid-2">
+ <div class="card" style="border-left:4px solid #6D4FB5"><h4 style="color:#6D4FB5">Research → Engineering Translation</h4><p>Research cycle completes → HF Researchers produce design brief (behavioral/UX requirements, not specs) → Interface+Integration Engineer (Platform) + Intelligence ML Lead jointly review → Convert to backlog items. Typical lag: 2–4 weeks. Prevents research findings reaching engineering as vague mandates.</p></div>
+ <div class="card" style="border-left:4px solid #8B2222"><h4 style="color:#8B2222">Red Team Response Protocol</h4><p><strong>P0 Critical:</strong> Cell Lead within 24h, emergency sprint work authorized. <strong>P1 High:</strong> Next sprint backlog, Cell Lead notified. <strong>P2 Medium:</strong> Normal backlog prioritization, red team follow-up after fix. <strong>P3 Low:</strong> Taxonomy maintenance, informs future research cycles.</p></div>
+ <div class="card" style="border-left:4px solid #2E5FAD"><h4 style="color:#2E5FAD">Platform ↔ Intelligence Service Contract</h4><p>TCS/MIMIR boundary: Platform owns the service infrastructure, Intelligence owns the calibration models it runs. Changes to the service contract require joint sign-off from Engineering Lead and Intelligence ML Lead. Neither team can make unilateral contract changes. Changes require a migration plan both teams agree to before the sprint begins.</p></div>
+ <div class="card" style="border-left:4px solid #0D6B5E"><h4 style="color:#0D6B5E">FGTS Quality Feedback Loop</h4><p>Corpus Quality Specialist (Research team) ↔ Calibration Engineer (Intelligence team). Weekly standing touchpoint. Corpus Quality Specialist surfaces review queue patterns; Calibration Engineer responds with model adjustments. Runs outside sprint planning — operational rhythm not a project.</p></div>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 5 — ATHENA INTERFACE
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="athena">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:20px;flex-wrap:wrap">
+ <div>
+  <div class="section-title">ATHENA Interface</div>
+  <div class="section-sub">28-intervention calibrated analysis interface. Mockup shows key interface elements and intervention patterns.</div>
+ </div>
+ <div style="flex-shrink:0">
+  <div style="background:#1A9E8C;border-radius:8px;padding:14px 20px;text-align:center;cursor:pointer;box-shadow:0 2px 12px rgba(26,158,140,.3)" onclick="window.open('athena-v3.html','_blank')">
+   <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px">↗ Open Full Prototype</div>
+   <div style="font-size:10.5px;color:rgba(255,255,255,.8)">athena-v3.html · Interactive prototype</div>
+  </div>
+  <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:5px">Save both files to the same directory</div>
+ </div>
+</div>
+
+<div class="athena-shell" style="max-width:1100px;margin:0 auto 28px">
+ <div class="athena-topbar">
+  <span class="mode-badge">RAG + TRAINING</span>
+  <span class="stat-pill">Agreement rate: 1 / 3</span>
+  <span class="stat-pill warn">⚠ Episode 2 commitment pending</span>
+  <span class="stat-pill">Engagement quality: 0.78</span>
+  <span class="stat-pill">Session: LSC-2026-0441</span>
+  <span style="flex:1"></span>
+  <span class="stat-pill">Corpus: v1.4.2 · Model: claude-3-7</span>
+ </div>
+ <div class="athena-intent-bar">
+  📋 Task: Analyze regulatory exposure for merger filing · Decision: Whether to include supplemental risk disclosure · Consequence: Filing deficiency → SEC enforcement
+ </div>
+ <div class="athena-body">
+  <div class="athena-chat">
+   <!-- User message -->
+   <div class="athena-msg user">
+    <div style="font-size:9px;color:#6B7280;margin-bottom:4px;padding-left:4px">ANALYST · <em>Prior belief declared. Falsification condition recorded.</em></div>
+    <div class="bubble">What is the current SEC position on AI-generated content disclosure requirements for merger proxy statements?</div>
+   </div>
+   <!-- AI response -->
+   <div class="athena-msg ai">
+    <div style="font-size:9px;color:#6B7280;margin-bottom:4px;padding-left:4px">ATHENA · ANALYTICAL query · <span style="color:#22C9B0">Citation verification: 2 Verified, 1 Unresolved</span></div>
+    <div class="bubble">
+     The SEC's current position on AI disclosure in merger proxies rests on three foundations.
+     <br><br>
+     <span class="claim-span" style="border-color:#1A9E8C">
+      <span class="claim-badge" style="background:#1A9E8C;color:#fff">HIGH</span>
+      <span class="src-badge" style="color:#2E5FAD;border-color:#2E5FAD">GRND</span>
+      Staff Legal Bulletin No. 14L (2022) extended the proxy disclosure framework to include material AI contributions to analytical work product.
+     </span>
+     <br><br>
+     <span class="claim-span" style="border-color:#B87800">
+      <span class="claim-badge" style="background:#B87800;color:#fff">MED</span>
+      <span class="src-badge" style="color:#9A6800;border-color:#9A6800">PARAM</span>
+      The Division of Corporation Finance has informally indicated that AI-generated content used in material analysis should be disclosed as a methodology footnote when the AI contribution is substantive.
+     </span>
+     <br><br>
+     <span class="claim-span" style="border-color:#B84040">
+      <span class="claim-badge" style="background:#B84040;color:#fff">UNVER</span>
+      <span class="src-badge" style="color:#9A6800;border-color:#9A6800">SYNTH</span>
+      Peer firms have adopted a 40% AI contribution threshold for triggering disclosure, though no formal rule codifies this standard.
+     </span>
+     <br><br>
+     <span class="claim-span" style="border-color:#B87800">
+      <span class="claim-badge" style="background:#B87800;color:#fff">MED</span>
+      <span class="src-badge" style="color:#6B7590;border-color:#6B7590">TRANSCRIPT</span>
+      The SEC Chair's Q2 2025 congressional testimony addressed AI disclosure obligations in securities filings.
+     </span>
+     <br>
+     <div class="counter-panel">
+      <details><summary>COUNTER-POSITION</summary>
+      <div style="margin-top:6px">The disclosure framework cited applies to investment advisers, not registrants filing merger proxies. Staff Legal Bulletin 14L is interpretive and non-binding. The 40% threshold is industry convention with no regulatory backing — relying on it creates false confidence that a subjective standard has been met.</div></details>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="athena-queue">
+   <div class="queue-header"><span>VERIFICATION QUEUE</span><span style="color:#1A9E8C">3 items</span></div>
+   <div class="queue-item">
+    <div class="qi-claim">Staff Legal Bulletin No. 14L (2022) extended proxy disclosure framework to AI work product.</div>
+    <div class="qi-meta"><span class="claim-badge" style="background:#1A9E8C;color:#fff;font-size:8px">HIGH</span><span class="src-badge" style="color:#2E5FAD;border-color:#2E5FAD;font-size:8px">GRND</span><span>Source: SEC.gov · Match: 0.91</span></div>
+    <div class="qi-actions">
+     <button class="qi-btn" style="color:#1A9E8C;border-color:#1A9E8C;background:#E6F5F3">Confirmed against source</button>
+     <button class="qi-btn" style="color:#B84040;border-color:#B84040;background:#FBF0F0">Misrepresents source</button>
+     <button class="qi-btn" style="color:#6B7590;border-color:#D0D8E8;background:#F4F7FB">Dismiss</button>
+    </div>
+   </div>
+   <div class="queue-item">
+    <div class="qi-claim">Division of Corp Finance informal position on AI methodology footnotes.</div>
+    <div class="qi-meta"><span class="claim-badge" style="background:#B87800;color:#fff;font-size:8px">MED</span><span class="src-badge" style="color:#9A6800;border-color:#9A6800;font-size:8px">PARAM</span><span>No retrieved source</span></div>
+    <div class="qi-actions">
+     <button class="qi-btn" style="color:#1A9E8C;border-color:#1A9E8C;background:#E6F5F3">Verified independently</button>
+     <button class="qi-btn" style="color:#9A6800;border-color:#9A6800;background:#FFF7E8">Could not verify</button>
+     <button class="qi-btn" style="color:#B84040;border-color:#B84040;background:#FBF0F0">Incorrect</button>
+    </div>
+   </div>
+   <div class="queue-item">
+    <div class="qi-claim">SEC Chair Q2 2025 congressional testimony on AI disclosure.</div>
+    <div class="qi-meta"><span class="claim-badge" style="background:#B87800;color:#fff;font-size:8px">MED</span><span class="src-badge" style="color:#6B7590;border-color:#6B7590;font-size:8px">TRANSCRIPT</span><span>ASR confidence: 0.87</span></div>
+    <div class="qi-actions">
+     <button class="qi-btn" style="color:#1A9E8C;border-color:#1A9E8C;background:#E6F5F3">Verified against recording</button>
+     <button class="qi-btn" style="color:#9A6800;border-color:#9A6800;background:#FFF7E8">Transcript may be inaccurate</button>
+     <button class="qi-btn" style="color:#6B7590;border-color:#D0D8E8;background:#F4F7FB">Dismiss</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<h3 class="subsec">Source Type Badges — Design Rationale</h3>
+
+<div class="card" style="border-left:4px solid #1A9E8C;margin-bottom:20px;padding:16px 20px">
+ <h4 style="color:#0D6B5E;margin-bottom:8px">Why source type is surfaced at claim level</h4>
+ <p style="font-size:12.5px;color:var(--sub);line-height:1.7;margin-bottom:10px">LLMs produce uniformly fluent output regardless of how a claim was generated — whether retrieved from a specific document, inferred from training weights, synthesized across partial sources, or derived from an AI-generated transcript of a deposition. That uniformity is the problem. Fluency acts as a proxy for credibility in standard interfaces, and the source type of a claim has direct implications for what verification is even possible.</p>
+ <p style="font-size:12.5px;color:var(--sub);line-height:1.7">A claim marked GRND can be checked against a specific document. A claim marked PARAM cannot — the appropriate response is independent verification or explicit acknowledgment that the claim is unverifiable through normal analyst workflow. A claim marked TRANSCRIPT requires checking against the recording itself, not the document the transcript came from — because the transcript is a derivative artifact with its own error rate. These are qualitatively different epistemic tasks, and the interface must make the distinction visible before the analyst acts.</p>
+</div>
+
+<div class="grid grid-2" style="margin-bottom:20px;gap:16px">
+ <div class="card" style="border-top:4px solid #1B3A5C">
+  <h4 style="color:#1B3A5C;margin-bottom:8px">Text-derived badges (3)</h4>
+  <p style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">Claims derived from text sources — retrieved documents, training weights, or synthesized from multiple partial matches. These are the original three source types from the initial design. TCS/MIMIR calibration models have the richest verification outcome history for these types.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <span class="src-badge" style="color:#2E5FAD;border-color:#2E5FAD;font-size:11px;padding:3px 8px">GRND</span>
+   <span class="src-badge" style="color:#9A6800;border-color:#9A6800;font-size:11px;padding:3px 8px">PARAM</span>
+   <span class="src-badge" style="color:#6B7590;border-color:#6B7590;font-size:11px;padding:3px 8px">SYNTH</span>
+  </div>
+ </div>
+ <div class="card" style="border-top:4px solid #8B2222">
+  <h4 style="color:#8B2222;margin-bottom:8px">Media-derived badges (5)</h4>
+  <p style="font-size:12px;color:var(--sub);line-height:1.6;margin-bottom:8px">Claims derived from AI analysis of media artifacts or from OCR extraction. These require separate TCS/MIMIR calibration streams because the cognitive task, failure mode taxonomy, and available verification actions differ materially from text-derived claims. MAS/EIDOLON authenticity risk scores are integrated for VIDEO, AUDIO, IMAGE, and TRANSCRIPT badges.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+   <span class="src-badge" style="color:#0D6B5E;border-color:#0D6B5E;font-size:11px;padding:3px 8px">TRANSCRIPT</span>
+   <span class="src-badge" style="color:#4A2FA8;border-color:#4A2FA8;font-size:11px;padding:3px 8px">VIDEO</span>
+   <span class="src-badge" style="color:#6D4FB5;border-color:#6D4FB5;font-size:11px;padding:3px 8px">AUDIO</span>
+   <span class="src-badge" style="color:#8B2222;border-color:#8B2222;font-size:11px;padding:3px 8px">IMAGE</span>
+   <span class="src-badge" style="color:#7A5000;border-color:#7A5000;font-size:11px;padding:3px 8px">OCR</span>
+  </div>
+ </div>
+</div>
+
+<!-- Key design decisions -->
+<div class="grid grid-2" style="margin-bottom:24px;gap:12px">
+ <div style="background:#E6F5F3;border:1px solid #A0D0C4;border-radius:8px;padding:14px 16px">
+  <h4 style="color:#0D6B5E;font-size:12px;margin-bottom:6px">TRANSCRIPT is not GRND</h4>
+  <p style="font-size:11.5px;color:#0A4A40;line-height:1.6">An AI-generated transcript of a video deposition is not equivalent to a retrieved source document. The transcript has its own error rate — ASR (automatic speech recognition) accuracy varies by audio quality, speaker accent, technical terminology, and background noise. A claim sourced from a transcript inherits the transcript's accuracy profile, not the authority of the original recording. Showing TRANSCRIPT rather than GRND makes this derivation visible at the claim level. The verification action set reflects this: "Transcript may be inaccurate" routes to MAS/EIDOLON for transcript accuracy corpus update — a different signal from "Misrepresents source," which routes as a synthesis failure.</p>
+ </div>
+ <div style="background:#FFF7E8;border:1px solid #E0C880;border-radius:8px;padding:14px 16px">
+  <h4 style="color:#9A6800;font-size:12px;margin-bottom:6px">Confidence ceiling concept</h4>
+  <p style="font-size:11.5px;color:#7A5000;line-height:1.6">Source type creates an upper bound on TCS/MIMIR confidence scores independent of the model's self-reported confidence. An OCR-derived claim from a region with 62% OCR confidence cannot carry a HIGH confidence badge regardless of how confidently the model stated it — the accuracy of the extracted text is the binding constraint. Similarly, a claim derived from a media artifact with a high MAS/EIDOLON authenticity risk score receives a reduced confidence ceiling: the claim may accurately represent what the artifact showed, but what the artifact showed may itself be fabricated. The badge system surfaces both the TCS confidence score and the source type — readers see both signals independently.</p>
+ </div>
+</div>
+
+<!-- Full badge reference table -->
+<h3 class="subsec">Complete Badge Reference</h3>
+
+<script>
+const BADGES=[
+ {
+  code:'GRND', label:'Grounded', col:'#2E5FAD', bg:'#EEF3FF',
+  trigger:'Claim retrieved from a specific source document in the retrieval corpus with a match score above the GRND threshold from RQS/HERMES.',
+  ceiling:'No reduction. TCS/MIMIR calibrated score applies directly. The most trusted source type for calibration purposes.',
+  actions:['Confirmed against source — strongest possible verification signal. Logs to FGTS as a high-quality correction event.','Misrepresents source — the document exists and was retrieved, but the model characterized it incorrectly. Routes to FGTS as a synthesis failure signal, distinct from a retrieval failure.','Dismiss — analyst chooses not to verify. Logged but not incorporated into calibration.'],
+  themis:'RQS/HERMES provides the retrieval trace and match score that triggers GRND classification. TVS/KAIROS validity score for the source document is shown in the expanded provenance panel. FGTS/ALETHEIA receives Confirmed or Misrepresents as the highest-quality correction signal type in the system.',
+  failure:'Automation bias and fluency-credibility coupling. GRND makes the retrieved source visible and actionable, preventing the analyst from treating the model\'s synthesis as if it were equivalent to direct source reading.'
+ },
+ {
+  code:'PARAM', label:'Parametric', col:'#9A6800', bg:'#FFF7E8',
+  trigger:'Claim derived from model training weights with no retrieved source document. No retrieval trace exists for this claim.',
+  ceiling:'Moderate reduction. PARAM claims are scored conservatively because the verification path is indirect. The model may be confidently wrong on domain-specific facts where training data was sparse or outdated.',
+  actions:['Verified independently — analyst confirms the claim against an external source outside ATHENA. Routes to FGTS as a valid correction but with lower weight than GRND verification.','Could not verify — the claim type is not verifiable through normal analyst workflow. Routes to FGTS as a domain coverage gap signal, informing decisions about corpus expansion.','Incorrect — analyst has found the claim to be factually wrong. Routes to FGTS as a correction event and to TCS/MIMIR as a calibration update for (claim type, domain, model version).'],
+  themis:'No RQS/HERMES signal — there is no retrieval trace. TCS/MIMIR calibration for PARAM claims depends primarily on direct analyst verification outcomes rather than retrieval match scores. ERAS/LOGOS flags PARAM claims with high model confidence as unsupported claim signals — high confidence plus no source is a specific warning pattern.',
+  failure:'Hallucination confidence. LLMs state PARAM claims with the same fluency and apparent authority as GRND claims. The PARAM badge breaks the fluency-credibility coupling for ungrounded assertions.'
+ },
+ {
+  code:'SYNTH', label:'Synthesis', col:'#6B7590', bg:'#F4F6FA',
+  trigger:'Claim inferred or computed from multiple partial sources where the specific figure, date, or conclusion does not appear verbatim in any single retrieved document. The claim is a model-generated synthesis.',
+  ceiling:'Reduced. Synthesis claims inherit the uncertainty of the underlying partial sources plus the uncertainty of the inference step. A specific quantitative figure that is synthesized from partial data is particularly suspect.',
+  actions:['Figure confirmed — analyst locates the specific figure or conclusion in a primary source. Routes to FGTS as a correction that updates the synthesis confidence model.','Not in sources — the synthesized figure cannot be found in any of the underlying retrieved documents. Routes to FGTS as a confabulation signal — a qualitatively distinct failure mode from Misrepresents source.','Dismiss — logged but not incorporated.'],
+  themis:'RQS/HERMES provides the retrieval trace showing which documents contributed partial support to the synthesis. The Synthesis flag is set when no single document provides direct support above the GRND threshold. FGTS/ALETHEIA routes Not in sources as a confabulation signal — the model generated a plausible-sounding figure from incomplete inputs. This is the highest-priority correction type for TCS/MIMIR calibration updates.',
+  failure:'Synthesis confabulation. The model aggregates partial data into specific quantitative claims with no direct source. Without SYNTH visibility, these pass as GRND-level claims to analysts who assume the figure came from a document.'
+ },
+ {
+  code:'TRANSCRIPT', label:'Transcript (derivative)', col:'#0D6B5E', bg:'#E6F5F3',
+  trigger:'Claim derived from AI-generated transcription of video or audio evidence. The source is the transcript, not the original recording. ASR (automatic speech recognition) accuracy metadata is attached and shown inline.',
+  ceiling:'Reduced relative to GRND. Ceiling is bounded by the ASR confidence score — a claim from a transcript with 62% ASR accuracy cannot receive a HIGH confidence badge regardless of TCS calibration score. Low ASR confidence regions are flagged in the provenance panel.',
+  actions:['Verified against recording — analyst confirms the claim directly against the source recording, bypassing the transcript. The strongest verification action for transcript-derived claims.','Transcript may be inaccurate — analyst identifies an ASR error. Routes to MAS/EIDOLON for transcript accuracy corpus update — a different FGTS signal from synthesis failure.','Dismiss — logged but not incorporated.'],
+  themis:'MAS/EIDOLON produces the ASR accuracy metadata and identifies low-confidence transcript regions. TRANSCRIPT badge and its confidence ceiling are set by MAS, not by TCS/MIMIR alone. FGTS/ALETHEIA receives transcript inaccuracy signals as a separate correction type — distinct from model mischaracterization because the error occurred in the transcription step, not the reasoning step. Provenance/MOIRAI records transcripts as derivative artifacts with their own ASR accuracy profile in the chain of custody.',
+  failure:'Derivative artifact confusion. Without TRANSCRIPT labeling, analysts treat AI-generated transcripts as equivalent to retrieved source documents. Transcription errors — especially on technical legal terminology — propagate into analysis as if they were primary source content.'
+ },
+ {
+  code:'VIDEO', label:'Video', col:'#4A2FA8', bg:'#EEEBFF',
+  trigger:'Claim derived from AI analysis of video evidence — deposition recordings, surveillance footage, expert witness testimony, or other video artifacts in the evidence corpus. MAS/EIDOLON authenticity risk score is attached.',
+  ceiling:'Reduced. Ceiling bounded by MAS/EIDOLON authenticity risk score. High authenticity risk reduces confidence ceiling. TCS/MIMIR calibrates VIDEO claims as a separate modality stream — an analyst well-calibrated for document analysis may be entirely uncalibrated for video analysis.',
+  actions:['Verified against clip — analyst reviews the specific video segment referenced in the provenance panel.','Clip unavailable — the referenced segment cannot be accessed for verification.','Characterization incorrect — the video content does not support the model\'s characterization. Routes to FGTS as a video analysis calibration update.','Dismiss — logged but not incorporated.'],
+  themis:'MAS/EIDOLON screens video artifacts at ingestion for deepfake indicators, temporal manipulation, and metadata spoofing. Authenticity risk score (0–1) is stored and surfaced in the provenance panel alongside the claim. TCS/MIMIR tracks VIDEO verification outcomes as a separate modality calibration stream. FGTS routes Characterization incorrect for VIDEO as a distinct correction type — the failure mode taxonomy for video analysis differs from document analysis.',
+  failure:'Video evidence automation bias. AI can analyze video with apparent confidence even when the analysis is superficial, temporally imprecise, or based on manipulated footage. The VIDEO badge combined with the MAS risk score makes both the source and its authenticity status visible.'
+ },
+ {
+  code:'AUDIO', label:'Audio', col:'#6D4FB5', bg:'#F2EEFD',
+  trigger:'Claim derived from AI analysis of audio recordings — recorded calls, voicemails, witness interviews, or other audio artifacts. Speaker verification confidence is shown where a reference speaker embedding is available.',
+  ceiling:'Reduced. Ceiling bounded by MAS/EIDOLON audio authenticity risk score and, where speaker identification is material to the claim, by speaker verification confidence. TCS/MIMIR calibrates AUDIO as a separate modality stream.',
+  actions:['Verified against recording — analyst reviews the specific audio segment.','Recording unavailable — referenced segment cannot be accessed.','Characterization incorrect — audio content does not support the model\'s characterization.','Dismiss — logged.'],
+  themis:'MAS/EIDOLON screens audio artifacts for voice synthesis indicators, acoustic anomalies, and speaker inconsistencies. Speaker verification against reference embedding where available. Voice cloning and spliced recording detection. FGTS receives audio-specific correction types. TCS/MIMIR maintains separate calibration for audio analysis by interaction class.',
+  failure:'Audio evidence mischaracterization and voice cloning risk. AI can misattribute statements to speakers, miss irony and tone that would be apparent to a human listener, and analyze synthesized audio as genuine. The AUDIO badge with MAS risk score surfaces both the source type and its authenticity status.'
+ },
+ {
+  code:'IMAGE', label:'Image', col:'#8B2222', bg:'#FBF0F0',
+  trigger:'Claim derived from AI analysis of image evidence — photographs, screenshots, document images, diagrams, or other image artifacts. MAS/EIDOLON authenticity risk score includes GAN artifact detection, EXIF metadata analysis, and steganographic scan.',
+  ceiling:'Reduced by MAS/EIDOLON authenticity risk score. Claims from high-risk-authenticity images carry a substantially reduced confidence ceiling. EXIF spoofing is specifically flagged when detected.',
+  actions:['Verified against image — analyst reviews the specific image referenced.','Image authenticity flagged — analyst confirms a MAS/EIDOLON authenticity concern. This action routes to MAS/EIDOLON as a confirmed authenticity event, distinct from a model mischaracterization signal. This is not a dispute about the model\'s reasoning but about the artifact\'s genuineness.','Characterization incorrect — the image does not support the characterization.','Dismiss — logged.'],
+  themis:'MAS/EIDOLON applies GAN artifact detection, JPEG compression inconsistency analysis, EXIF metadata authenticity scoring, and steganographic scanning. Image authenticity flagged routes to MAS/EIDOLON — not to FGTS as a model calibration signal but as an authenticity corpus update. This routing distinction is architecturally important: the failure mode is at the artifact level, not the model level. Provenance/MOIRAI records the MAS authenticity risk score alongside the image in the chain of custody.',
+  failure:'Fabricated and manipulated image evidence. AI can analyze a deepfake or manipulated image as confidently as a genuine one. The IMAGE badge combined with the MAS risk score and the Image authenticity flagged action is the only mechanism that surfaces this possibility systematically at the claim level.'
+ },
+ {
+  code:'OCR', label:'OCR / Scanned document', col:'#7A5000', bg:'#FFF3E0',
+  trigger:'Claim derived from OCR-extracted text from a scanned document. The confidence score shown inline (e.g. OCR 87%) is the per-region OCR confidence from MAS/EIDOLON, not the TCS claim confidence. Low-confidence regions are flagged in the provenance panel.',
+  ceiling:'Hard reduction tied to OCR confidence score. TCS/MIMIR cannot assign HIGH confidence to a claim sourced from a region with OCR confidence below 80%. The OCR confidence score is a hard ceiling on TCS calibration score, not a soft modifier. Claims from below-threshold regions display the OCR score prominently with a warning indicator.',
+  actions:['Confirmed against original — analyst reviews the physical or high-resolution scanned document directly, bypassing the OCR layer. The most reliable verification action for OCR-derived claims.','OCR error — text misread — analyst identifies a specific OCR extraction error. Routes to FGTS as a text extraction failure signal, distinct from model mischaracterization. The routing difference matters: the model may have correctly reasoned from the OCR output, but the OCR output was wrong.','Dismiss — logged.'],
+  themis:'MAS/EIDOLON provides per-region OCR confidence scoring during media ingestion. Regions below the confidence threshold are flagged and attached to the claim provenance record. The OCR confidence score is stored in Provenance/MOIRAI as part of the claim\'s provenance chain — not merely as metadata but as a hard constraint on TCS confidence scoring. FGTS/ALETHEIA receives OCR error signals as text extraction failure — a separate correction category that informs decisions about scanned document quality standards and re-scanning requirements, not model behavior.',
+  failure:'OCR error propagation. Scanned documents with poor scan quality, handwriting, degraded text, or non-standard fonts produce systematic OCR errors that AI analyzes as if they were accurate text. Without OCR confidence visibility, these errors propagate undetected into analysis as authoritative document content.'
+ },
+];
+
+document.addEventListener('DOMContentLoaded',()=>{
+ const el=document.getElementById('badge-detail');
+ BADGES.forEach(b=>{
+  el.innerHTML+=`<details class="iv-card" style="margin-bottom:10px">
+   <summary style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;background:#fff;list-style:none">
+    <span class="src-badge" style="color:${b.col};border-color:${b.col};font-size:12px;padding:3px 9px;flex-shrink:0">${b.code}</span>
+    <span style="font-size:13px;font-weight:700;color:var(--navy);flex:1">${b.label}</span>
+    <span style="font-size:10px;color:var(--muted);margin-left:auto">▸</span>
+   </summary>
+   <div class="iv-body" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+     <h5>Trigger Condition</h5><p>${b.trigger}</p>
+     <h5>Confidence Ceiling</h5><p>${b.ceiling}</p>
+     <h5>Failure Mode Addressed</h5><p>${b.failure}</p>
+    </div>
+    <div>
+     <h5>Verification Action Set</h5>
+     <ul>${b.actions.map(a=>`<li>${a}</li>`).join('')}</ul>
+     <h5>THEMIS Integration</h5><p>${b.themis}</p>
+    </div>
+   </div>
+  </details>`;
+ });
+ // fix summary arrows on open
+ document.querySelectorAll('#badge-detail details').forEach(d=>{
+  d.addEventListener('toggle',()=>{
+   const arr=d.querySelector('summary span:last-child');
+   if(arr) arr.textContent=d.open?'▾':'▸';
+  });
+ });
+});
+</script>
+
+<div id="badge-detail"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 6 — SEQUENCE DIAGRAM
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="sequence">
+<div class="section-title">Analyst Session Flow</div>
+<div class="section-sub">C4 Dynamic Diagram — 9-phase sequence from session setup through export with full provenance record.</div>
+<div class="mermaid-wrap">
+<pre class="mermaid">
+sequenceDiagram
+    autonumber
+    actor A as Analyst
+    participant AT as ATHENA
+    participant PCES as PCES/AEGIS
+    participant PGS as PGS/NOMOS
+    participant IAS as IAS/SCUDO
+    participant MIMIR as MIMIR Retrieval
+    participant IG as Inference Gateway
+    participant CVS as CVS/VERITAS
+    participant ERAS as ERAS/LOGOS
+    participant TCS as TCS/MIMIR
+    participant FGTS as FGTS/ALETHEIA
+    participant KB as Kafka+MOIRAI
+
+    Note over A,KB: PHASE 1 — SESSION SETUP
+    A->>AT: Declare session intent — task, decision, consequence
+    AT->>TCS: Fetch analyst calibration profile and cold start state
+    TCS-->>AT: Prior RAI scores and domain calibration state
+    A->>AT: Complete Intention Gate — prior belief and falsification condition
+
+    Note over A,KB: PHASE 2 — SAFETY GATES
+    A->>AT: Submit query
+    AT->>PCES: Request + session context + matter scope
+    PCES->>PCES: Privilege check, CoI detection, matter scope validation
+    alt Privilege violation
+        PCES-->>AT: Block
+    else Cleared
+        PCES->>PGS: Cleared interaction
+    end
+    PGS->>PGS: Interaction classification, PII detection, policy evaluation
+    alt Policy block
+        PGS-->>AT: Block
+    else Approved
+        PGS->>MIMIR: Retrieval query
+        PGS->>IG: Policy-approved signal
+    end
+
+    Note over A,KB: PHASE 3 — RETRIEVAL AND SCREENING
+    MIMIR->>IAS: Retrieved chunks — adversarial pre-screen
+    IAS->>IAS: Taxonomy matching + embedding similarity + heuristic scoring
+    alt Chunk quarantined above 0.85 threshold
+        IAS->>KB: InjectionScreeningEvent
+    end
+    IAS-->>MIMIR: Sanitised chunks with risk scores
+    MIMIR-->>IG: Screened chunks + match scores + provenance trace
+
+    Note over A,KB: PHASE 4 — INFERENCE
+    IG->>IG: Inject system prompt, parameters, context
+    IG->>IG: Capture full context snapshot
+    IG-->>AT: Context snapshot for Inspector
+    IG->>IG: Model inference call to vendor API
+
+    Note over A,KB: PHASE 5 — GENERATION-TIME SERVICES
+    par CVS — synchronous, blocks render on Not Found
+        IG->>CVS: Response text — extract citations
+        CVS->>CVS: Resolve against Westlaw and Lexis
+        alt Not Found
+            CVS-->>AT: Hard interrupt before response renders
+        else Verified or Unresolved
+            CVS-->>IG: Citation manifest
+        end
+        CVS->>KB: Signed CitationVerificationEvent
+    and ERAS — async reasoning capture
+        IG->>ERAS: Turn content
+        ERAS->>ERAS: Claim indexing and unsupported claim detection
+        ERAS->>KB: Signed ReasoningRecord
+    end
+
+    Note over A,KB: PHASE 6 — CONFIDENCE AND DISPLAY
+    AT->>TCS: Claim list with type, domain, model version, source type
+    TCS-->>AT: Calibrated scores — HIGH / MED / UNVERIFIED per claim
+    AT-->>A: Response + confidence badges + source type badges + verification queue
+
+    Note over A,KB: PHASE 7 — PROVENANCE WRITES
+    par All services sign and publish
+        PCES->>KB: Signed PrivilegeAnnotationEvent + prev_event_hash
+        PGS->>KB: Signed PolicyEvaluationEvent
+        IG->>KB: Signed ContextSnapshotEvent
+    end
+    Note over KB: MOIRAI validates signatures, updates hash chain, writes to Neo4j. Every 24h digest to RFC 3161 TSA.
+
+    Note over A,KB: PHASE 8 — VERIFICATION AND CALIBRATION
+    A->>AT: Expand provenance panel — review source
+    AT->>KB: Fetch source provenance and ERAS reasoning
+    KB-->>AT: Source passage + provenance chain + reasoning record
+    A->>AT: Verification action — typed by source type
+    AT->>FGTS: Correction event with action type and consequence weight
+    FGTS->>FGTS: Compute 5-factor confidence weight
+    alt Weight below minimum threshold
+        FGTS->>FGTS: Route to human review queue
+    else Above threshold
+        FGTS->>TCS: Weighted correction signal
+        TCS->>TCS: Update domain calibration model
+    end
+    FGTS->>KB: Signed CorrectionEvent
+    TCS->>KB: Signed CalibrationUpdateEvent
+
+    Note over A,KB: PHASE 9 — EXPORT WITH PROVENANCE GATE
+    A->>AT: Request export
+    alt Unverified HIGH confidence claims remain
+        AT-->>A: Export blocked — supervisor acknowledgment required
+    else Queue clear
+        AT->>KB: Assemble canonical provenance record
+        KB-->>AT: Full provenance — model version, params, claims, verification states, ERAS record, TCS RAI snapshot
+        AT-->>A: Export artifact with complete signed provenance record
+    end
+</pre>
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 7 — INTERVENTION CATALOG
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="catalog">
+<div class="section-title">Intervention Catalog</div>
+<div class="section-sub">28 interventions across 8 categories. Each targets a specific cognitive or behavioral failure mode in AI-assisted analysis.</div>
+<script>
+const IVDATA=[
+ // Cat 1: Session Configuration
+ {n:2,name:'Chat Mode / Knowledge Source Configuration',cat:'Session Configuration',cc:'#2E5FAD',cl:'#EEF3FF',purpose:'Toggle between Training Only (no retrieval), RAG + Training (retrieved documents plus model knowledge), and Company Docs Only. Mode displayed persistently. Each mode triggers different PCES/AEGIS corpus access and TCS/MIMIR calibration stratification.',mechs:['Tesler\'s Law: externalises the epistemic difference between retrieved and parametric knowledge.','Mode transparency: trust calibration differs when the model draws on a retrieved document versus training weights.'],svcs:['PCES/AEGIS','PGS/NOMOS','Provenance/MOIRAI','TCS/MIMIR','RQS/HERMES']},
+ {n:3,name:'System Prompt Editor',cat:'Session Configuration',cc:'#2E5FAD',cl:'#EEF3FF',purpose:'Live editable system prompt with save/load and named presets. Changes take effect on the next inference call. System prompt hash logged to Provenance/MOIRAI. PGS/NOMOS policy rules cannot be overridden by the system prompt.',mechs:['Transparency: reveals the instruction layer that shapes model behavior.','Prevents silent drift in model behavior across sessions.'],svcs:['PGS/NOMOS','Provenance/MOIRAI']},
+ {n:4,name:'Model Parameter Configuration',cat:'Session Configuration',cc:'#2E5FAD',cl:'#EEF3FF',purpose:'Five sliders: temperature, top-P, top-K, presence penalty, max tokens. Three presets: Precise, Balanced, Exploratory. All parameters logged to Provenance/MOIRAI for session reproducibility and TCS/MIMIR calibration stratification.',mechs:['Expert control over output distribution.','Reproducibility: identical parameters required to reconstruct conditions that produced a prior response.'],svcs:['Provenance/MOIRAI','TCS/MIMIR']},
+ {n:5,name:'Prompt Repository',cat:'Session Configuration',cc:'#2E5FAD',cl:'#EEF3FF',purpose:'Library of policy-approved curated analytical prompt templates accessible from Config sidebar. Covers supply chain risk, actor intent, counter-analysis, and calibration checks. Template ID logged per exchange for TCS/MIMIR stratification.',mechs:['Reduces query-level variance: standardised prompts enable meaningful cross-session comparison.','Templates elicit analyst framing before model output.'],svcs:['PGS/NOMOS','TCS/MIMIR']},
+ // Cat 2: Session Scaffolding
+ {n:1,name:'Session Intent Declaration',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Required pre-session form: task description, decision the session supports, consequence of an error. Blocks first query until completed. Consequence-of-error weight used by TCS/MIMIR to modulate RAI scoring. Skips are logged.',mechs:['Stakes recalibration (Lerner and Tetlock): motivational maintenance through consequence salience.','Prospective memory activation: declared intent creates a cognitive anchor before model output arrives.'],svcs:['PCES/AEGIS','PGS/NOMOS','TCS/MIMIR','Provenance/MOIRAI']},
+ {n:6,name:'Session History',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Browsable list of prior sessions. Loading a prior session injects its context and activates disagreement detection for overlapping queries. Prior RAI scores surfaced alongside loaded sessions.',mechs:['Continuity of analysis: builds on prior work without re-establishing context.','Activates disagreement detection as a downstream effect.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA']},
+ {n:16,name:'Episode Boundary',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Checkpoint every three exchanges. Requires analyst to commit to one specific claim they will verify independently before proceeding. TCS/MIMIR tracks cross-episode follow-through rate as a direct RAI input.',mechs:['Vigilance decrement countermeasure: fires at the interval where criterion shift is most likely.','Zeigarnik Effect: explicit commitment creates an open task that persists cognitively after session ends.'],svcs:['TCS/MIMIR','FGTS/ALETHEIA']},
+ {n:22,name:'Session Synthesis Workspace',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Dedicated right-panel workspace for analyst independent synthesis. Three fields: conclusions I am confident in, assumptions I am relying on, claims I still need to verify. Exported as session header of the Provenance/MOIRAI record.',mechs:['Structural boundary between model-generated and analyst-generated content.','Peak-end rule: synthesis as memorable peak rather than the model\'s confident final output.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','ERAS/LOGOS']},
+ {n:26,name:'Pressure-Aware Session Mode',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Three pressure levels declared at session start: Standard, Elevated, Deadline-Critical. Deadline-Critical: intention gate compresses to one field, reformulation gate defers, episode boundary fires every two exchanges, export gate hardened — unverified HIGH claims block export and require supervisor acknowledgment (PGS/NOMOS policy).',mechs:['Asymmetric hardening: easier in, harder out. Entry friction reduces, exit enforcement increases.','Friction calibration: compressed gate produces lower-quality prior but higher compliance under time pressure.'],svcs:['PGS/NOMOS','Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','ERAS/LOGOS']},
+ {n:27,name:'Multi-Analyst Session Framework',cat:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD',purpose:'Three workflow modes: Supervisory review (read-annotate, counter-position auto-expanded, state overrides logged), Matter handoff (structured handoff brief, explicit acknowledgment required per section), Collaborative session (per-analyst attribution, shared session intent, explicit surfacing of verification conflicts).',mechs:['Attribution accuracy: per-analyst attribution for all actions is the foundational multi-analyst requirement.','Supervisory override is the highest-quality FGTS ground truth signal in the system.'],svcs:['PCES/AEGIS','Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA']},
+ // Cat 3: Pre-Response
+ {n:7,name:'Input Type Classification',cat:'Pre-Response Interventions',cc:'#9A6800',cl:'#FFF7E8',purpose:'Auto-classification of each query: Factual, Analytical, Predictive, or Opinion. Badge appears on user message immediately after submission, before response renders. PGS/NOMOS maps types to interaction class definitions. TCS/MIMIR uses input type as calibration variable.',mechs:['Sets epistemic expectations before the response is read.','Predictive queries warrant far higher uncertainty than Factual queries against retrieved documents.'],svcs:['PGS/NOMOS','Provenance/MOIRAI','TCS/MIMIR','ERAS/LOGOS']},
+ {n:8,name:'Intention Gate',cat:'Pre-Response Interventions',cc:'#9A6800',cl:'#FFF7E8',purpose:'Required two-field form that prevents response rendering until analyst submits: what they already believe, and what evidence would change their mind. Character-count minimum enforced. Response only appears after both fields are populated.',mechs:['Anchoring countermeasure: analyst commits prior belief before model output sets the reference point.','System 2 activation: articulating a prior and falsification condition forces deliberate engagement before fluency signal arrives.'],svcs:['TCS/MIMIR','FGTS/ALETHEIA']},
+ // Cat 4: Response Interventions
+ {n:9,name:'Claim Confidence Badges',cat:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Inline badges on each discrete claim: HIGH CONF (teal), MED CONF (amber), UNVERIFIED (red). Generated from TCS/MIMIR calibrated scores — not model self-report. Clicking a badge adds the claim to the Verification Queue.',mechs:['Von Restorff Effect: isolated visually distinct elements receive more attention and are better recalled.','Breaks the fluency-credibility coupling: visual differentiation disrupts the automatic well-written-equals-accurate inference.','Automation bias countermeasure: calibrated uncertainty prevents passive acceptance.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','RQS/HERMES','ERAS/LOGOS']},
+ {n:10,name:'Source Type Badges',cat:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Inline provenance type indicators adjacent to each claim badge. Eight types: GRND, PARAM, SYNTH, TRANSCRIPT (derivative artifact with ASR accuracy), VIDEO, AUDIO, IMAGE, OCR (with confidence score inline). Each type triggers a different verification action set.',mechs:['Tesler\'s Law: externalises the epistemic origin of each claim across eight distinct source types.','TRANSCRIPT is the most important new type — an AI transcript is a derivative artifact, not equivalent to a retrieved document.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','TVS/KAIROS','RQS/HERMES']},
+ {n:11,name:'Counter-Position Panel',cat:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Collapsed panel containing a structurally generated adversarial challenge to the response claims, framing, and unstated assumptions. Toggled by analyst. Framed as a challenge, not a disclaimer. Governed by PGS/NOMOS as a distinct interaction class.',mechs:['Confirmation bias countermeasure: presents disconfirming signals before analyst finalises their interpretation.','Agreement rate buffer: challenges analyst framing even when the primary response aligns with it.'],svcs:['PGS/NOMOS','TCS/MIMIR','ERAS/LOGOS']},
+ {n:12,name:'Agreement Rate Tracker',cat:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Persistent header indicator showing session agreement-to-challenge ratio. Turns amber when two or more consecutive responses align without a challenge. Updates in real time.',mechs:['Social accountability: making the pattern visible changes behavior.','Sycophancy detection: surfaces the model tendency to agree as a session-level metric.'],svcs:['TCS/MIMIR','FGTS/ALETHEIA']},
+ {n:21,name:'Disagreement Detection',cat:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'When a query resembles one from a loaded prior session, current response is compared against the prior. If material divergence is detected, an amber banner surfaces a side-by-side comparison. Dismissible but logged. TVS/KAIROS provides context when divergence may result from source supersession.',mechs:['Makes response instability visible: in standard interfaces, model response variance across sessions is completely invisible.','Prevents tacit reliance on consistency.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','TVS/KAIROS']},
+ // Cat 5: Verification Infrastructure
+ {n:13,name:'Verification Queue',cat:'Verification Infrastructure',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Right-panel list of claims flagged for verification. Claims auto-populate from confidence badges. Each item expandable to show full source provenance. State tracks: pending → confirmed/misrepresents/independent/unverifiable/disputed/dismissed.',mechs:['Zeigarnik Effect: open verification tasks persist cognitively.','Separates reading from verification: analyst reads the response, then reviews each claim with provenance visible.'],svcs:['PCES/AEGIS','Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','RQS/HERMES']},
+ {n:14,name:'Context-Sensitive Verification Actions',cat:'Verification Infrastructure',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Action set varies by source type across all 8 badge types. GRND: Confirmed against source / Misrepresents source / Dismiss. PARAM: Verified independently / Could not verify / Incorrect. TRANSCRIPT: Verified against recording / Transcript may be inaccurate. IMAGE: Verified against image / Image authenticity flagged. OCR: Confirmed against original / OCR error — text misread.',mechs:['Action-specific semantics: Confirmed against source is qualitatively stronger than Verified independently.','OCR error routes as text extraction failure in FGTS — different from model mischaracterisation.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','TVS/KAIROS']},
+ {n:15,name:'Reformulation Gate',cat:'Verification Infrastructure',cc:'#0D6B5E',cl:'#E6F5F3',purpose:'Triggered after responses that challenge analyst framing. Requires analyst to paraphrase the model\'s core claim before proceeding. Side-by-side comparison of analyst paraphrase and model key claim displayed after submission. In Deadline-Critical mode, deferred to post-session.',mechs:['Semantic processing depth (Craik and Lockhart): writing a paraphrase forces semantic engagement that surface reading does not.','Comprehension gaps are exposed by the paraphrase attempt itself.'],svcs:['TCS/MIMIR','FGTS/ALETHEIA','ERAS/LOGOS']},
+ // Cat 6: Behavioral Telemetry
+ {n:17,name:'Per-Message Feedback',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Thumbs up/down on each AI response. Toggle state. Granular response-level feedback distinct from claim-level verification queue actions. Valence aggregated by FGTS/ALETHEIA as secondary calibration signal.',mechs:['Granular signal capture: session-level satisfaction obscures response-level variation.','Explicit feedback activates an evaluative stance.'],svcs:['TCS/MIMIR','FGTS/ALETHEIA']},
+ {n:18,name:'Per-Message Annotation',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Inline analyst notes attached to specific AI responses. Displayed as visually distinct blocks. Persisted in session state and included in exports. Logged to Provenance/MOIRAI as analyst-generated enrichments to the turn record.',mechs:['Externalises analyst judgment: retrievable record structurally separate from model output.','Prevents retrospective attribution error.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','ERAS/LOGOS']},
+ {n:19,name:'Conversation Branching',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Fork the conversation at any exchange. Independent state per branch. Branch lineage recorded in Provenance/MOIRAI. FGTS/ALETHEIA uses branch divergence as a framing sensitivity signal.',mechs:['Enables controlled comparison: same context, different framing.','Supports adversarial self-analysis: analysts can test whether their framing drove the model\'s conclusions.'],svcs:['Provenance/MOIRAI','FGTS/ALETHEIA']},
+ {n:20,name:'Context Window Inspector',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Modal inspector showing full context received by the model: system prompt with token count, retrieved chunks with match scores, conversation history, and current user message. Each chunk expandable.',mechs:['Radical transparency: closes the most significant epistemic gap in current AI interfaces.','Prerequisite for provenance literacy: analysts cannot meaningfully evaluate claim provenance without visibility into what was retrieved.'],svcs:['Provenance/MOIRAI','RQS/HERMES','ERAS/LOGOS']},
+ {n:23,name:'Export with Provenance Gate',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Export is flagged (Standard) or blocked (Deadline-Critical) when unverified HIGH confidence claims remain. Exported artifact includes: model version, parameters, system prompt hash, chat mode, corpus version, session intent, all claims with verification states, retrieval trace, TCS RAI snapshot, ERAS reasoning record.',mechs:['Zeigarnik Effect enforced structurally: cannot close session without acknowledging open items.','Accountability at the point of consequence: export is when analysis leaves the analyst\'s hands.'],svcs:['PCES/AEGIS','PGS/NOMOS','Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','ERAS/LOGOS']},
+ {n:24,name:'Session Manifest',cat:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8',purpose:'Modal view of the complete session configuration: model ID, knowledge mode, corpus version, parameters, system prompt hash, session intent, and live verification statistics. Accessible at any point. IS the Provenance/MOIRAI record for this session.',mechs:['Reproducibility: every parameter needed to reconstruct conditions.','Calibration awareness: live verification statistics mid-session provide real-time feedback.'],svcs:['PCES/AEGIS','PGS/NOMOS','Provenance/MOIRAI','TCS/MIMIR']},
+ // Cat 7: Session Integrity
+ {n:25,name:'Compliance Gaming Detection',cat:'Session Integrity',cc:'#8B2222',cl:'#FBF0F0',purpose:'Gaming probability score (0–1) computed by TCS/MIMIR from four behavioral signals: semantic similarity of intention gate entries to prior five sessions, time-on-provenance before verification action (verify button grayed 5s until panel opened), batch dismissal pattern, episode commitment semantic drift. Score visible in session manifest to analyst and supervisors. High gaming score reduces FGTS correction weight.',mechs:['Metacognitive awareness: showing gaming pattern score activates self-regulatory behavior (Bandura).','Evaluation apprehension (Lerner and Tetlock): supervisory visibility changes behavior even without direct observation.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA']},
+ {n:28,name:'Cross-Analyst Disagreement Detection',cat:'Session Integrity',cc:'#8B2222',cl:'#FBF0F0',purpose:'When a new query is submitted, semantic similarity service compares it against prior queries from other analysts on the same matter. If material divergence detected, matter coordinator sees full event in matter-level dashboard. Individual analysts receive a narrow notification without seeing the other\'s session — preventing anchoring.',mechs:['Attribution-blind notification: showing one analyst the other\'s response would anchor their reasoning to the prior framing.','Calibration instability signal: cross-analyst divergence on a verified claim indicates model producing inconsistent outputs on the same matter.'],svcs:['Provenance/MOIRAI','TCS/MIMIR','FGTS/ALETHEIA','TVS/KAIROS']},
+ // Cat 8: Pressure Response
+];
+
+const CATS=[
+ {name:'Session Configuration',cc:'#2E5FAD',cl:'#EEF3FF'},
+ {name:'Session Scaffolding',cc:'#6D4FB5',cl:'#F2EEFD'},
+ {name:'Pre-Response Interventions',cc:'#9A6800',cl:'#FFF7E8'},
+ {name:'Response Interventions',cc:'#0D6B5E',cl:'#E6F5F3'},
+ {name:'Verification Infrastructure',cc:'#0D6B5E',cl:'#E6F5F3'},
+ {name:'Behavioral Telemetry',cc:'#1B3A5C',cl:'#EEF2F8'},
+ {name:'Session Integrity',cc:'#8B2222',cl:'#FBF0F0'},
+];
+document.addEventListener('DOMContentLoaded',()=>{
+ const el=document.getElementById('iv-catalog');
+ CATS.forEach(cat=>{
+  const ivs=IVDATA.filter(iv=>iv.cat===cat.name);
+  if(!ivs.length)return;
+  const section=document.createElement('div');
+  section.className='cat-group';
+  section.innerHTML=`<div class="cat-label" style="background:${cat.cc};color:#fff">${cat.name} · ${ivs.length} intervention${ivs.length>1?'s':''}</div>`;
+  ivs.sort((a,b)=>a.n-b.n).forEach(iv=>{
+   const d=document.createElement('details');
+   d.className='iv-card';
+   d.innerHTML=`<summary>
+    <span class="iv-num">${iv.n}</span>
+    <span class="iv-name">${iv.name}</span>
+    <span class="iv-cat-pill" style="background:${iv.cl};color:${iv.cc}">${iv.cat}</span>
+   </summary>
+   <div class="iv-body">
+    <h5>Purpose</h5><p>${iv.purpose}</p>
+    <h5>Key Mechanisms</h5><ul>${iv.mechs.map(m=>`<li>${m}</li>`).join('')}</ul>
+    <h5>THEMIS Integration</h5>
+    <div class="svc-pills">${iv.svcs.map(s=>`<span class="svc-pill">${s}</span>`).join('')}</div>
+   </div>`;
+   section.appendChild(d);
+  });
+  el.appendChild(section);
+ });
+});
+</script>
+<div id="iv-catalog"></div>
+</div>
+
+<script>
+mermaid.initialize({startOnLoad:true,theme:'default',sequence:{diagramMarginX:20,diagramMarginY:10,actorMargin:40,width:150,height:55,boxMargin:8,messageMargin:25}});
+
+function show(id,btn){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ btn.classList.add('active');
+ if(id==='sequence') mermaid.run();
+}
+</script>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 9 — REFERENCES
+══════════════════════════════════════════════════════════ -->
+<div class="section" id="refs">
+<div class="section-title">Research References</div>
+<div class="section-sub">Foundational research informing the ATHENA intervention design, THEMIS architecture, and AI Trust Cell organizational model.</div>
+
+<script>
+const REFS={
+ 'Human Factors and Automation':[
+  {auth:'Parasuraman, R., & Manzey, D. H.',year:'2010',title:'Complacency and Bias in Human Use of Automation: An Attentional Integration',venue:'Human Factors, 52(3), 381–410',note:'Primary empirical basis for automation complacency and bias claims. Documents both omission and commission errors under imperfect automation. Key finding: expertise does not protect against automation bias. Informed the core justification for ATHENA\'s intervention architecture.'},
+  {auth:'Mackworth, N. H.',year:'1948',title:'The Breakdown of Vigilance During Prolonged Visual Search',venue:'Quarterly Journal of Experimental Psychology, 1(1), 6–21',note:'Radar operator vigilance study. Documents 10–15% signal detection accuracy degradation within the first 30 minutes of a monitoring task, continuing across a two-hour session. Foundation for the Episode Boundary intervention design and the vigilance decrement countermeasure rationale.'},
+  {auth:'Lee, J. D., & See, K. A.',year:'2004',title:'Trust in Automation: Designing for Appropriate Reliance',venue:'Human Factors, 46(1), 50–80',note:'Defines the normative target for trust calibration: trust that accurately tracks actual system reliability, not maximum trust or maximum scepticism. Provides the theoretical basis for the Trust Calibration Service (TCS/MIMIR) and the Reliance-Accuracy Index (RAI) construct.'},
+  {auth:'Parasuraman, R., Sheridan, T. B., & Wickens, C. D.',year:'2000',title:'A Model for Types and Levels of Human Interaction with Automation',venue:'IEEE Transactions on Systems, Man, and Cybernetics, 30(3), 286–297',note:'Foundational taxonomy of human-automation interaction levels. Informs the design of ATHENA\'s intervention intensity calibration across different interaction classes.'},
+ ],
+ 'Cognitive Psychology and Decision Making':[
+  {auth:'Kahneman, D.',year:'2011',title:'Thinking, Fast and Slow',venue:'Farrar, Straus and Giroux',note:'Dual-process theory (System 1/System 2). Foundational framing for ATHENA\'s intervention design: interventions are designed to activate System 2 deliberative processing in contexts where System 1 fluency-based processing would otherwise dominate. Anchoring effects and their resistance to correction directly motivate the Intention Gate design.'},
+  {auth:'Lerner, J. S., & Tetlock, P. E.',year:'1999',title:'Accounting for the Effects of Accountability',venue:'Psychological Bulletin, 125(2), 255–275',note:'Accountability and evaluation apprehension as mechanisms for improving decision quality. Basis for the Agreement Rate Tracker (social accountability through visible pattern), the Compliance Gaming Detection supervisory visibility dimension, and the cross-analyst disagreement detection design rationale.'},
+  {auth:'Craik, F. I. M., & Lockhart, R. S.',year:'1972',title:'Levels of Processing: A Framework for Memory Research',venue:'Journal of Verbal Learning and Verbal Behavior, 11(6), 671–684',note:'Levels-of-processing theory: semantic encoding is deeper and more durable than phonological or structural encoding. Primary basis for the Reformulation Gate intervention — writing a paraphrase forces semantic engagement that surface reading does not.'},
+  {auth:'Tversky, A., & Kahneman, D.',year:'1974',title:'Judgment under Uncertainty: Heuristics and Biases',venue:'Science, 185(4157), 1124–1131',note:'Anchoring, availability, and representativeness heuristics. The anchoring heuristic directly motivates the pre-response intervention design (Intention Gate, Input Type Classification) — the model always speaks first in a standard interface and anchors all subsequent reasoning.'},
+  {auth:'Nickerson, R. S.',year:'1998',title:'Confirmation Bias: A Ubiquitous Phenomenon in Many Guises',venue:'Review of General Psychology, 2(2), 175–220',note:'Comprehensive review of confirmation bias mechanisms. Informs the Counter-Position Panel design and the rationale for structurally generated adversarial challenges rather than relying on analyst self-initiated critical evaluation.'},
+ ],
+ 'AI Overreliance and Cognitive Forcing':[
+  {auth:'Buçinca, Z., Malaya, M. B., & Gajos, K. Z.',year:'2021',title:'To Trust or to Think: Cognitive Forcing Functions Can Reduce Overreliance on AI in AI-Assisted Decision Making',venue:'Proceedings of the ACM on Human-Computer Interaction, 5(CSCW1)',note:'Most directly relevant empirical work. Tests three cognitive forcing functions against a control condition. Key finding: interventions benefited participants higher in Need for Cognition more; the most effective overreliance-reduction interventions were also the most disliked. Directly informs the friction-effectiveness tradeoff design rationale in ATHENA and the research agenda for the Human Factors team.'},
+  {auth:'Buccinca, Z., Lin, P., Gajos, K. Z., & Glassman, E. L.',year:'2020',title:'Proxy Tasks and Subjective Measures Can Be Misleading in Evaluating Explainable AI Systems',venue:'Proceedings of the ACM International Conference on Intelligent User Interfaces',note:'Warns against conflating user satisfaction with decision quality in AI system evaluation. Directly informs the design of the RAI as a calibration metric rather than a satisfaction metric, and the distinction between User Satisfaction and Verification Quality in ATHENA evaluation design.'},
+  {auth:'Skitka, L. J., Mosier, K. L., & Burdick, M.',year:'1999',title:'Does Automation Bias Decision-Making?',venue:'International Journal of Human-Computer Studies, 51(5), 991–1006',note:'Documents automation bias as a distinct phenomenon from general confirmation bias — showing that people err by following automation even when they would not have erred without it. Informs the claim that automation bias is not addressable through expertise alone.'},
+ ],
+ 'Memory and Prospective Cognition':[
+  {auth:'Brandimonte, M. A., Einstein, G. O., & McDaniel, M. A. (Eds.)',year:'1996',title:'Prospective Memory: Theory and Applications',venue:'Lawrence Erlbaum Associates',note:'Foundational text on prospective memory — the cognitive capacity to form and execute delayed intentions. Primary basis for the Intention Gate design: setting a verification intention before reading creates a cognitive hook that survives engagement with fluent model output.'},
+  {auth:'Zeigarnik, B.',year:'1927',title:'Über das Behalten von erledigten und unerledigten Handlungen',venue:'Psychologische Forschung, 9, 1–85',note:'The Zeigarnik Effect: incomplete tasks persist in memory more strongly than completed ones. Foundational basis for the Verification Queue design (open verification tasks create explicit incomplete tasks rather than implicit responsibility) and the Episode Boundary commitment mechanism.'},
+  {auth:'Von Restorff, H.',year:'1933',title:'Über die Wirkung von Bereichsbildungen im Spurenfeld',venue:'Psychologische Forschung, 18, 299–342',note:'The isolation effect (Von Restorff Effect): an item that stands out from its surroundings is more likely to be remembered. Basis for the Claim Confidence Badge design — uncertainty must be structurally visible and visually isolated to be epistemically effective.'},
+ ],
+ 'UX and Interface Design Principles':[
+  {auth:'Tesler, L.',year:'1980s',title:"Tesler's Law of Conservation of Complexity (informal)",venue:'Xerox PARC; formalized in various HCI literature',note:'Every application has an inherent amount of complexity that cannot be reduced — it can only be shifted between user and system. Directly motivates the Source Type Badge and Context Window Inspector design: the epistemic complexity of AI knowledge sourcing is real and must be made visible rather than hidden.'},
+  {auth:'Norman, D.',year:'2013',title:'The Design of Everyday Things (Revised Ed.)',venue:'Basic Books',note:'Affordances, feedback, constraints, and mappings in interface design. Informs the structural design of ATHENA\'s intervention stack — each intervention creates a visible affordance for deliberate evaluation rather than relying on implicit understanding.'},
+  {auth:'Kaur, H., et al.',year:'2020',title:'Interpreting Interpretability: Understanding Data Scientists\' Use of Interpretability Tools for Machine Learning',venue:'CHI 2020',note:'Documents how ML practitioners use interpretability tools in practice — often in post-hoc rationalization rather than genuine understanding. Informs the ATHENA Reformulation Gate and Context Window Inspector design philosophy.'},
+ ],
+ 'Software Architecture and Platform Design':[
+  {auth:'Brown, S.',year:'2018',title:'The C4 Model for Software Architecture',venue:'InfoQ / c4model.com',note:'The C4 model (Context, Container, Component, Code) used for the THEMIS and ATHENA architecture diagrams. Provides the layered diagrammatic vocabulary for the Container and Dynamic (sequence) diagrams produced in this program.'},
+  {auth:'Richardson, C.',year:'2018',title:'Microservices Patterns',venue:'Manning Publications',note:'Microservices architectural patterns including service decomposition, event-driven architecture, and the saga pattern. Informs the THEMIS service isolation principle (no shared databases, clean event contracts) and the Kafka event bus architecture.'},
+  {auth:'Wiggins, A.',year:'2011',title:'The Twelve-Factor App',venue:'Heroku / 12factor.net',note:'Twelve principles for building software-as-a-service applications. Related to the framing of the 13th Factor research blog (human-centered design as a missing factor in the Twelve-Factor methodology) and informs the ATHENA/THEMIS platform design philosophy.'},
+ ],
+ 'AI Systems and Language Model Evaluation':[
+  {auth:'Perez, E., Huang, S., Song, F., et al.',year:'2022',title:'Red Teaming Language Models with Language Models',venue:'arXiv:2202.03286',note:'Systematic adversarial evaluation methodology for language models using LLMs as red team agents. Informs the Red Team Evaluator role design and the IAS/SCUDO injection taxonomy development approach.'},
+  {auth:'Anthropic',year:'2023',title:'Sycophancy to Subterfuge: Investigating Reward Tampering in Language Models',venue:'Anthropic Research',note:'Documents sycophancy as a structural output of RLHF training rather than an incidental property. Primary basis for the claim that the model\'s tendency to agree is not a bug to be fixed but a structural feature to be counteracted through interface design.'},
+  {auth:'Ouyang, L., Wu, J., Jiang, X., et al.',year:'2022',title:'Training Language Models to Follow Instructions with Human Feedback',venue:'NeurIPS 2022',note:'Foundational paper on RLHF. Documents how human rater preferences shape model behavior. Shows why sycophancy is a structural output: human raters consistently score responses higher when they feel validated, creating a training signal that rewards agreement.'},
+  {auth:'Guo, C., Pleiss, G., Sun, Y., & Weinberger, K. Q.',year:'2017',title:'On Calibration of Modern Neural Networks',venue:'ICML 2017',note:'Shows that modern neural networks are often poorly calibrated — they express high confidence on incorrect predictions. Foundation for the requirement that claim confidence badges must derive from external calibration (TCS/MIMIR verification outcomes) rather than model self-report.'},
+ ],
+ 'Legal Technology and AI Governance':[
+  {auth:'American Bar Association',year:'2023',title:'Formal Opinion 512: Generative Artificial Intelligence Tools',venue:'ABA Standing Committee on Ethics and Professional Responsibility',note:'Addresses attorney competence obligations when using generative AI tools. Affirms that attorneys have an obligation to understand the benefits and risks of AI tools used in legal practice. Informs the professional responsibility rationale for ERAS/LOGOS and PCES/AEGIS.'},
+  {auth:'American Bar Association',year:'2012',title:'Comment to Model Rule 1.1: Competence (Technology Amendment)',venue:'ABA Model Rules of Professional Conduct',note:'Amendment requiring attorneys to maintain competence including the benefits and risks of relevant technology. Foundation for the regulatory compliance dimension of the THEMIS platform business case.'},
+  {auth:'Susskind, R.',year:'2023',title:'The End of Lawyers? (Updated Edition)',venue:'Oxford University Press',note:'Analysis of the transformation of legal practice through technology. Provides context for the competitive displacement risk dimension of the THEMIS business case.'},
+ ],
+ 'Security and Cryptography':[
+  {auth:'Adams, C., & Just, M.',year:'2001',title:'RFC 3161: Internet X.509 PKI Time-Stamp Protocol (TSP)',venue:'IETF RFC 3161',note:'The standard used for external timestamp anchoring in the THEMIS cryptographic attestation architecture. RFC 3161 TSA tokens provide externally verifiable proof that the provenance chain existed in a specific state at a specific time, without requiring access to THEMIS infrastructure.'},
+  {auth:'HashiCorp',year:'2023',title:'HashiCorp Vault Documentation: Transit Secrets Engine',venue:'HashiCorp',note:'The transit secrets engine provides cryptographic signing and verification operations without exposing private key material. Services call Vault\'s signing API and receive a signature — they never hold private keys directly. Foundational to the THEMIS cryptographic attestation implementation.'},
+  {auth:'OWASP',year:'2023',title:'OWASP Top 10 for Large Language Model Applications',venue:'OWASP Foundation',note:'Documents prompt injection as a leading vulnerability class for LLM applications. Defines the threat model that IAS/SCUDO is designed to address. Taxonomy of injection attack patterns informs the IAS injection signature taxonomy development approach.'},
+ ],
+};
+
+document.addEventListener('DOMContentLoaded',()=>{
+ const el=document.getElementById('refs-list');
+ Object.entries(REFS).forEach(([cat,items])=>{
+  const sec=document.createElement('div');
+  sec.style.marginBottom='24px';
+  sec.innerHTML=`<h3 class="subsec">${cat}</h3>`;
+  items.forEach((ref,i)=>{
+   sec.innerHTML+=`<div class="card" style="margin-bottom:10px;border-left:4px solid var(--navy)">
+    <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px">
+     <span style="font-size:12px;font-weight:700;color:var(--navy)">${ref.auth}</span>
+     <span class="badge" style="background:var(--navy-l);color:var(--navy)">${ref.year}</span>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;font-style:italic">${ref.title}</div>
+    <div style="font-size:11.5px;color:var(--muted);margin-bottom:8px">${ref.venue}</div>
+    <div style="font-size:12px;color:var(--sub);line-height:1.55;background:var(--bg);padding:8px 10px;border-radius:4px">${ref.note}</div>
+   </div>`;
+  });
+  el.appendChild(sec);
+ });
+});
+</script>
+
+<div class="card" style="border-left:4px solid var(--teal);margin-bottom:24px;padding:14px 18px">
+ <h4 style="color:var(--teal-dark)">About These References</h4>
+ <p style="margin-top:6px;font-size:12.5px;line-height:1.65">The ATHENA intervention design is grounded in peer-reviewed human factors, cognitive science, and HCI research. The THEMIS architecture draws on established software engineering patterns and legal technology governance frameworks. References are organized by domain. Each entry includes a note on how the research informed specific design decisions — the mapping between theory and implementation is explicit, not assumed. The Transfer Assumption (that findings from lab contexts transfer to high-stakes professional legal analysis) is noted as a gap requiring empirical validation by the Research and Red Team through the pre-registered research cycle program.</p>
+</div>
+<div id="refs-list"></div>
+</div>
+
+</body>
+</html>
