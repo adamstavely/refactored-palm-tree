@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Development Office — Org Design Reference</title>
+
+
+<style>:root{--bg:#07101e;--sidebar:#0a1628;--s2:#101f33;--s3:#152540;--border:rgba(255,255,255,.07);--bordermd:rgba(255,255,255,.13);--text:#dde6f2;--muted:#7b8fa6;--dim:#3a5166;--amber:#d97706;--amber-bg:rgba(217,119,6,.12);--teal:#0d9488;--teal-bg:rgba(13,148,136,.12);--violet:#7c3aed;--violet-bg:rgba(124,58,237,.12);--orange:#ea580c;--orange-bg:rgba(234,88,12,.12);--green:#059669;--green-bg:rgba(5,150,105,.12);--blue:#2563eb;--blue-bg:rgba(37,99,235,.12);--sky:#0ea5e9;--sky-bg:rgba(14,165,233,.12);--fd:'Syne',sans-serif;--fb:'DM Sans',sans-serif;--r:10px;--rl:14px;--sw:248px;}*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html,body{height:100%;overflow:hidden;}body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:14px;line-height:1.7;font-weight:300;display:flex;}aside{width:var(--sw);flex-shrink:0;height:100vh;background:var(--sidebar);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;bottom:0;}.sb-brand{padding:24px 20px 20px;border-bottom:1px solid var(--border);}.sb-logo{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}.sb-logo span{color:var(--blue);}.sb-title{font-family:var(--fd);font-size:14px;font-weight:800;color:#ecf3ff;line-height:1.25;}.sb-subtitle{font-size:10px;color:var(--dim);margin-top:3px;}nav{flex:1;padding:16px 0;overflow-y:auto;}nav a{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;text-decoration:none;transition:all .15s;border-left:2px solid transparent;margin-bottom:1px;}nav a:hover{background:rgba(255,255,255,.04);}nav a.active{background:rgba(37,99,235,.1);border-left-color:var(--blue);}.nav-num{font-family:var(--fd);font-size:9px;font-weight:700;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.05);color:var(--dim);}nav a.active .nav-num{background:var(--blue-bg);color:var(--blue);}.nav-label{font-size:12px;font-weight:500;color:var(--muted);}nav a.active .nav-label{color:var(--text);}.sb-footer{padding:16px 20px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);line-height:1.6;}.sb-ver{font-family:var(--fd);font-size:9px;font-weight:700;color:var(--dim);letter-spacing:.08em;margin-bottom:4px;}main{margin-left:var(--sw);flex:1;height:100vh;overflow-y:auto;padding:48px 64px 80px;}.page{display:none;}.page.active{display:block;}.pg-eye{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}.pg-title{font-family:var(--fd);font-size:clamp(24px,3.5vw,42px);font-weight:800;letter-spacing:-.025em;color:#ecf3ff;line-height:1.05;margin-bottom:14px;}.pg-desc{font-size:14px;color:var(--muted);max-width:640px;line-height:1.8;margin-bottom:40px;}.pg-divider{border:none;border-top:1px solid var(--border);margin:36px 0;}.pg-sub-eye{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;}.stats-row{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:40px;}.stat{flex:1;padding:20px 22px;border-right:1px solid var(--border);}.stat:last-child{border-right:none;}.stat-n{font-family:var(--fd);font-size:26px;font-weight:800;color:#ecf3ff;line-height:1;}.stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;}.org-outer{overflow-x:auto;padding-bottom:8px;margin-bottom:24px;}.org-chart{position:relative;width:1000px;height:430px;margin:0 auto;}.node-leader{position:absolute;left:390px;width:220px;background:linear-gradient(135deg,#152038,#0d1929);border:1px solid rgba(37,99,235,.35);border-radius:var(--rl);padding:11px 18px;text-align:center;}.node-leader.n1{top:0;border-color:rgba(37,99,235,.7);}.node-leader.n2{top:68px;}.node-leader.n3{top:136px;}.node-leader .nt{font-family:var(--fd);font-size:12px;font-weight:700;color:#ecf3ff;}.node-leader .ns{font-size:10px;color:var(--muted);margin-top:2px;}.node-leader.n1 .nt{font-size:14px;}.node-pmo{position:absolute;left:638px;top:4px;background:var(--s2);border:1px dashed rgba(37,99,235,.4);border-radius:var(--r);padding:9px 12px;}.pmo-tag{font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--blue-bg);color:var(--blue);padding:2px 5px;border-radius:3px;display:inline-block;margin-bottom:3px;}.node-pmo .nt{font-family:var(--fd);font-size:11px;font-weight:700;color:var(--blue);}.node-pmo .ns{font-size:10px;color:var(--muted);margin-top:1px;}.oc-line{position:absolute;}.org-mini{position:absolute;top:290px;width:178px;background:var(--s2);border:1px solid var(--border);border-top:2px solid var(--cc);border-radius:var(--r);padding:11px;}.om-name{font-family:var(--fd);font-size:11px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}.om-badge{display:inline-flex;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--cb);color:var(--cc);padding:2px 5px;border-radius:3px;margin-bottom:7px;}.om-teams{display:flex;flex-direction:column;}.om-team{font-size:10px;color:var(--muted);padding:2px 0;border-top:1px solid var(--border);display:flex;align-items:center;gap:5px;}.om-team::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--cc);flex-shrink:0;}.org-legend{display:flex;gap:20px;justify-content:center;margin-top:8px;flex-wrap:wrap;}.leg-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}.leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}.tt-intro{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:28px 32px;margin-bottom:28px;}.tt-intro-hd{font-family:var(--fd);font-size:17px;font-weight:800;color:#ecf3ff;margin-bottom:10px;}.tt-intro p{font-size:13px;color:var(--muted);line-height:1.8;max-width:800px;}.tt-intro p + p{margin-top:10px;}.tt-principles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;}.tt-principle{background:var(--s3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}.tt-principle-hd{font-family:var(--fd);font-size:11px;font-weight:700;color:var(--blue);margin-bottom:6px;}.tt-principle p{font-size:11px;color:var(--muted);line-height:1.65;}.tt-types-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}.tt-type{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);border-top:3px solid var(--tc);padding:22px;position:relative;overflow:hidden;}.tt-type-letter{position:absolute;top:8px;right:14px;font-family:var(--fd);font-size:48px;font-weight:800;color:var(--tc);opacity:.08;line-height:1;pointer-events:none;}.tt-type-badge{display:inline-flex;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--tbg);color:var(--tc);padding:3px 8px;border-radius:4px;margin-bottom:12px;}.tt-type h3{font-family:var(--fd);font-size:16px;font-weight:800;color:#ecf3ff;margin-bottom:8px;line-height:1.2;}.tt-type p{font-size:12px;color:var(--muted);line-height:1.75;}.tt-type p + p{margin-top:8px;}.tt-signals-hd{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}.tt-signal{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:flex-start;margin-bottom:4px;}.tt-signal::before{content:'›';color:var(--tc);flex-shrink:0;font-size:13px;margin-top:-1px;}.tt-applies{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:10px;color:var(--dim);}.tt-applies strong{color:var(--tc);font-weight:500;}.im-grid{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}.im-card{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--ic);border-radius:var(--r);padding:16px 20px;display:grid;grid-template-columns:140px 1fr;gap:20px;align-items:start;}.im-label{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ic);margin-top:2px;}.im-body h4{font-family:var(--fd);font-size:13px;font-weight:700;color:#ecf3ff;margin-bottom:5px;}.im-body p{font-size:12px;color:var(--muted);line-height:1.7;}.im-when{font-size:11px;color:var(--dim);margin-top:6px;font-style:italic;}.tt-note{background:var(--s3);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:var(--r);padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.7;}.tt-note strong{color:var(--text);font-weight:500;}.div-cards{display:flex;flex-direction:column;gap:18px;}.div-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}.div-head{padding:20px 24px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--dc-bg) 0%,transparent 50%);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}.div-head-l{flex:1;}.div-name{font-family:var(--fd);font-size:18px;font-weight:800;color:#ecf3ff;letter-spacing:-.01em;margin-bottom:2px;}.div-dir{font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:300;}.div-mission{font-size:12px;color:var(--muted);font-style:italic;line-height:1.65;max-width:520px;}.div-tt-chip{flex-shrink:0;display:inline-flex;align-items:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:var(--dc-bg);color:var(--dc);border:1px solid var(--dc);padding:5px 12px;border-radius:6px;}.div-body{display:grid;grid-template-columns:1fr 1fr 1fr;}.div-col{padding:16px 20px;border-right:1px solid var(--border);}.div-col:last-child{border-right:none;}.div-col-hd{font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dc);margin-bottom:12px;}.team-list{display:flex;flex-direction:column;gap:10px;}.team-entry{display:flex;flex-direction:column;gap:2px;}.team-nm{font-size:12px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px;flex-wrap:wrap;}.team-tt-tag{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--dc-bg);color:var(--dc);padding:1px 5px;border-radius:3px;flex-shrink:0;}.team-desc{font-size:11px;color:var(--muted);line-height:1.55;font-weight:300;}.resp-list{list-style:none;display:flex;flex-direction:column;gap:5px;}.resp-list li{font-size:11px;color:var(--muted);line-height:1.55;display:flex;gap:7px;align-items:flex-start;}.resp-list li::before{content:'—';color:var(--dc);flex-shrink:0;}.int-list{display:flex;flex-direction:column;gap:9px;}.int-entry{display:flex;flex-direction:column;gap:3px;}.int-partner{font-size:11px;font-weight:500;color:var(--text);}.int-row{display:flex;align-items:center;gap:6px;}.mt{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 5px;border-radius:3px;}.xaas{background:rgba(13,148,136,.15);color:#0d9488;}.collab{background:rgba(124,58,237,.15);color:#7c3aed;}.facilit{background:rgba(5,150,105,.15);color:#059669;}.int-note{font-size:10px;color:var(--dim);}.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:20px;}.op-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:22px;}.op-card h3{font-family:var(--fd);font-size:14px;font-weight:700;color:#ecf3ff;margin-bottom:6px;}.op-desc{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:16px;}.demand-lanes{display:grid;grid-template-columns:1fr 1fr;gap:8px;}.demand-lane{border:1px solid var(--border);border-top:2px solid var(--lc);border-radius:var(--r);padding:10px 12px;}.lane-hd{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lc);margin-bottom:8px;}.lane-step{font-size:11px;color:var(--muted);display:flex;gap:5px;align-items:flex-start;margin-bottom:3px;}.lane-step::before{content:'→';color:var(--lc);flex-shrink:0;font-size:10px;margin-top:2px;}.t-steps{display:flex;flex-direction:column;gap:6px;}.t-step{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--r);}.t-from{font-size:11px;font-weight:500;color:var(--amber);min-width:120px;flex-shrink:0;padding-top:1px;}.t-arr{color:var(--dim);font-size:14px;flex-shrink:0;}.t-to{font-size:11px;color:var(--muted);line-height:1.5;}.sprint-card{grid-column:1/-1;}.sprint-pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px;}.sprint-pillar{border:1px solid var(--border);border-top:2px solid var(--blue);border-radius:var(--r);padding:10px 12px;}.sprint-pillar-hd{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:7px;}.sprint-pillar p{font-size:11px;color:var(--muted);line-height:1.6;}.matrix-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}.matrix-hd{padding:16px 22px;border-bottom:1px solid var(--border);}.matrix-hd h3{font-family:var(--fd);font-size:14px;font-weight:700;color:#ecf3ff;margin-bottom:3px;}.matrix-hd p{font-size:12px;color:var(--muted);}table.matrix{width:100%;border-collapse:collapse;}table.matrix th{font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding:9px 18px;border-bottom:1px solid var(--border);text-align:left;}table.matrix td{padding:10px 18px;border-bottom:1px solid var(--border);vertical-align:top;font-size:12px;}table.matrix tr:last-child td{border-bottom:none;}.mc{font-weight:500;color:var(--text);}.mp{color:var(--muted);font-weight:300;}.mn{font-size:10px;color:var(--dim);margin-top:2px;}.ep-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}.ep-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;position:relative;}.ep-card-accent{height:4px;width:100%;background:linear-gradient(90deg,var(--ep-a),var(--ep-b));}.ep-card-body{padding:24px 26px 26px;}.ep-num{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ep-a);margin-bottom:10px;display:flex;align-items:center;gap:8px;}.ep-num::after{content:'';flex:1;height:1px;background:var(--ep-a);opacity:.25;}.ep-title{font-family:var(--fd);font-size:19px;font-weight:800;color:#ecf3ff;letter-spacing:-.01em;line-height:1.15;margin-bottom:8px;}.ep-tagline{font-size:13px;color:var(--ep-a);font-weight:500;line-height:1.5;margin-bottom:18px;font-style:italic;}.ep-bullets{display:flex;flex-direction:column;gap:9px;}.ep-bullet{font-size:12px;color:var(--muted);line-height:1.7;display:flex;gap:10px;align-items:flex-start;}.ep-bullet::before{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,var(--ep-a),var(--ep-b));flex-shrink:0;margin-top:6px;}.ep-bg-num{position:absolute;bottom:-10px;right:16px;font-family:var(--fd);font-size:96px;font-weight:800;line-height:1;color:var(--ep-a);opacity:.04;pointer-events:none;letter-spacing:-.04em;}.ep-charter{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:24px 28px;margin-bottom:32px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;}.ep-charter-text h3{font-family:var(--fd);font-size:15px;font-weight:800;color:#ecf3ff;margin-bottom:6px;}.ep-charter-text p{font-size:13px;color:var(--muted);line-height:1.75;max-width:580px;}.ep-charter-pills{display:flex;flex-direction:column;gap:6px;align-items:flex-end;}.ep-charter-pill{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;border:1px solid;white-space:nowrap;}.ref-sections{display:flex;flex-direction:column;gap:32px;}.ref-section-hd{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}.ref-grid{display:flex;flex-direction:column;gap:10px;}.ref-entry{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:16px 20px;}.ref-title{font-family:var(--fd);font-size:13px;font-weight:700;color:#ecf3ff;margin-bottom:3px;line-height:1.3;}.ref-authors{font-size:11px;color:var(--blue);margin-bottom:7px;}.ref-desc{font-size:11px;color:var(--muted);line-height:1.75;}.ref-tag{display:inline-flex;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:3px;margin-top:9px;}.tag-core{background:var(--blue-bg);color:var(--blue);}.tag-method{background:var(--teal-bg);color:var(--teal);}.tag-tt{background:var(--violet-bg);color:var(--violet);}.tag-gov{background:var(--amber-bg);color:var(--amber);}.tag-hcd{background:var(--green-bg);color:var(--green);}.talent-philosophy{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:28px 32px;margin-bottom:28px;}.talent-philosophy-hd{font-family:var(--fd);font-size:17px;font-weight:800;color:#ecf3ff;margin-bottom:10px;}.talent-philosophy p{font-size:13px;color:var(--muted);line-height:1.8;max-width:800px;}.talent-philosophy p + p{margin-top:10px;}.exp-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;}.exp-card{background:var(--s3);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:var(--r);padding:16px 18px;}.exp-card-hd{font-family:var(--fd);font-size:11px;font-weight:700;color:var(--blue);margin-bottom:7px;}.exp-card p{font-size:11px;color:var(--muted);line-height:1.65;}.dlm-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}.dlm-quad{background:var(--s3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}.dlm-quad-hd{font-family:var(--fd);font-size:11px;font-weight:700;margin-bottom:5px;}.dlm-quad p{font-size:11px;color:var(--muted);line-height:1.6;}.dlm-quad-tag{font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:3px;display:inline-flex;margin-bottom:8px;}.dlm-own{--dq:var(--blue);border-left:3px solid var(--blue);}.dlm-lrn{--dq:var(--teal);border-left:3px solid var(--teal);}.dlm-tch{--dq:var(--green);border-left:3px solid var(--green);}.dlm-del{--dq:var(--muted);border-left:3px solid var(--dim);}.dlm-quad-hd{color:var(--dq);}.dlm-quad-tag{background:rgba(255,255,255,.05);color:var(--dq);border:1px solid var(--dq);}.ladder-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}.ladder-col{display:flex;flex-direction:column;gap:0;}.ladder-hd{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}.ladder-hd-ic{color:var(--blue);}.ladder-hd-mgt{color:var(--green);}.rung{display:flex;gap:0;position:relative;}.rung-line{width:2px;background:var(--border);flex-shrink:0;margin-left:16px;}.rung:first-child .rung-line{margin-top:20px;}.rung:last-child .rung-line{height:24px;background:transparent;}.rung-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:2px solid var(--rc);background:var(--bg);margin-top:14px;margin-left:-6px;z-index:1;position:relative;}.rung.highlight .rung-dot{background:var(--rc);}.rung-body{flex:1;padding:8px 0 8px 14px;}.rung-level{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--rc);margin-bottom:2px;display:flex;align-items:center;gap:6px;}.rung-grade{font-size:8px;color:var(--dim);background:rgba(255,255,255,.04);border:1px solid var(--border);padding:1px 5px;border-radius:3px;font-family:var(--fd);}.rung-title{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:3px;}.rung.highlight .rung-title{color:#ecf3ff;}.rung-scope{font-size:10px;color:var(--muted);line-height:1.5;}.split-note{background:var(--s2);border:1px solid var(--blue);border-radius:var(--r);padding:14px 18px;font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:20px;}.split-note strong{color:var(--blue);}.sdo-map{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-top:8px;}.sdo-map-hd{padding:14px 20px;border-bottom:1px solid var(--border);}.sdo-map-hd h3{font-family:var(--fd);font-size:13px;font-weight:700;color:#ecf3ff;margin-bottom:3px;}.sdo-map-hd p{font-size:12px;color:var(--muted);}.sdo-map-rows{display:flex;flex-direction:column;}.sdo-map-row{display:grid;grid-template-columns:160px 1fr 1fr;border-bottom:1px solid var(--border);}.sdo-map-row:last-child{border-bottom:none;}.sdo-map-row.hdr{background:rgba(255,255,255,.02);}.smc{padding:10px 16px;font-size:11px;border-right:1px solid var(--border);}.smc:last-child{border-right:none;}.smc-hd{font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);}.smc-role{font-weight:500;color:var(--text);}.smc-grade{font-size:10px;color:var(--dim);margin-top:1px;}.smc-note{font-size:10px;color:var(--muted);line-height:1.5;margin-top:2px;}.mvv-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}.mvv-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:22px 26px;}.mvv-mission{border-top:3px solid var(--blue);}.mvv-vision{border-top:3px solid var(--violet);}.mvv-eye{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px;}.mvv-mission .mvv-eye{color:var(--blue);}.mvv-vision .mvv-eye{color:var(--violet);}.mvv-statement{font-family:var(--fd);font-size:15px;font-weight:700;color:#ecf3ff;line-height:1.35;margin-bottom:10px;}.mvv-sub{font-size:12px;color:var(--muted);line-height:1.75;}.cvs-grid{margin-bottom:32px;}.cvs-hd{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;}.cvs-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}.cvs-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;}.cvs-icon{font-size:14px;color:var(--blue);margin-bottom:6px;opacity:.5;}.cvs-name{font-family:var(--fd);font-size:12px;font-weight:700;color:#ecf3ff;margin-bottom:4px;}.cvs-desc{font-size:11px;color:var(--muted);line-height:1.65;}.culture-intro{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);padding:24px 28px;margin-bottom:28px;}.culture-intro-hd{font-family:var(--fd);font-size:16px;font-weight:800;color:#ecf3ff;margin-bottom:8px;}.culture-intro p{font-size:13px;color:var(--muted);line-height:1.8;max-width:780px;}.culture-intro p + p{margin-top:10px;}.culture-four{display:grid;grid-template-columns:1fr 1fr;gap:18px;}.culture-card{background:var(--s2);border:1px solid var(--border);border-top:3px solid var(--cc);border-radius:var(--rl);overflow:hidden;}.culture-card-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);}.culture-card-num{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cc);margin-bottom:8px;}.culture-card-title{font-family:var(--fd);font-size:20px;font-weight:800;color:#ecf3ff;line-height:1.1;margin-bottom:8px;}.culture-card-def{font-size:12px;color:var(--muted);line-height:1.7;}.culture-card-body{padding:16px 24px 20px;}.culture-card-q{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--cc);margin-bottom:10px;}.culture-example{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;}.culture-example:last-child{margin-bottom:0;}.culture-ex-dot{width:6px;height:6px;border-radius:50%;background:var(--cc);flex-shrink:0;margin-top:5px;}.culture-ex-text{font-size:12px;color:var(--muted);line-height:1.65;}.culture-ex-text strong{color:var(--text);font-weight:500;}.oq-intro{background:var(--s2);border:1px solid var(--border);border-left:3px solid var(--amber);border-radius:var(--r);padding:16px 20px;margin-bottom:28px;font-size:13px;color:var(--muted);line-height:1.75;}.oq-intro strong{color:var(--text);font-weight:500;}.oq-sections{display:flex;flex-direction:column;gap:20px;}.oq-card{background:var(--s2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;}.oq-head{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:16px;background:linear-gradient(135deg,var(--oq-bg) 0%,transparent 50%);}.oq-head-l{flex:1;}.oq-title{font-family:var(--fd);font-size:16px;font-weight:800;color:#ecf3ff;margin-bottom:4px;}.oq-subtitle{font-size:12px;color:var(--muted);line-height:1.6;max-width:520px;}.oq-status{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0;}.oq-open{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber);}.oq-partial{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal);}.oq-body{display:grid;grid-template-columns:1fr 1fr;}.oq-col{padding:16px 20px;border-right:1px solid var(--border);}.oq-col:last-child{border-right:none;}.oq-col-hd{font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--oq-c);margin-bottom:12px;}.oq-q-list{display:flex;flex-direction:column;gap:8px;}.oq-q{font-size:12px;color:var(--muted);line-height:1.6;display:flex;gap:8px;align-items:flex-start;}.oq-q::before{content:'?';font-family:var(--fd);font-size:10px;font-weight:700;color:var(--oq-c);flex-shrink:0;margin-top:1px;}.oq-consideration{display:flex;flex-direction:column;gap:8px;}.oq-con{font-size:12px;color:var(--muted);line-height:1.6;display:flex;gap:8px;align-items:flex-start;}.oq-con::before{content:'→';color:var(--oq-c);flex-shrink:0;font-size:11px;}</style>
+</head>
+<body>
+<aside>
+<div class="sb-brand">
+<div class="sb-logo">Software <span>Dev</span> Office</div>
+<div class="sb-title">Org Design<br>Reference</div>
+<div class="sb-subtitle">Team Topologies Aligned · v1.1</div>
+</div>
+<nav>
+<a href="#" class="active" onclick="show('overview');return false;">
+<div class="nav-num">01</div><div class="nav-label">Org Overview</div>
+</a>
+<a href="#" onclick="show('tt');return false;">
+<div class="nav-num">02</div><div class="nav-label">Team Topologies</div>
+</a>
+<a href="#" onclick="show('divisions');return false;">
+<div class="nav-num">03</div><div class="nav-label">Divisions</div>
+</a>
+<a href="#" onclick="show('opmodel');return false;">
+<div class="nav-num">04</div><div class="nav-label">Operating Model</div>
+</a>
+<a href="#" onclick="show('principles');return false;">
+<div class="nav-num">05</div><div class="nav-label">Eng. Principles</div>
+</a>
+<a href="#" onclick="show('talent');return false;">
+<div class="nav-num">06</div><div class="nav-label">Tech Talent</div>
+</a>
+<a href="#" onclick="show('culture');return false;">
+<div class="nav-num">07</div><div class="nav-label">Culture</div>
+</a>
+<a href="#" onclick="show('openqs');return false;">
+<div class="nav-num">08</div><div class="nav-label">Open Questions</div>
+</a>
+<a href="#" onclick="show('references');return false;">
+<div class="nav-num">09</div><div class="nav-label">References</div>
+</a>
+</nav>
+<div class="sb-footer">
+<div class="sb-ver">SDO-REF-2026-v1.1</div>
+<div>6–18 Mo. Sunset Horizon<br>200+ Engineers · 5 Divisions<br>~50/50 FTE / Contractor</div>
+</div>
+</aside>
+<main>
+<div class="page active" id="page-overview">
+<div class="pg-eye">01 — Organizational Overview</div>
+<div class="pg-title">Office Structure</div>
+<p class="pg-desc">The Director leads the office. The Deputy Director and Technical Director form the leadership chain below — the Technical Director reports to the Deputy Director. Three divisions (Sustain &amp; Sunset, Modern App Development, Datalytics) report to the Deputy Director. Two divisions (AI Engineering, UX &amp; Enablement) report to the Technical Director. Portfolio &amp; Demand Management is a staff function off the Director.</p>
+<div class="stats-row">
+<div class="stat"><div class="stat-n">200+</div><div class="stat-l">Engineers</div></div>
+<div class="stat"><div class="stat-n">5</div><div class="stat-l">Divisions</div></div>
+<div class="stat"><div class="stat-n">3</div><div class="stat-l">Active TT Types</div></div>
+<div class="stat"><div class="stat-n">6–18mo</div><div class="stat-l">Sunset Horizon</div></div>
+<div class="stat"><div class="stat-n">~50/50</div><div class="stat-l">FTE / Contractor</div></div>
+<div class="stat"><div class="stat-n">2 wk</div><div class="stat-l">Sprint Cadence</div></div>
+</div>
+<div class="mvv-grid">
+<div class="mvv-card mvv-mission">
+<div class="mvv-eye">Mission</div>
+<div class="mvv-statement">Deliver secure, human-centered software capabilities that enable mission outcomes — at the speed the mission demands.</div>
+<div class="mvv-sub">The SDO exists to build, modernize, and sustain the software systems that the organization depends on. We do this with engineering rigor, deliberate human-machine teaming, and a relentless focus on the people who use what we build.</div>
+</div>
+<div class="mvv-card mvv-vision">
+<div class="mvv-eye">Vision</div>
+<div class="mvv-statement">A modern, AI-augmented software organization where experts lead experts — and every engineer's work is traceable to mission impact.</div>
+<div class="mvv-sub">We are building toward an office where legacy debt is retired, delivery is continuous, AI is trustworthy and governed, and every team has the platform, capability, and culture to do the best work of their careers.</div>
+</div>
+</div>
+<div class="cvs-grid">
+<div class="cvs-hd">Core Values</div>
+<div class="cvs-cards">
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Mission First</div>
+<div class="cvs-desc">Technical decisions are evaluated by their contribution to mission outcomes. Elegance without impact is not enough.</div>
+</div>
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Experts Lead Experts</div>
+<div class="cvs-desc">We hire and promote domain mastery. Every leader must be able to engage with, evaluate, and improve the work beneath them.</div>
+</div>
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Build to Last</div>
+<div class="cvs-desc">We engineer for security, resilience, and long-term maintainability — not for speed alone. Technical debt is a mission risk.</div>
+</div>
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Human-Centered</div>
+<div class="cvs-desc">The user is always in the room, even when they aren't. We build with them, not just for them, and measure success by how well our systems serve them.</div>
+</div>
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Trustworthy Autonomy</div>
+<div class="cvs-desc">AI augments human judgment — it does not replace it. Every system we deploy is explainable, traceable, and under meaningful human control.</div>
+</div>
+<div class="cvs-card">
+<div class="cvs-icon">⬡</div>
+<div class="cvs-name">Blameless Learning</div>
+<div class="cvs-desc">Failures are systems problems, not people problems. We acknowledge mistakes openly, learn from telemetry, and build more resilient systems as a result.</div>
+</div>
+</div>
+</div>
+<hr class="pg-divider">
+<div class="org-outer">
+<div class="org-chart" style="width:1050px;height:420px;">
+<div class="node-leader n1" style="left:190px;">
+<div class="nt">Director</div><div class="ns">Software Development Office</div>
+</div>
+<div class="oc-line" style="left:410px;top:22px;width:40px;height:2px;border-top:2px dashed rgba(37,99,235,.4);"></div>
+<div class="node-pmo" style="left:450px;top:4px;">
+<div class="pmo-tag">Staff Function</div>
+<div class="nt">Portfolio &amp; Demand Mgmt</div>
+<div class="ns">Intake · Prioritization · Capacity</div>
+</div>
+<div class="oc-line" style="left:299px;top:48px;width:2px;height:42px;background:var(--bordermd);"></div>
+<div class="node-leader n2" style="left:190px;top:90px;">
+<div class="nt">Deputy Director</div><div class="ns">Software Development Office</div>
+</div>
+<div class="oc-line" style="left:410px;top:113px;width:280px;height:2px;background:var(--bordermd);"></div>
+<div class="node-leader n3" style="left:690px;top:90px;">
+<div class="nt">Technical Director</div><div class="ns">Engineering &amp; Delivery</div>
+</div>
+<div class="oc-line" style="left:82px;top:138px;width:301px;height:2px;background:var(--bordermd);"></div>
+<div class="oc-line" style="left:702px;top:138px;width:201px;height:2px;background:var(--bordermd);"></div>
+<div class="oc-line" style="left:81px; top:138px;width:2px;height:122px;background:var(--amber);"></div>
+<div class="oc-line" style="left:231px;top:138px;width:2px;height:122px;background:var(--teal);"></div>
+<div class="oc-line" style="left:381px;top:138px;width:2px;height:122px;background:var(--sky);"></div>
+<div class="oc-line" style="left:701px;top:138px;width:2px;height:122px;background:var(--violet);"></div>
+<div class="oc-line" style="left:901px;top:138px;width:2px;height:122px;background:var(--green);"></div>
+<div style="position:absolute;left:0;top:250px;width:480px;font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:center;">Deputy Director Direct Reports</div>
+<div style="position:absolute;left:600px;top:250px;width:440px;font-family:var(--fd);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:center;">Technical Director Direct Reports</div>
+<div class="org-mini" style="left:0;top:260px;--cc:var(--amber);--cb:var(--amber-bg);">
+<div class="om-name">Sustain &amp; Sunset</div><div class="om-badge">SA</div>
+<div class="om-teams"><div class="om-team">Domain Team A</div><div class="om-team">Domain Team B</div><div class="om-team">Domain Team C</div></div>
+</div>
+<div class="org-mini" style="left:142px;top:260px;--cc:var(--teal);--cb:var(--teal-bg);">
+<div class="om-name">Modern App Dev</div><div class="om-badge">SA + CS</div>
+<div class="om-teams"><div class="om-team">Mission-Critical Ops</div><div class="om-team">Internal Tools</div><div class="om-team">Auth · API · Backend</div></div>
+</div>
+<div class="org-mini" style="left:292px;top:260px;--cc:var(--sky);--cb:var(--sky-bg);">
+<div class="om-name">Datalytics</div><div class="om-badge">SA</div>
+<div class="om-teams"><div class="om-team">Data Engineering</div><div class="om-team">Analytics &amp; Reporting</div><div class="om-team">Data Enrichment</div></div>
+</div>
+<div class="org-mini" style="left:612px;top:260px;--cc:var(--violet);--cb:var(--violet-bg);">
+<div class="om-name">AI Engineering</div><div class="om-badge">CS</div>
+<div class="om-teams"><div class="om-team">AI Platform &amp; MLOps</div><div class="om-team">THEMIS Product Team</div><div class="om-team">Embedded AI Engineers</div></div>
+</div>
+<div class="org-mini" style="left:812px;top:260px;--cc:var(--green);--cb:var(--green-bg);">
+<div class="om-name">UX &amp; Enablement</div><div class="om-badge">EN</div>
+<div class="om-teams"><div class="om-team">HCD &amp; UX Design</div><div class="om-team">User Training</div><div class="om-team">User Support</div></div>
+</div>
+</div>
+</div>
+<div class="org-legend">
+<div class="leg-item"><div class="leg-dot" style="background:var(--teal);"></div>Stream-Aligned (SA)</div>
+<div class="leg-item"><div class="leg-dot" style="background:var(--violet);"></div>Complicated Subsystem (CS)</div>
+<div class="leg-item"><div class="leg-dot" style="background:var(--green);"></div>Enabling (EN)</div>
+<div class="leg-item"><div class="leg-dot" style="border:1px dashed rgba(37,99,235,.6);background:transparent;"></div>Staff Function</div>
+<div class="leg-item"><div class="leg-dot" style="background:var(--amber);opacity:.8;"></div>Deputy Dir. reports</div>
+<div class="leg-item"><div class="leg-dot" style="background:var(--violet);opacity:.8;"></div>Technical Dir. reports</div>
+</div>
+</div>
+<div class="page" id="page-tt">
+<div class="pg-eye">02 — Framework Primer</div>
+<div class="pg-title">Team Topologies</div>
+<p class="pg-desc">A framework for organizing software delivery teams for fast flow. Developed by Matthew Skelton and Manuel Pais (2019), it provides a structured approach to team design that treats cognitive load as the primary constraint on delivery speed and quality.</p>
+<div class="tt-intro">
+<div class="tt-intro-hd">What Is Team Topologies?</div>
+<p>Team Topologies argues that the way an organization structures its teams determines its ability to deliver software quickly and sustainably. Org structure shapes communication patterns — and communication patterns shape software architecture. This is Conway's Law: systems reflect the communication structures of the organizations that build them. Getting team design wrong creates invisible coupling, cognitive overload, and delivery friction that no amount of tooling or process can fix.</p>
+<p>The framework defines four team types and three interaction modes. Every team should have a clear type, and every team-to-team relationship should operate in a defined interaction mode. Ambiguity in either is a predictable source of delivery failure. The entire architecture of the framework exists to enforce one boundary: <strong style="color:var(--text);">cognitive load</strong>. Stream-aligned teams should never carry cognitive load that belongs to a platform, subsystem, or enabling function.</p>
+<div class="tt-principles">
+<div class="tt-principle">
+<div class="tt-principle-hd">Conway's Law</div>
+<p>Software architecture mirrors the communication structure of the teams that build it. Deliberately design teams to produce the architecture you want — not the other way around.</p>
+</div>
+<div class="tt-principle">
+<div class="tt-principle-hd">Cognitive Load as Constraint</div>
+<p>Every team has a finite capacity for complexity. Team type and interaction mode bound what each team is responsible for knowing and doing. Overloaded teams slow down and produce lower quality work.</p>
+</div>
+<div class="tt-principle">
+<div class="tt-principle-hd">Team-First Thinking</div>
+<p>The team — not the individual — is the unit of delivery. Teams should be stable, long-lived, and autonomous within their bounded domain. Frequent re-orgs destroy delivery throughput.</p>
+</div>
+</div>
+</div>
+<hr class="pg-divider">
+<div class="pg-sub-eye">The Four Team Types</div>
+<div class="tt-types-grid">
+<div class="tt-type" style="--tc:var(--teal);--tbg:var(--teal-bg);">
+<div class="tt-type-letter">SA</div>
+<div class="tt-type-badge">Stream-Aligned</div>
+<h3>Aligned to a Flow of Work</h3>
+<p>The primary and most common team type. A stream-aligned team is aligned to a single, valuable stream of work — a product, a service, a user journey, or a business domain. It owns end-to-end delivery within its stream: building, running, and evolving its part of the system.</p>
+<p>Stream-aligned teams deliver value independently, without waiting on other teams for routine work. They consume platform services and enabling support — they do not build them. This is the fundamental cognitive load boundary the rest of the framework protects.</p>
+<div class="tt-signals-hd">Healthy signals</div>
+<div class="tt-signal">Owns and delivers against a product backlog without external gate approvals for routine work</div>
+<div class="tt-signal">Cognitive load bounded by domain scope, not technology breadth</div>
+<div class="tt-signal">Can deploy independently and frequently without coordination overhead</div>
+<div class="tt-applies"><strong>In this office:</strong> Sustain &amp; Sunset domain teams, Mission-Critical Ops, Internal Tools &amp; Back-Office, THEMIS Product Team.</div>
+</div>
+<div class="tt-type" style="--tc:var(--sky);--tbg:var(--sky-bg);">
+<div class="tt-type-letter">PT</div>
+<div class="tt-type-badge">Platform</div>
+<h3>Accelerates Other Teams</h3>
+<p>Platform teams build and maintain the internal infrastructure, tooling, and services that stream-aligned teams use to deliver faster and with less cognitive load. A platform team's product is the developer experience — the golden paths, self-service APIs, and paved roads that make other teams more productive.</p>
+<p>Platform teams interact with stream-aligned teams almost exclusively in X-as-a-Service mode. If a stream-aligned team must collaborate extensively with the platform team to get routine work done, the platform has failed. The goal is frictionless self-service consumption.</p>
+<div class="tt-signals-hd">Healthy signals</div>
+<div class="tt-signal">Stream-aligned teams can consume platform services without tickets or support wait times</div>
+<div class="tt-signal">Platform measures success by adoption rate and time-to-onboard, not just uptime</div>
+<div class="tt-signal">Platform is treated as an internal product with versioned APIs and published documentation</div>
+<div class="tt-applies"><strong>In this office:</strong> Provided externally by the Platform &amp; Enablement office (DevSecOps, QA, infrastructure, enterprise architecture). Not internally staffed within this SDO.</div>
+</div>
+<div class="tt-type" style="--tc:var(--violet);--tbg:var(--violet-bg);">
+<div class="tt-type-letter">CS</div>
+<div class="tt-type-badge">Complicated Subsystem</div>
+<h3>Deep Specialist Expertise</h3>
+<p>Complicated subsystem teams own components that require specialist knowledge too deep or risky for stream-aligned teams to build and maintain. The complexity is not just high — it is the kind that genuinely requires dedicated experts to operate safely. These teams publish stable contracts to consuming teams.</p>
+<p>Unlike platform teams, complicated subsystem teams do not serve all teams broadly — they serve specific consumers. They do not own feature delivery; they own a complex technical component that enables delivery.</p>
+<div class="tt-signals-hd">Healthy signals</div>
+<div class="tt-signal">The subsystem requires skills that cannot be reasonably distributed across stream-aligned teams</div>
+<div class="tt-signal">Consumers interact via stable, versioned contracts — not ad-hoc collaboration requests</div>
+<div class="tt-signal">Team maintains SDK, docs, and sandbox environments for consumer onboarding</div>
+<div class="tt-applies"><strong>In this office:</strong> AI Platform &amp; MLOps CoE, Auth &amp; Identity Services, API &amp; Integration Layer, Shared Backend Services.</div>
+</div>
+<div class="tt-type" style="--tc:var(--green);--tbg:var(--green-bg);">
+<div class="tt-type-letter">EN</div>
+<div class="tt-type-badge">Enabling</div>
+<h3>Builds Capability in Others</h3>
+<p>Enabling teams help stream-aligned teams acquire capabilities they don't currently have. Critically, the goal is to grow capability in served teams — not create permanent dependency. Engagement is typically time-limited: embed, upskill, leave a pattern behind, step back.</p>
+<p>An enabling team that becomes a permanent fixture has failed. An enabling team that becomes a bottleneck has reverted to traditional shared services. Success is measured by reducing the need for enabling support over time — not by growing the enabling team's own headcount.</p>
+<div class="tt-signals-hd">Healthy signals</div>
+<div class="tt-signal">Stream-aligned teams need less enabling support over time, not more</div>
+<div class="tt-signal">Engagements are time-bounded and leave documented patterns, not dependencies</div>
+<div class="tt-signal">Enabling team tracks capability growth in other teams as its primary metric</div>
+<div class="tt-applies"><strong>In this office:</strong> HCD &amp; UX Design, User Training. User Support is operationally ongoing but lives within the enabling division to close the feedback loop.</div>
+</div>
+</div>
+<hr class="pg-divider">
+<div class="pg-sub-eye">The Three Interaction Modes</div>
+<div class="im-grid">
+<div class="im-card" style="--ic:var(--teal);">
+<div class="im-label">X-as-a-Service</div>
+<div class="im-body">
+<h4>Consume without collaboration</h4>
+<p>One team consumes a service, API, or tool provided by another with minimal interaction. The consuming team uses the interface — it doesn't need to understand implementation. The providing team maintains a stable, well-documented contract. This is the highest-bandwidth mode: it scales without growing the provider team.</p>
+<div class="im-when">Use when the interface is stable and well-documented and consuming teams can self-serve. If teams regularly need to open tickets or wait for provider help to do routine work, the XaaS boundary has broken down.</div>
+</div>
+</div>
+<div class="im-card" style="--ic:var(--violet);">
+<div class="im-label">Collaboration</div>
+<div class="im-body">
+<h4>Work together on shared complexity</h4>
+<p>Two teams work closely together for a defined period to discover or solve something neither could do alone. Collaboration is high-bandwidth, high-value, and deliberately time-limited. It should produce a clearer interface, a new capability, or a new XaaS boundary — not become permanent joint ownership.</p>
+<div class="im-when">Use when there is genuine uncertainty about the right approach, new technology is being adopted, or a new service boundary needs to be discovered through working together. Not for routine delivery.</div>
+</div>
+</div>
+<div class="im-card" style="--ic:var(--green);">
+<div class="im-label">Facilitation</div>
+<div class="im-body">
+<h4>Unblock and upskill</h4>
+<p>An enabling team works alongside a stream-aligned team to help them overcome a capability gap. The enabling team is not doing the work for them — it is building capability so the stream-aligned team can do it themselves. Facilitation ends when the gap is closed.</p>
+<div class="im-when">Use when a stream-aligned team lacks a skill or practice needed for delivery. The enabling team detects the need, engages for a defined period, and exits with a documented pattern in the stream-aligned team's hands.</div>
+</div>
+</div>
+</div>
+<div class="tt-note">
+<strong>Platform Teams in This Office:</strong> Platform teams are the fourth Team Topologies type but are not directly staffed within the Software Development Office. The external Platform &amp; Enablement office acts as the platform team for this org — providing CI/CD, infrastructure, DevSecOps, QA frameworks, and enterprise architecture as a service. All five SDO divisions consume that office in X-as-a-Service mode. This is a deliberate boundary: the SDO focuses on application delivery; platform concerns live outside it.
+</div>
+</div>
+<div class="page" id="page-divisions">
+<div class="pg-eye">03 — Division Detail</div>
+<div class="pg-title">The Five Operating Divisions</div>
+<p class="pg-desc">Each division is led by a Director-level leader and typed by Team Topologies. Divisions operate as distinct accountability boundaries. Interaction between divisions follows prescribed Team Topologies modes — not ad-hoc collaboration.</p>
+<div class="div-cards">
+<div class="div-card" style="--dc:var(--amber);--dc-bg:var(--amber-bg);">
+<div class="div-head">
+<div class="div-head-l">
+<div class="div-name">Sustain &amp; Sunset Division</div>
+<div class="div-dir">Director, Sustain &amp; Sunset · Stream-Aligned Teams</div>
+<div class="div-mission">Maintain the legacy portfolio organized by business domain and execute a deliberate, milestone-driven wind-down over the 6–18 month sunset horizon.</div>
+</div>
+<div class="div-tt-chip">Stream-Aligned</div>
+</div>
+<div class="div-body">
+<div class="div-col">
+<div class="div-col-hd">Teams</div>
+<div class="team-list">
+<div class="team-entry"><div class="team-nm"><span>Domain Team A</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Owns legacy applications within assigned business domain. Named by domain at implementation.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Domain Team B</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Owns legacy applications within assigned business domain. Named by domain at implementation.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Domain Team C</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Owns legacy applications within assigned business domain. Named by domain at implementation.</div></div>
+</div>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Key Responsibilities</div>
+<ul class="resp-list">
+<li>Legacy application O&amp;M within SLA targets</li>
+<li>Sunset planning with milestones as delivery targets, not aspirations</li>
+<li>Knowledge transfer and documentation ahead of wind-down</li>
+<li>FTE skill assessment and workforce transition planning</li>
+<li>Stakeholder coordination for application retirement</li>
+<li>Contractor wind-down sequenced to app sunset milestones</li>
+</ul>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Interaction Modes</div>
+<div class="int-list">
+<div class="int-entry"><div class="int-partner">Common Application Services</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">Shared auth, APIs, backend services</div></div>
+<div class="int-entry"><div class="int-partner">External Platform &amp; Enablement</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">CI/CD, infra, DevSecOps tooling</div></div>
+<div class="int-entry"><div class="int-partner">UX &amp; Enablement</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">HCD support and user training as needed</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="div-card" style="--dc:var(--teal);--dc-bg:var(--teal-bg);">
+<div class="div-head">
+<div class="div-head-l">
+<div class="div-name">Modern Application Development</div>
+<div class="div-dir">Director, Modern Application Development · Mixed SA / CS Teams</div>
+<div class="div-mission">Build and deliver new mission-critical systems and internal tools, while owning the shared backend services that support the entire portfolio. Product delivery and the platform capabilities it depends on live under one director — a deliberate consolidation that concentrates full-stack accountability and eliminates the coordination overhead of a separate shared services division.</div>
+</div>
+<div class="div-tt-chip">Stream-Aligned · CS Internal</div>
+</div>
+<div class="div-body">
+<div class="div-col">
+<div class="div-col-hd">Teams</div>
+<div class="team-list">
+<div class="team-entry"><div class="team-nm"><span>Mission-Critical Ops Systems</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Higher-governance delivery of mission-critical applications. Full-stack, Agile/Scrum, product-owned.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Internal Tools &amp; Back-Office</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Faster-cycle delivery of internal tooling. Tighter stakeholder loop, lighter governance overhead.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Auth &amp; Identity Services</span><span class="team-tt-tag">CS</span></div><div class="team-desc">Shared authentication, SSO, identity management, and access control for all applications in the portfolio.</div></div>
+<div class="team-entry"><div class="team-nm"><span>API &amp; Integration Layer</span><span class="team-tt-tag">CS</span></div><div class="team-desc">API gateway, service mesh, integration patterns, and event routing consumed across the office.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Shared Backend Services</span><span class="team-tt-tag">CS</span></div><div class="team-desc">Shared data services, notifications, common middleware, and reusable backend components. Publishes stable contracts.</div></div>
+</div>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Key Responsibilities</div>
+<ul class="resp-list">
+<li>Agile/Scrum delivery against product-owned backlogs for SA teams</li>
+<li>Feature development for mission-critical and internal systems</li>
+<li>AI feature integration with AI Engineering embedded engineers</li>
+<li>Onboarding staff transitioning from Sustain &amp; Sunset</li>
+<li>Service contract definition, versioning, and SLA management for CS teams</li>
+<li>Developer experience for shared services — SDKs, docs, sandbox environments</li>
+<li>Preventing shared capability duplication across divisions</li>
+<li>Incident management for shared service failures</li>
+</ul>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Interaction Modes</div>
+<div class="int-list">
+<div class="int-entry"><div class="int-partner">Sustain &amp; Sunset, Datalytics (inbound)</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">Shared auth, APIs, backend consumed by other SA divisions via CS teams within MAD</div></div>
+<div class="int-entry"><div class="int-partner">AI Engineering (Embedded)</div><div class="int-row"><span class="mt collab">Collaboration</span><span style="font-size:9px;color:var(--dim);"> → XaaS</span></div><div class="int-note">Close collab during AI buildout; matures to XaaS</div></div>
+<div class="int-entry"><div class="int-partner">External Platform &amp; Enablement</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">CI/CD, infra, DevSecOps, testing frameworks</div></div>
+<div class="int-entry"><div class="int-partner">UX &amp; Enablement</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">HCD embedded during design; training at release milestones</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="div-card" style="--dc:var(--violet);--dc-bg:var(--violet-bg);">
+<div class="div-head">
+<div class="div-head-l">
+<div class="div-name">AI Engineering Division</div>
+<div class="div-dir">Director, AI Engineering / Principal AI Architect · Complicated Subsystem</div>
+<div class="div-mission">Build and govern AI/ML infrastructure, deliver the THEMIS AI provenance platform, and deploy embedded AI engineering capacity into product teams. Operates as both CoE and service provider.</div>
+</div>
+<div class="div-tt-chip">Complicated Subsystem</div>
+</div>
+<div class="div-body">
+<div class="div-col">
+<div class="div-col-hd">Teams</div>
+<div class="team-list">
+<div class="team-entry"><div class="team-nm"><span>AI Platform &amp; MLOps — CoE</span><span class="team-tt-tag">CS</span></div><div class="team-desc">Models, pipelines, MLOps tooling, responsible AI guardrails. Authoritative source for AI standards.</div></div>
+<div class="team-entry"><div class="team-nm"><span>THEMIS Product Team</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Builds and operates the THEMIS AI provenance and governance platform. Co-located with CoE to leverage shared infrastructure.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Embedded AI Engineers</span></div><div class="team-desc">Matrix-deployed into Modern App Development and Datalytics. Funded by AI Engineering; day-to-day in product teams.</div></div>
+</div>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Key Responsibilities</div>
+<ul class="resp-list">
+<li>AI/ML infrastructure, models, and MLOps pipeline ownership</li>
+<li>THEMIS platform development and governance integration</li>
+<li>Responsible AI guardrails and bias/risk review</li>
+<li>Embedded engineering support deployed into MAD and Datalytics</li>
+<li>AI tooling standards — preventing rogue model pipelines</li>
+<li>AI talent development and upskilling across the office</li>
+</ul>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Interaction Modes</div>
+<div class="int-list">
+<div class="int-entry"><div class="int-partner">MAD &amp; Datalytics (outbound)</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">AI services and embedded engineers delivered as XaaS to product teams</div></div>
+<div class="int-entry"><div class="int-partner">MAD (Shared Services layer)</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">THEMIS and AI Platform consume shared auth and backend from MAD's CS teams</div></div>
+<div class="int-entry"><div class="int-partner">Datalytics</div><div class="int-row"><span class="mt collab">Collaboration</span></div><div class="int-note">Curated datasets and feature engineering for model training and enrichment</div></div>
+<div class="int-entry"><div class="int-partner">External Platform &amp; Enablement</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">CI/CD, infra, and security from external office</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="div-card" style="--dc:var(--sky);--dc-bg:var(--sky-bg);">
+<div class="div-head">
+<div class="div-head-l">
+<div class="div-name">Datalytics Division</div>
+<div class="div-dir">Director, Datalytics · Stream-Aligned Teams</div>
+<div class="div-mission">Deliver bespoke data products, enrichments, and analytics that support mission-specific decision-making. This is the "retail" data layer — targeted, curated, application-specific data work that the enterprise wholesale data organization does not provide. Datalytics serves the SDO portfolio's specific data needs, not the enterprise at large.</div>
+</div>
+<div class="div-tt-chip">Stream-Aligned</div>
+</div>
+<div class="div-body">
+<div class="div-col">
+<div class="div-col-hd">Teams</div>
+<div class="team-list">
+<div class="team-entry"><div class="team-nm"><span>Data Engineering</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Bespoke data pipelines, ETL/ELT, and data integration tailored to SDO application needs. Builds the plumbing that feeds analytics and enrichment workflows.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Analytics &amp; Reporting</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Dashboards, KPIs, operational metrics, and business intelligence for mission and operational stakeholders. Translates data into decision-relevant outputs.</div></div>
+<div class="team-entry"><div class="team-nm"><span>Data Enrichment</span><span class="team-tt-tag">SA</span></div><div class="team-desc">Entity resolution, data quality management, and curated enrichments for specific mission data needs. Produces the bespoke, high-fidelity data products that raw wholesale data cannot supply.</div></div>
+</div>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Key Responsibilities</div>
+<ul class="resp-list">
+<li>Bespoke data pipeline development for SDO applications</li>
+<li>Analytics dashboards and reporting for operational and mission stakeholders</li>
+<li>Data enrichment workflows, entity resolution, and data quality management</li>
+<li>Defining data contracts and schemas for SDO-owned data products</li>
+<li>Coordination with external wholesale data org for raw data acquisition</li>
+<li>Curated training datasets and feature engineering for AI Engineering</li>
+<li>Data observability — monitoring freshness, quality, and lineage</li>
+</ul>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Interaction Modes</div>
+<div class="int-list">
+<div class="int-entry"><div class="int-partner">External Wholesale Data Org</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">Raw data acquisition; Datalytics is a downstream consumer of enterprise data infrastructure</div></div>
+<div class="int-entry"><div class="int-partner">MAD &amp; Sustain &amp; Sunset</div><div class="int-row"><span class="mt collab">Collaboration</span><span style="font-size:9px;color:var(--dim);"> → XaaS</span></div><div class="int-note">Close collaboration defining data contracts for applications; matures to XaaS as contracts stabilize</div></div>
+<div class="int-entry"><div class="int-partner">AI Engineering</div><div class="int-row"><span class="mt collab">Collaboration</span></div><div class="int-note">Joint data product and feature engineering for model training pipelines</div></div>
+<div class="int-entry"><div class="int-partner">MAD (Shared Services layer)</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">Consumes shared auth, APIs, and backend from MAD's CS teams</div></div>
+<div class="int-entry"><div class="int-partner">External Platform &amp; Enablement</div><div class="int-row"><span class="mt xaas">X-as-a-Service</span></div><div class="int-note">CI/CD, infra, and data tooling from external office</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="div-card" style="--dc:var(--green);--dc-bg:var(--green-bg);">
+<div class="div-head">
+<div class="div-head-l">
+<div class="div-name">User Experience &amp; Enablement</div>
+<div class="div-dir">Director, User Experience &amp; Enablement · Enabling Teams</div>
+<div class="div-mission">Build HCD capability across the office, deliver user training, and provide first-line user support. Success is measured by capability growth in other teams and user satisfaction — not headcount.</div>
+</div>
+<div class="div-tt-chip">Enabling</div>
+</div>
+<div class="div-body">
+<div class="div-col">
+<div class="div-col-hd">Teams</div>
+<div class="team-list">
+<div class="team-entry"><div class="team-nm"><span>HCD &amp; UX Design</span><span class="team-tt-tag">EN</span></div><div class="team-desc">Embeds in product teams during formative design phases. Owns design system and pattern library as shared artifacts.</div></div>
+<div class="team-entry"><div class="team-nm"><span>User Training</span><span class="team-tt-tag">EN</span></div><div class="team-desc">Develops and delivers training programs time-bounded to release cycles and major feature launches.</div></div>
+<div class="team-entry"><div class="team-nm"><span>User Support</span><span class="team-tt-tag">EN</span></div><div class="team-desc">First-line user assistance. Feeds pain points back to HCD and product teams, closing the feedback loop.</div></div>
+</div>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Key Responsibilities</div>
+<ul class="resp-list">
+<li>HCD practice ownership, design system, and pattern library governance</li>
+<li>User research facilitation and usability testing</li>
+<li>Training content development and delivery program management</li>
+<li>User support operations and first-line ticket resolution</li>
+<li>Voice of the user — surfacing insights to product teams and leadership</li>
+<li>Growing HCD capability within stream-aligned teams over time</li>
+</ul>
+</div>
+<div class="div-col">
+<div class="div-col-hd">Interaction Modes</div>
+<div class="int-list">
+<div class="int-entry"><div class="int-partner">All Stream-Aligned Teams</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">HCD embedded during design; training at release milestones</div></div>
+<div class="int-entry"><div class="int-partner">THEMIS Product Team</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">User research and usability for THEMIS governance interfaces</div></div>
+<div class="int-entry"><div class="int-partner">Datalytics (Analytics outputs)</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">UX guidance on dashboard design and data visualization usability</div></div>
+<div class="int-entry"><div class="int-partner">Portfolio &amp; Demand Mgmt</div><div class="int-row"><span class="mt facilit">Facilitation</span></div><div class="int-note">Support insights inform demand prioritization decisions</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-opmodel">
+<div class="pg-eye">04 — Operating Model</div>
+<div class="pg-title">How the Office Runs</div>
+<p class="pg-desc">Four operating model components govern how work enters the office, how teams run, how they interact, and how the workforce transitions from legacy to modern over the 6–18 month horizon.</p>
+<div class="op-grid">
+<div class="op-card">
+<h3>Two-Lane Demand Management</h3>
+<p class="op-desc">Portfolio &amp; Demand Management separates O&amp;M demand from new development. Without this separation, legacy work crowds out modernization. Both lanes are governed but prioritized independently.</p>
+<div class="demand-lanes">
+<div class="demand-lane" style="--lc:var(--amber);">
+<div class="lane-hd">Lane 1 · O&amp;M</div>
+<div class="lane-step">Incidents, change requests, and maintenance</div>
+<div class="lane-step">Triaged by Portfolio &amp; Demand Mgmt</div>
+<div class="lane-step">Routed to Sustain &amp; Sunset teams</div>
+<div class="lane-step">SLA-governed; not competing with new dev</div>
+</div>
+<div class="demand-lane" style="--lc:var(--teal);">
+<div class="lane-hd">Lane 2 · New Dev</div>
+<div class="lane-step">New features, apps, and AI capabilities</div>
+<div class="lane-step">Prioritized against a unified backlog</div>
+<div class="lane-step">Routed to MAD, AIE, or Common Services</div>
+<div class="lane-step">Capacity-governed; protected from O&amp;M bleed</div>
+</div>
+</div>
+</div>
+<div class="op-card">
+<h3>Workforce Transition Model</h3>
+<p class="op-desc">The office is designed to shrink in one place and grow in others. The Director of Sustain &amp; Sunset owns active transition planning. Receiving divisions plan for capacity absorption.</p>
+<div class="t-steps">
+<div class="t-step"><div class="t-from">App reaches sunset</div><div class="t-arr">→</div><div class="t-to">Contractors wound down; FTE skill-match assessed</div></div>
+<div class="t-step"><div class="t-from">FTE: modern dev skills</div><div class="t-arr">→</div><div class="t-to">Transition pathway to Modern App Development</div></div>
+<div class="t-step"><div class="t-from">FTE: ML / AI skills</div><div class="t-arr">→</div><div class="t-to">Transition pathway to AI Engineering Division</div></div>
+<div class="t-step"><div class="t-from">Domain fully sunset</div><div class="t-arr">→</div><div class="t-to">Domain team dissolved; sequencing managed with TD</div></div>
+</div>
+</div>
+<div class="op-card sprint-card">
+<h3>Standardized Sprint Cadence</h3>
+<p class="op-desc">Every team in the office operates on the same 2-week sprint cycle with synchronized boundaries. This is a structural decision — not a convention — enabling cross-team coordination, predictable planning, and office-wide delivery visibility.</p>
+<div class="sprint-pillars">
+<div class="sprint-pillar">
+<div class="sprint-pillar-hd">Sprint Length</div>
+<p>2 weeks, fixed. No team operates a different cadence without Director and Technical Director approval.</p>
+</div>
+<div class="sprint-pillar">
+<div class="sprint-pillar-hd">Synchronized Boundaries</div>
+<p>All teams start and end on the same calendar day. Sprint 1 start date is established at office kickoff and governs all teams.</p>
+</div>
+<div class="sprint-pillar">
+<div class="sprint-pillar-hd">Why It Matters</div>
+<p>Shared sprint boundaries enable cross-team dependency planning, synchronized demos, and portfolio-level reporting without translation overhead.</p>
+</div>
+<div class="sprint-pillar">
+<div class="sprint-pillar-hd">Office Ceremonies</div>
+<p>Sprint Review: last Friday of each sprint. Leadership sync: first Monday of each sprint. PI Planning: every 5 sprints (~10 weeks).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="matrix-card">
+<div class="matrix-hd">
+<h3>Team Interaction Mode Matrix</h3>
+<p>How divisions interact with one another and with external providers across all defined Team Topologies interaction modes.</p>
+</div>
+<table class="matrix">
+<thead>
+<tr><th>Consumer</th><th>Provider</th><th>Mode</th><th>Notes</th></tr>
+</thead>
+<tbody>
+<tr><td><span class="mc">Sustain &amp; Sunset</span></td><td><span class="mp">MAD (Shared Services layer)</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">Consumes shared auth, API, and backend from CS teams within MAD</span></td></tr>
+<tr><td><span class="mc">Datalytics</span></td><td><span class="mp">MAD (Shared Services layer)</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">Consumes shared auth, API, and backend from CS teams within MAD</span></td></tr>
+<tr><td><span class="mc">AI Engineering</span></td><td><span class="mp">MAD (Shared Services layer)</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">THEMIS and AI Platform consume shared auth and backend from MAD's CS teams</span></td></tr>
+<tr><td><span class="mc">MAD SA Teams (internal)</span></td><td><span class="mp">MAD CS Teams (internal)</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">Product teams within MAD consume auth, API, and backend from the CS teams within the same division</span></td></tr>
+<tr><td><span class="mc">MAD &amp; Datalytics</span></td><td><span class="mp">AI Engineering (Embedded)</span></td><td><span class="mt collab">Collaboration → XaaS</span></td><td><span class="mn">Close collaboration during AI buildout; matures to XaaS as patterns stabilize</span></td></tr>
+<tr><td><span class="mc">Datalytics</span></td><td><span class="mp">External Wholesale Data Org</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">Raw data acquisition; Datalytics is downstream consumer of enterprise data infrastructure</span></td></tr>
+<tr><td><span class="mc">AI Engineering</span></td><td><span class="mp">Datalytics</span></td><td><span class="mt collab">Collaboration</span></td><td><span class="mn">Curated datasets and feature engineering for model training pipelines</span></td></tr>
+<tr><td><span class="mc">All Divisions</span></td><td><span class="mp">External Platform &amp; Enablement</span></td><td><span class="mt xaas">X-as-a-Service</span></td><td><span class="mn">CI/CD, infrastructure, DevSecOps, QA frameworks, enterprise architecture</span></td></tr>
+<tr><td><span class="mc">All Stream-Aligned Teams</span></td><td><span class="mp">UX &amp; Enablement</span></td><td><span class="mt facilit">Facilitation</span></td><td><span class="mn">HCD during design phases; user training at release milestones; support ongoing</span></td></tr>
+<tr><td><span class="mc">All Divisions</span></td><td><span class="mp">Portfolio &amp; Demand Mgmt (Staff)</span></td><td><span class="mt facilit">Facilitation</span></td><td><span class="mn">Demand intake, capacity planning, portfolio health reporting</span></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="page" id="page-references">
+<div class="pg-eye">05 — References</div>
+<div class="pg-title">References &amp; Further Reading</div>
+<p class="pg-desc">Foundational texts, frameworks, and standards that inform this org design. Practitioners implementing this structure should be familiar with the core Team Topologies text. Additional references support the operating model, agile delivery approach, and HCD practices embedded in the office.</p>
+<div class="ref-sections">
+<div>
+<div class="ref-section-hd">Core Framework</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">Team Topologies: Organizing Business and Technology Teams for Fast Flow</div>
+<div class="ref-authors">Matthew Skelton &amp; Manuel Pais · IT Revolution Press, 2019</div>
+<div class="ref-desc">The primary source for all Team Topologies concepts used in this org design. Defines the four team types — stream-aligned, platform, complicated subsystem, and enabling — the three interaction modes (collaboration, X-as-a-Service, facilitation), and the cognitive load framework that drives team boundary decisions. Required reading for all division directors implementing this structure.</div>
+<div><span class="ref-tag tag-core">Core Text</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">Accelerate: The Science of Lean Software and DevOps</div>
+<div class="ref-authors">Nicole Forsgren, Jez Humble &amp; Gene Kim · IT Revolution Press, 2018</div>
+<div class="ref-desc">The empirical basis for many delivery practices embedded in this design — small batch sizes, deployment frequency, lead time, and change failure rate as the four key metrics (DORA metrics). Supports the rationale for stream-aligned teams with end-to-end ownership and the two-lane demand model's separation of O&amp;M from new development work.</div>
+<div><span class="ref-tag tag-core">Core Text</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">Conway's Law</div>
+<div class="ref-authors">Mel Conway · Datamation, 1968</div>
+<div class="ref-desc">"Any organization that designs a system will produce a design whose structure is a copy of the organization's communication structure." The foundational insight behind Team Topologies' premise that org structure must be deliberately designed to produce the desired software architecture. Informs why division boundaries in this org align to capability domains, not technology stacks.</div>
+<div><span class="ref-tag tag-core">Foundational</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="ref-section-hd">Agile &amp; Delivery Methodology</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">The Scrum Guide</div>
+<div class="ref-authors">Ken Schwaber &amp; Jeff Sutherland · Scrum.org, 2020 edition</div>
+<div class="ref-desc">The canonical reference for Scrum practices adopted across all stream-aligned teams in this office. All teams operate 2-week fixed sprints consistent with Scrum's sprint length principle. The standardized office sprint cadence described in the Operating Model is grounded in this guide. Division directors should reference it to resolve disputes about sprint ceremonies and Scrum team accountabilities.</div>
+<div><span class="ref-tag tag-method">Methodology</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">SAFe 6.0: Scaled Agile Framework</div>
+<div class="ref-authors">Scaled Agile, Inc. · scaledagileframework.com</div>
+<div class="ref-desc">The PI Planning cadence referenced in this operating model (every 5 sprints, approximately 10 weeks) is informed by SAFe's Program Increment concept. This office does not implement full SAFe — it selectively adopts PI Planning as an office-wide coordination ceremony to align cross-division dependencies while preserving team-level Scrum autonomy.</div>
+<div><span class="ref-tag tag-method">Reference Framework</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="ref-section-hd">Team Topologies — Extended Reading</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">Remote Team Interactions Workbook</div>
+<div class="ref-authors">Matthew Skelton &amp; Manuel Pais · IT Revolution Press, 2022</div>
+<div class="ref-desc">Extends the Team Topologies framework with practical guidance for distributed and hybrid teams. Directly relevant given this office's mixed FTE/contractor staffing model. Covers how interaction modes translate to remote contexts, and how to maintain team identity and cognitive load boundaries when team members are geographically distributed.</div>
+<div><span class="ref-tag tag-tt">Team Topologies</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">Team Topologies Patterns</div>
+<div class="ref-authors">Skelton &amp; Pais · teamtopologies.com/patterns</div>
+<div class="ref-desc">The official pattern library maintained by the authors. Documents common organizational patterns, anti-patterns, and transition paths. The "Sunset Team" and "Team Splitting" patterns are particularly relevant to this org's Sustain &amp; Sunset wind-down — they provide implementation guidance for dissolving domain teams while preserving delivery continuity for stakeholders.</div>
+<div><span class="ref-tag tag-tt">Team Topologies</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="ref-section-hd">Governance &amp; AI</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">NIST AI Risk Management Framework (AI RMF 1.0)</div>
+<div class="ref-authors">National Institute of Standards and Technology · NIST, January 2023</div>
+<div class="ref-desc">The voluntary framework for managing AI risk across four functions: Govern, Map, Measure, and Manage. Informs the AI Engineering Division's responsible AI guardrails and the THEMIS platform's provenance and governance capabilities. Relevant to the CoE's mandate for bias and risk review and the office's responsible AI posture more broadly.</div>
+<div><span class="ref-tag tag-gov">Governance</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">THEMIS Platform Architecture Reference</div>
+<div class="ref-authors">Internal · Software Development Office, 2026</div>
+<div class="ref-desc">Internal architecture documentation for the THEMIS AI provenance and governance platform embedded in the AI Engineering Division. Covers the Trust Calibration Service (TCS), MIMIR service integration, MOIRAI provenance DAG, and analyst-facing ATHENA interface. Available through internal documentation systems. Informs the AI Engineering Division's product team scope and service boundary decisions.</div>
+<div><span class="ref-tag tag-gov">Internal Reference</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="ref-section-hd">Human-Centered Design</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">The Design of Everyday Things</div>
+<div class="ref-authors">Don Norman · Basic Books, revised edition 2013</div>
+<div class="ref-desc">Foundational text for the HCD practice embedded in the UX &amp; Enablement division. Establishes the principles of affordances, feedback, mapping, and user mental models applied during formative design phases. Provides the conceptual foundation for why HCD is a distinct enabling function rather than a task assigned to developers within stream-aligned teams.</div>
+<div><span class="ref-tag tag-hcd">HCD</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">"Designing for Doubt" — Blog Series</div>
+<div class="ref-authors">The 13th Factor · 2026 · 8 Posts</div>
+<div class="ref-desc">An eight-post series covering human-machine teaming design patterns applied to AI-assisted decision making. Developed in parallel with the THEMIS platform architecture. Provides practical HCD guidance for teams integrating AI features — particularly relevant to the UX &amp; Enablement division's facilitation role and to the AI Engineering Division's embedded engineer practice.</div>
+<div><span class="ref-tag tag-hcd">Internal Reference</span></div>
+</div>
+</div>
+</div>
+<div>
+<div class="ref-section-hd">Technical Leadership &amp; Career Development</div>
+<div class="ref-grid">
+<div class="ref-entry">
+<div class="ref-title">How Apple Is Organized for Innovation</div>
+<div class="ref-authors">Joel M. Podolny &amp; Morten T. Hansen · Harvard Business Review, November–December 2020 (Reprint R2006F)</div>
+<div class="ref-desc">The primary source for the experts-lead-experts leadership model adopted in this office. Documents Apple's functional organization design — where experts lead experts rather than general managers overseeing technical teams — and the three leadership characteristics expected of all engineering leaders: deep expertise, immersion in details, and willingness to collaboratively debate. Also introduces the Discretionary Leadership Model (owning, learning, teaching, delegating) used in the Technical Talent section. Required reading for all division directors.</div>
+<div><span class="ref-tag tag-core">Leadership Model</span></div>
+</div>
+<div class="ref-entry">
+<div class="ref-title">Engineering Career Framework (ENG-FW-2026)</div>
+<div class="ref-authors">Internal · Engineering R&amp;D Department · Effective February 1, 2026 · Revision 4.2</div>
+<div class="ref-desc">The definitive internal reference for roles, levels, competencies, and progression paths from Intern (Pre-GS) to VP of Engineering (SES). Defines the dual-track career path (Individual Contributor and Management tracks, diverging at GS-13/Level 4), the five competency dimensions evaluated across both tracks (Scope, Core Skill, Connection, Growth, Direction), impact dimensions (consistency, breadth, term, multiplier effect, business alignment), and promotion principles including the competitive nature of GS-13 and above promotions. Directly governs all hiring, leveling, and promotion decisions within this office.</div>
+<div><span class="ref-tag tag-core">Internal Reference</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-principles">
+<div class="pg-eye">06 — Engineering Culture</div>
+<div class="pg-title">Engineering Principles</div>
+<p class="pg-desc">Six principles that govern how this office builds, operates, and grows. These are not aspirational values — they are behavioral commitments that define what it means to be an engineer in this office. Every engineering decision should be traceable to at least one of these principles.</p>
+<div class="ep-charter">
+<div class="ep-charter-text">
+<h3>How to Use These Principles</h3>
+<p>Engineering principles are most useful when they resolve ambiguity — when two reasonable paths exist and a team needs a shared standard to decide. These six principles are ordered by architectural priority, not importance. All six apply at all times. When principles appear to conflict, the mission context determines which takes precedence, and that decision should be documented.</p>
+</div>
+<div class="ep-charter-pills">
+<div class="ep-charter-pill" style="color:var(--teal);border-color:var(--teal);background:var(--teal-bg);">Security &amp; Resiliency</div>
+<div class="ep-charter-pill" style="color:var(--green);border-color:var(--green);background:var(--green-bg);">Accountability</div>
+<div class="ep-charter-pill" style="color:#84cc16;border-color:#84cc16;background:rgba(132,204,22,.1);">Human-Centered</div>
+<div class="ep-charter-pill" style="color:var(--amber);border-color:var(--amber);background:var(--amber-bg);">Tradecraft</div>
+<div class="ep-charter-pill" style="color:var(--orange);border-color:var(--orange);background:var(--orange-bg);">Trustworthy AI</div>
+<div class="ep-charter-pill" style="color:#e879f9;border-color:#e879f9;background:rgba(232,121,249,.1);">Modularity</div>
+</div>
+</div>
+<div class="ep-grid">
+<div class="ep-card" style="--ep-a:#0d9488;--ep-b:#0ea5e9;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 01</div>
+<div class="ep-title">Build to Endure,<br>Engineer to Protect</div>
+<div class="ep-tagline">We treat security &amp; resiliency as a first principle; embedded in every decision, design, and deployment.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Embed zero trust, confidentiality, and availability into every layer of design, development, and deployment. Engineer for high availability, graceful degradation, and redundancy — not as features, but as structural requirements.</div>
+<div class="ep-bullet">Continuously adapt to stay ahead of threats. Security posture is never static; threat modeling, dependency review, and adversarial thinking are standing activities, not periodic audits.</div>
+</div>
+<div class="ep-bg-num">1</div>
+</div>
+</div>
+<div class="ep-card" style="--ep-a:#059669;--ep-b:#0d9488;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 02</div>
+<div class="ep-title">Mission-Driven<br>Accountability</div>
+<div class="ep-tagline">We own our impact &amp; outcomes — technical, operational, and ethical.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Engineers are responsible for the mission impact, security, and operational behavior of their work. Ownership does not end at code merge — it extends to production behavior, downstream effects, and mission consequences.</div>
+<div class="ep-bullet">Openly acknowledge mistakes through blameless postmortems and use telemetry to drive continuous learning, resilience, and improvement. A blame-free culture requires a truth-seeking culture — both must be present.</div>
+</div>
+<div class="ep-bg-num">2</div>
+</div>
+</div>
+<div class="ep-card" style="--ep-a:#84cc16;--ep-b:#d97706;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 03</div>
+<div class="ep-title">Human-Centered Design<br>&amp; Engineering</div>
+<div class="ep-tagline">We build with and for the user.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Involve end users and domain experts early and often to ensure solutions align with real mission needs. User research and usability testing are engineering activities, not UX afterthoughts — they belong in the delivery process alongside architecture review and code review.</div>
+<div class="ep-bullet">Prioritize intuitive, usable designs and continuously adapt based on user feedback and evolving requirements. A system that works correctly but cannot be used effectively has failed its mission.</div>
+</div>
+<div class="ep-bg-num">3</div>
+</div>
+</div>
+<div class="ep-card" style="--ep-a:#d97706;--ep-b:#ea580c;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 04</div>
+<div class="ep-title">Tradecraft<br>Mastery</div>
+<div class="ep-tagline">We grow talent as deliberately as we build technology.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Promote a culture of lifelong learning and invest in ongoing mastery of secure development, AI/ML ethics, leadership, and core tradecraft skills. Engineers who stop learning produce systems that stop improving — skill development is a delivery requirement, not a benefit.</div>
+<div class="ep-bullet">Encourage mentorship, knowledge sharing, and the development of sound technical and mission judgment. Expertise that lives only in individuals is a single point of failure. Documenting, pairing, and teaching are engineering obligations.</div>
+</div>
+<div class="ep-bg-num">4</div>
+</div>
+</div>
+<div class="ep-card" style="--ep-a:#ea580c;--ep-b:#e11d48;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 05</div>
+<div class="ep-title">Trustworthy<br>Autonomy</div>
+<div class="ep-tagline">We augment, not replace, human judgment.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Ensure all AI and automation are explainable, traceable, and always under meaningful human control — with built-in trust calibration and human-in-the-loop oversight. Automation that cannot be interrogated cannot be trusted, and automation that cannot be trusted cannot be fielded.</div>
+<div class="ep-bullet">Proactively test, challenge, and validate autonomy through red teaming, adversarial exercises, and bias mitigation to maintain trust and mission alignment. Trustworthy systems are proven, not assumed.</div>
+</div>
+<div class="ep-bg-num">5</div>
+</div>
+</div>
+<div class="ep-card" style="--ep-a:#e879f9;--ep-b:#7c3aed;">
+<div class="ep-card-accent"></div>
+<div class="ep-card-body">
+<div class="ep-num">Engineering Principle 06</div>
+<div class="ep-title">Loosely Coupled,<br>Highly Aligned</div>
+<div class="ep-tagline">We engineer capabilities that evolve with mission.</div>
+<div class="ep-bullets">
+<div class="ep-bullet">Use open standards, well-documented APIs, and modular components to enable agility, collaboration, and capability reuse across domains and missions. Every interface is a contract; contracts must be designed for extension, not just for today's consumer.</div>
+<div class="ep-bullet">Design systems to avoid platform lock-in and adapt quickly to adversarial threats, shifting priorities, and emerging technologies. Technical flexibility is a mission requirement — the threat landscape, technology landscape, and mission requirements will all change; the architecture must be able to change with them.</div>
+</div>
+<div class="ep-bg-num">6</div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-talent">
+<div class="pg-eye">07 — Technical Talent</div>
+<div class="pg-title">Technical Staff Structure<br>&amp; Career Framework</div>
+<p class="pg-desc">The office organizes technical talent on a single principle: experts lead experts. From entry-level engineers to the Technical Director, every leadership role is held by someone with deep expertise in the domain they lead. This is not a preference — it is a structural requirement that shapes how the office hires, promotes, and evaluates its people.</p>
+<div class="talent-philosophy">
+<div class="talent-philosophy-hd">The Experts-Lead-Experts Paradigm</div>
+<p>Conventional organizations separate management from expertise. As companies grow, they tend to install general managers above technical teams — people who can coordinate but cannot evaluate, judge, or improve the work beneath them. The result is predictable: technical decisions get slower, quality declines, and the best individual contributors leave because they can't learn from their managers.</p>
+<p>This office takes a different position, one validated by Apple's functional organization model: the assumption is that it is easier to train an expert to manage well than to train a general manager to develop genuine technical expertise. Engineering leaders at every level — team lead, division director, deputy director, technical director — must be capable of engaging substantively with the work their teams produce. They must be able to push, probe, and evaluate decisions, not just track them. Leaders are chosen for domain mastery first; management capability is developed from that foundation.</p>
+<p>Three behaviors define what experts-lead-experts looks like in practice. All three are expected of every engineering leader in this office, calibrated to their level and span of responsibility.</p>
+<div class="exp-trio">
+<div class="exp-card">
+<div class="exp-card-hd">Deep Expertise</div>
+<p>Leaders possess genuine expertise in the domain they lead and can engage meaningfully with technical work at multiple levels of detail. They are recognized as authoritative within their specialty — not merely senior in title. Engineers choose this org because they can learn from the people above them.</p>
+</div>
+<div class="exp-card">
+<div class="exp-card-hd">Immersion in Details</div>
+<p>Leaders know the details of their organization at least three levels deep. This is essential for effective cross-functional decision-making. Leaders who cannot engage with the details of their domain cannot evaluate trade-offs, detect failure, or earn the trust of their engineers.</p>
+</div>
+<div class="exp-card">
+<div class="exp-card-hd">Collaborative Debate</div>
+<p>Leaders hold strong, well-grounded views and advocate for them — and are willing to change their minds when presented with better evidence. Effective functional organizations require leaders who can be simultaneously partisan and open-minded, separating how right a decision is from how hard it is to execute.</p>
+</div>
+</div>
+</div>
+<div class="pg-sub-eye" style="margin-bottom:12px;">Discretionary Leadership Model</div>
+<div class="talent-philosophy" style="margin-bottom:28px;">
+<p>As engineering leaders take on larger spans and broader responsibilities, they cannot own everything at the same level of detail. The Discretionary Leadership Model, adapted from Apple University, defines four modes of engagement that leaders use to allocate their attention across the portfolio of work they are responsible for.</p>
+<div class="dlm-grid">
+<div class="dlm-quad dlm-own">
+<div class="dlm-quad-tag">High Expertise · Deep Involvement</div>
+<div class="dlm-quad-hd">Owning</div>
+<p>Areas where the leader has deep expertise and is highly involved in the details. The leader sets direction, evaluates the work, and is accountable for the outcome. This is the core of what it means to be an expert leading experts.</p>
+</div>
+<div class="dlm-quad dlm-lrn">
+<div class="dlm-quad-tag">Low Expertise · Deep Involvement</div>
+<div class="dlm-quad-hd">Learning</div>
+<p>New domains the leader must grow into. Requires a genuine beginner's mindset — asking questions without pretending to have answers. Only critical new responsibilities should be in this quadrant; it is expensive and time-consuming.</p>
+</div>
+<div class="dlm-quad dlm-tch">
+<div class="dlm-quad-tag">High Expertise · Lower Involvement</div>
+<div class="dlm-quad-hd">Teaching</div>
+<p>Areas of deep expertise where the leader has developed others sufficiently to reduce direct involvement. The leader provides critique, feedback, and standards rather than owning the decisions. Requires experts to teach — general managers cannot do this.</p>
+</div>
+<div class="dlm-quad dlm-del">
+<div class="dlm-quad-tag">Lower Expertise · Lower Involvement</div>
+<div class="dlm-quad-hd">Delegating</div>
+<p>Areas where others have the requisite capability and the leader sets objectives, monitors progress, and holds teams accountable. This is closer to general management. Leaders in this office should spend the minority of their time here.</p>
+</div>
+</div>
+</div>
+<hr class="pg-divider">
+<div class="pg-sub-eye" style="margin-bottom:16px;">Career Ladder — Dual Track (ENG-FW-2026)</div>
+<div class="split-note">
+<strong>Track Decision at GS-13 (Level 4).</strong> The Individual Contributor and Management tracks are equally valued and both lead to executive-level impact. Engineers choose at GS-13 based on where they generate more energy and create more leverage — technical depth or people leadership. Track switches are possible; many senior leaders have held roles in both. Promotions to GS-13 and above are <strong>competitive and based on organizational need</strong>, not individual readiness alone.
+</div>
+<div class="ladder-wrap">
+<div class="ladder-col">
+<div class="ladder-hd"><span class="ladder-hd-ic">Individual Contributor Track</span></div>
+<div class="rung" style="--rc:var(--dim);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L0 <span class="rung-grade">Pre-GS / GS-5/7</span></div>
+<div class="rung-title">Intern</div>
+<div class="rung-scope">Individual tasks with guidance. Building technical foundations.</div>
+</div>
+</div>
+<div class="rung" style="--rc:var(--muted);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L1 <span class="rung-grade">GS-9</span></div>
+<div class="rung-title">Software Engineer I</div>
+<div class="rung-scope">Feature delivery within team with direction. Quality focus.</div>
+</div>
+</div>
+<div class="rung" style="--rc:var(--muted);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L2 <span class="rung-grade">GS-11</span></div>
+<div class="rung-title">Software Engineer II</div>
+<div class="rung-scope">End-to-end project ownership within team. Autonomous delivery.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--teal);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L3 <span class="rung-grade">GS-12</span></div>
+<div class="rung-title">Senior Software Engineer</div>
+<div class="rung-scope">Group technical leadership. Solves complex &amp; ambiguous problems. Drives consensus and system design. Force multiplier for team.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--blue);">
+<div class="rung-line" style="background:var(--blue);opacity:.3;"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L4 <span class="rung-grade">GS-13</span></div>
+<div class="rung-title">Staff Software Engineer ⬤ Track Split</div>
+<div class="rung-scope">Domain/org-level direction. Force multiplier for 30–50+ engineers. Sets technical direction and architectural vision.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--blue);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L5 <span class="rung-grade">GS-14</span></div>
+<div class="rung-title">Senior Staff Engineer</div>
+<div class="rung-scope">Org-wide influence. Leads cross-functional technical design. Sets org-wide standards for 100–200+ engineers.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--violet);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L6 <span class="rung-grade">GS-15</span></div>
+<div class="rung-title">Principal Engineer</div>
+<div class="rung-scope">Enterprise architecture &amp; multi-year strategy. Reference architectures. Responsible innovation at org scale.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--amber);">
+<div class="rung-line" style="background:transparent;"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L7 <span class="rung-grade">SES</span></div>
+<div class="rung-title">Distinguished Engineer</div>
+<div class="rung-scope">Industry &amp; company transformation. Partners with executives on business-critical technical decisions. External recognition.</div>
+</div>
+</div>
+</div>
+<div class="ladder-col">
+<div class="ladder-hd"><span class="ladder-hd-mgt">Management Track</span><span style="font-size:9px;color:var(--dim);font-weight:400;">(begins at L4)</span></div>
+<div class="rung" style="--rc:var(--dim);opacity:.35;">
+<div class="rung-line" style="background:transparent;height:24px;"></div><div class="rung-dot" style="border-color:transparent;"></div>
+<div class="rung-body" style="padding-top:0;">
+<div style="font-size:10px;color:var(--dim);font-style:italic;padding-top:10px;">L0–L3 are IC-only. Management track begins at GS-13.</div>
+</div>
+</div>
+<div style="height:138px;"></div>
+<div class="rung highlight" style="--rc:var(--blue);">
+<div class="rung-line" style="background:var(--blue);opacity:.3;"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L4 <span class="rung-grade">GS-13</span></div>
+<div class="rung-title">Engineering Manager ⬤ Track Split</div>
+<div class="rung-scope">Team leadership &amp; delivery. People growth, team health, hiring, coaching. Builds inclusive high-performing teams.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--blue);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L5 <span class="rung-grade">GS-14</span></div>
+<div class="rung-title">Senior Engineering Manager</div>
+<div class="rung-scope">Multi-team org scale. Develops managers. Drives org capability, quality standards, cross-team collaboration.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--violet);">
+<div class="rung-line"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L6 <span class="rung-grade">GS-15</span></div>
+<div class="rung-title">Director of Engineering</div>
+<div class="rung-scope">Org strategy &amp; portfolio. Sets multi-year vision. Resourcing, long-term planning, aligns engineering with business goals.</div>
+</div>
+</div>
+<div class="rung highlight" style="--rc:var(--amber);">
+<div class="rung-line" style="background:transparent;"></div><div class="rung-dot"></div>
+<div class="rung-body">
+<div class="rung-level">L7 <span class="rung-grade">SES</span></div>
+<div class="rung-title">VP of Engineering</div>
+<div class="rung-scope">Enterprise leadership. Drives org culture, long-term vision, and business outcomes. Represents engineering at executive level.</div>
+</div>
+</div>
+</div>
+</div>
+<hr class="pg-divider">
+<div class="pg-sub-eye" style="margin-bottom:14px;">Career Framework Mapping to SDO Leadership</div>
+<p style="font-size:13px;color:var(--muted);line-height:1.8;max-width:680px;margin-bottom:20px;">Division directors in this office are expected to hold genuine expertise in the domain they lead, consistent with the experts-lead-experts principle. The table below shows how the career framework maps to SDO leadership roles. Division directors are typically GS-15 (Level 6) and must demonstrate both domain mastery and the ability to develop leaders beneath them.</p>
+<div class="sdo-map">
+<div class="sdo-map-hd">
+<h3>SDO Role → Career Framework Mapping</h3>
+<p>Framework levels and expected competency profile for each leadership position in the office.</p>
+</div>
+<div class="sdo-map-rows">
+<div class="sdo-map-row hdr">
+<div class="smc"><div class="smc-hd">SDO Role</div></div>
+<div class="smc"><div class="smc-hd">Framework Level / Grade</div></div>
+<div class="smc"><div class="smc-hd">Experts-Lead-Experts Expectation</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Technical Director</div><div class="smc-grade">Reports to Deputy Director</div></div>
+<div class="smc"><div class="smc-role">L6–L7 · GS-15 / SES</div><div class="smc-note">Principal Engineer or VP equivalent. Enterprise architecture scope.</div></div>
+<div class="smc"><div class="smc-note">Sets multi-year technical strategy across all five divisions. Owns or teaches across every major technical domain. Deep engagement with cross-division architecture decisions.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Director, Sustain &amp; Sunset</div><div class="smc-grade">Management Track</div></div>
+<div class="smc"><div class="smc-role">L6 · GS-15</div><div class="smc-note">Director of Engineering equivalent.</div></div>
+<div class="smc"><div class="smc-note">Must have deep expertise in legacy application O&amp;M and domain engineering. Cannot lead sunset planning without understanding the systems being wound down.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Director, Modern App Dev</div><div class="smc-grade">Management Track · Mixed SA/CS</div></div>
+<div class="smc"><div class="smc-role">L6 · GS-15</div><div class="smc-note">Director of Engineering equivalent. Broad full-stack scope including shared services.</div></div>
+<div class="smc"><div class="smc-note">Must be a credible full-stack engineering leader with delivery expertise AND the developer experience mindset required to own shared backend services. The absorption of CAS means this director owns both product velocity and platform reliability.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Director, AI Engineering</div><div class="smc-grade">Dual Track (IC + Mgt)</div></div>
+<div class="smc"><div class="smc-role">L6 · GS-15 (Principal AI Architect)</div><div class="smc-note">IC + Management hybrid. Serves as Principal AI Architect.</div></div>
+<div class="smc"><div class="smc-note">Holds deep AI/ML expertise (Principal Engineer caliber) and management authority. Must personally own the office's responsible AI standards. This is the highest-expertise leadership role in the office.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Director, Datalytics</div><div class="smc-grade">Management Track</div></div>
+<div class="smc"><div class="smc-role">L6 · GS-15</div><div class="smc-note">Director of Engineering equivalent. Data domain.</div></div>
+<div class="smc"><div class="smc-note">Must hold genuine data engineering and analytics expertise — not a general BI or program manager. Expected to evaluate data pipeline architecture, enrichment quality, and analytics design with the same depth the delivery directors apply to application code.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Director, UX &amp; Enablement</div><div class="smc-grade">Management Track</div></div>
+<div class="smc"><div class="smc-role">L6 · GS-15</div><div class="smc-note">Director of Engineering equivalent. HCD domain.</div></div>
+<div class="smc"><div class="smc-note">Must hold genuine HCD expertise — not a generalist manager placed over UX. Expected to personally conduct or credibly evaluate user research, design critiques, and usability standards.</div></div>
+</div>
+<div class="sdo-map-row">
+<div class="smc"><div class="smc-role">Engineering Manager (per team)</div><div class="smc-grade">Management Track</div></div>
+<div class="smc"><div class="smc-role">L4 · GS-13</div><div class="smc-note">Engineering Manager. Track split entry level.</div></div>
+<div class="smc"><div class="smc-note">Manages a single stream-aligned or subsystem team. Must have domain expertise sufficient to evaluate the technical quality of the team's output and provide credible technical guidance in 1:1s.</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-culture">
+<div class="pg-eye">07 — Organizational Culture</div>
+<div class="pg-title">Building Culture<br>Deliberately</div>
+<p class="pg-desc">Culture is not a values poster. It is the accumulated weight of what an organization signals, celebrates, repeats, and decides — especially under pressure. These four levers are how the SDO leadership team actively shapes and sustains the culture we want, rather than inheriting the culture we get by default.</p>
+<div class="culture-intro">
+<div class="culture-intro-hd">The Four Levers of Culture</div>
+<p>Every organization has a culture — the question is whether it was designed or accumulated. Designed cultures are built through consistent, intentional use of four levers: the signals leaders send through their attention and behavior, the stories that circulate about what the organization values, the rituals that create shared identity and rhythm, and the decisions that reveal what the organization actually believes when trade-offs are forced.</p>
+<p>For the SDO, these four levers must pull in the same direction: toward an engineering culture that is mission-driven, expert-led, human-centered, and psychologically safe. When they conflict — when a decision contradicts a stated value, or a story circulates that rewards the wrong behavior — the inconsistency is louder than any value statement. Leadership must maintain coherence across all four.</p>
+</div>
+<div class="culture-four">
+<div class="culture-card" style="--cc:var(--blue);">
+<div class="culture-card-head">
+<div class="culture-card-num">Lever 01 — Signals &amp; Signs</div>
+<div class="culture-card-title">What Leaders Pay<br>Attention To</div>
+<div class="culture-card-def">Signs are the visible behaviors, artifacts, and patterns that signal what the organization truly values — regardless of what it says it values. Engineers watch what leaders notice, reward, correct, and ignore. Over time these observations become the real operating norms. Signs include: what gets celebrated in all-hands, whose work gets highlighted, which metrics leaders ask about first, and how leaders behave during incidents or failures.</div>
+</div>
+<div class="culture-card-body">
+<div class="culture-card-q">Signs we are actively building in the SDO</div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Engineering quality over delivery velocity.</strong> When leaders ask about code health, test coverage, and architectural decisions — not just sprint burndown — engineers learn that quality is real, not aspirational.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Recognition of invisible work.</strong> Documentation, mentoring, code review, and operational improvements are recognized publicly alongside feature delivery.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Director visibility in the work.</strong> Division directors are expected to engage with the technical details of their domains — their presence in design reviews and code discussions signals that expertise is expected at every level.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Sunset milestones treated as wins.</strong> Successfully retiring a legacy system is celebrated as a delivery achievement — not mourned as a loss of team identity.</div></div>
+</div>
+</div>
+<div class="culture-card" style="--cc:var(--violet);">
+<div class="culture-card-head">
+<div class="culture-card-num">Lever 02 — Stories</div>
+<div class="culture-card-title">What the Organization<br>Remembers &amp; Repeats</div>
+<div class="culture-card-def">Stories are the narratives that travel through an organization — told in onboarding, all-hands, team meetings, and hallway conversations. They encode values more powerfully than any policy document because they are memorable, human, and specific. The stories an organization chooses to tell reveal what it actually believes. The stories it fails to tell — or actively suppresses — reveal what it is afraid to confront.</div>
+</div>
+<div class="culture-card-body">
+<div class="culture-card-q">Stories the SDO must actively tell</div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Blameless postmortem stories.</strong> Specific, named examples of incidents where honest root-cause analysis led to a better system — told publicly and credited to the team, not the individuals who "failed."</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Expertise-over-title stories.</strong> Engineers whose technical judgment overrode a senior decision — and were right — told to reinforce that expertise earns authority in this office, not seniority alone.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>User impact stories.</strong> Named examples of how a specific engineering decision — a UX improvement, a latency reduction, a data enrichment — changed an analyst's or operator's experience. Connects code to mission.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Modernization origin stories.</strong> The founding narrative of why this office exists — the cost of legacy, the mission gap it creates, and the commitment to close it — told repeatedly so engineers understand what they are part of.</div></div>
+</div>
+</div>
+<div class="culture-card" style="--cc:var(--teal);">
+<div class="culture-card-head">
+<div class="culture-card-num">Lever 03 — Rituals</div>
+<div class="culture-card-title">What the Organization<br>Does Repeatedly</div>
+<div class="culture-card-def">Rituals are recurring practices that create shared identity, rhythm, and belonging. They differ from processes in that they carry symbolic weight beyond their functional purpose — a sprint retrospective is a process, but a blameless postmortem ceremony is a ritual that encodes psychological safety. The SDO's rituals must reinforce the behaviors that the culture is trying to build, and must be protected from being cancelled when the calendar gets tight.</div>
+</div>
+<div class="culture-card-body">
+<div class="culture-card-q">Rituals to establish and protect</div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Synchronized Sprint Reviews.</strong> All teams demo on the same day every sprint. Not a status meeting — a showcase. Cross-division attendance is expected from leadership. Builds shared awareness of what the office is delivering.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Quarterly PI Planning.</strong> Office-wide alignment on cross-division dependencies and goals every ~10 weeks. Creates a shared sense of planning horizon and mutual accountability across division lines.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Tradecraft Sessions.</strong> Monthly office-wide learning sessions where engineers share deep technical or domain expertise. Not project updates — genuine knowledge transfer. Reinforces that learning is a job responsibility.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Blameless Postmortem Reviews.</strong> Every significant incident results in a written postmortem with a mandatory review meeting. The review is a ritual — not a punishment. Attendance by at least one director signals leadership takes learning seriously.</div></div>
+</div>
+</div>
+<div class="culture-card" style="--cc:var(--amber);">
+<div class="culture-card-head">
+<div class="culture-card-num">Lever 04 — Decisions</div>
+<div class="culture-card-title">What the Organization<br>Chooses When It's Hard</div>
+<div class="culture-card-def">Decisions are the most powerful cultural signal — and the most dangerous when they contradict stated values. Every time a trade-off is forced between mission and convenience, between quality and speed, between the right hire and the available hire — the decision reveals what the organization actually believes. One bad decision made visibly and without explanation can undo months of cultural investment. Decisions must be explained, especially when they are hard.</div>
+</div>
+<div class="culture-card-body">
+<div class="culture-card-q">Decisions that will define this office's culture</div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Holding the bar on expertise in leadership.</strong> Refusing to fill a director role with a capable generalist when a domain expert is not yet ready — and communicating why — establishes that the experts-lead-experts principle is real.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Treating sunset milestones as hard commitments.</strong> When the first domain team is dissolved on schedule — even under pressure to keep it running — the organization learns that the modernization mandate has teeth.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Delaying a release for quality or security.</strong> When leadership chooses to delay a delivery rather than ship something that violates a security or quality standard, engineers internalize that "build to endure" is not aspirational.</div></div>
+<div class="culture-example"><div class="culture-ex-dot"></div><div class="culture-ex-text"><strong>Protecting enabling team capacity.</strong> When UX &amp; Enablement facilitation time is defended against being cannibalized by delivery pressure, engineers learn that capability building is a first-class investment, not a luxury.</div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="page" id="page-openqs">
+<div class="pg-eye">08 — Open Questions</div>
+<div class="pg-title">Unresolved Design<br>Questions</div>
+<p class="pg-desc">These are the known unknowns in this org design — areas where the structure has been deliberately left open because the answer requires input, policy decisions, or operational experience that does not yet exist. Each question is scoped, not vague. They need owners and resolution timelines before this design is considered final.</p>
+<div class="oq-intro">
+<strong>How to use this page:</strong> Each open question has a status (Open or Partially Resolved), a set of specific sub-questions that need answering, and a set of design considerations that will likely shape the answer. These should be assigned to owners and revisited at the first PI Planning session. Questions that remain open at 90 days should be escalated to the Director.
+</div>
+<div class="oq-sections">
+<div class="oq-card" style="--oq-c:var(--violet);--oq-bg:var(--violet-bg);">
+<div class="oq-head">
+<div class="oq-head-l">
+<div class="oq-title">Interaction with Platform Engineering</div>
+<div class="oq-subtitle">The external Platform &amp; Enablement office provides CI/CD, infrastructure, DevSecOps, QA frameworks, and enterprise architecture. This design defines the interaction mode as X-as-a-Service, but the operational details of that relationship are unresolved.</div>
+</div>
+<div class="oq-status oq-open">Open</div>
+</div>
+<div class="oq-body">
+<div class="oq-col">
+<div class="oq-col-hd">Questions to Resolve</div>
+<div class="oq-q-list">
+<div class="oq-q">Who is the named relationship owner between the SDO and the Platform &amp; Enablement office — is it the Technical Director, or is each division director responsible for their own platform relationship?</div>
+<div class="oq-q">What is the SLA commitment from Platform &amp; Enablement to SDO divisions, and what is the escalation path when those SLAs are breached?</div>
+<div class="oq-q">How are onboarding requests for new applications handled — is there a self-service model, or does every new SDO application require a formal intake with Platform Engineering?</div>
+<div class="oq-q">How are cross-org architectural decisions made when Platform Engineering's standards conflict with an SDO division's technical direction? Who has final say?</div>
+<div class="oq-q">Does the AI Engineering division have a separate relationship with Platform Engineering for GPU/compute infrastructure, or does it flow through the same channel as other divisions?</div>
+</div>
+</div>
+<div class="oq-col">
+<div class="oq-col-hd">Design Considerations</div>
+<div class="oq-consideration">
+<div class="oq-con">The X-as-a-Service model only works if Platform Engineering's interface is genuinely self-service. If SDO teams routinely need to collaborate with Platform Engineering to do routine work, the boundary has failed and a Collaboration mode should be formalized instead.</div>
+<div class="oq-con">A single Technical Director relationship owner is likely the right model — it prevents five division directors from developing inconsistent expectations and allows the SDO to negotiate as a unified consumer.</div>
+<div class="oq-con">The Datalytics division may have distinct infrastructure needs (data pipelines, warehouse compute, orchestration tooling) that don't fit the standard Platform Engineering model — this should be surfaced early.</div>
+<div class="oq-con">Consider a quarterly joint review between SDO Technical Director and Platform Engineering leadership to surface friction, review SLA performance, and align on roadmap dependencies.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="oq-card" style="--oq-c:var(--amber);--oq-bg:var(--amber-bg);">
+<div class="oq-head">
+<div class="oq-head-l">
+<div class="oq-title">IT Operations &amp; 24/7 Support</div>
+<div class="oq-subtitle">The SDO owns mission-critical operational systems that may require round-the-clock availability. This design does not currently include an IT operations or 24/7 on-call function. How that need is met — and by whom — is unresolved.</div>
+</div>
+<div class="oq-status oq-open">Open</div>
+</div>
+<div class="oq-body">
+<div class="oq-col">
+<div class="oq-col-hd">Questions to Resolve</div>
+<div class="oq-q-list">
+<div class="oq-q">Which systems in the SDO portfolio require 24/7 on-call coverage, and what is the criticality classification that triggers that requirement?</div>
+<div class="oq-q">Is 24/7 on-call the responsibility of the engineering team that built and owns the system (you-build-it-you-run-it), or does a separate IT operations function exist for tier-1 triage?</div>
+<div class="oq-q">How does after-hours incident escalation work — what is the paging model, and who is the first engineer paged for a P1 incident on a mission-critical system?</div>
+<div class="oq-q">Does User Support (within UX &amp; Enablement) cover after-hours user-facing issues, or is that out of scope for the SDO and handled by a separate IT help desk?</div>
+<div class="oq-q">Is there an IT Operations organization external to the SDO that provides infrastructure and NOC-level coverage, and how does the SDO hand off to them?</div>
+</div>
+</div>
+<div class="oq-col">
+<div class="oq-col-hd">Design Considerations</div>
+<div class="oq-consideration">
+<div class="oq-con">The "you-build-it-you-run-it" model (DevOps) is consistent with the engineering principles in this design and should be the default — each stream-aligned team in MAD and Sustain &amp; Sunset maintains an on-call rotation for systems they own.</div>
+<div class="oq-con">A tiered model is likely needed: L1 triage by an IT operations function, L2 escalation to the on-call engineer in the owning team, L3 escalation to a senior engineer or director. The SDO should define L2+ and coordinate with whatever organization owns L1.</div>
+<div class="oq-con">THEMIS, as a governance platform, may have different availability expectations than operational applications — its criticality classification should be established before go-live, not after.</div>
+<div class="oq-con">If the ~50/50 FTE/contractor mix affects on-call eligibility (contractors may not be permitted to be on-call for certain system classifications), this constrains team staffing models and needs to be addressed in workforce planning.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="oq-card" style="--oq-c:var(--orange);--oq-bg:var(--orange-bg);">
+<div class="oq-head">
+<div class="oq-head-l">
+<div class="oq-title">Forward Deployed Field Engineers</div>
+<div class="oq-subtitle">Field engineers who operate forward — embedded with operational or mission partners outside the SDO's primary location — are not accounted for in the current org design. Their reporting chain, engagement model, and relationship to development teams is an open question.</div>
+</div>
+<div class="oq-status oq-open">Open</div>
+</div>
+<div class="oq-body">
+<div class="oq-col">
+<div class="oq-col-hd">Questions to Resolve</div>
+<div class="oq-q-list">
+<div class="oq-q">Do forward deployed field engineers report into the SDO org at all, or are they organizationally owned by the operational or mission partner they are embedded with?</div>
+<div class="oq-q">If they report into the SDO: which division owns them? Are they part of MAD (as embedded delivery engineers), Datalytics (as field data collection/integration), or a separate function?</div>
+<div class="oq-q">How do field engineers feed requirements, bug reports, and operational feedback back to the development teams that own the systems they are supporting?</div>
+<div class="oq-q">What is the career path for a field engineer — is it the same IC track as a headquarters engineer, or is there a distinct field engineering role with different expectations?</div>
+<div class="oq-q">How are field engineers included in the synchronized sprint cadence — do they participate in sprint ceremonies remotely, or is their cadence independent?</div>
+</div>
+</div>
+<div class="oq-col">
+<div class="oq-col-hd">Design Considerations</div>
+<div class="oq-consideration">
+<div class="oq-con">Forward deployment is most naturally a MAD responsibility if field engineers are doing application delivery or configuration work — they are stream-aligned to a mission-critical ops system and happen to be deployed near it. This is consistent with Team Topologies SA model.</div>
+<div class="oq-con">If field engineers are primarily doing data collection, enrichment, or integration work — bridging field systems to SDO data pipelines — they may belong under Datalytics rather than MAD.</div>
+<div class="oq-con">A matrix model may be required: field engineers report administratively to the SDO division that owns their primary work, but operate day-to-day under the authority of the field commander or mission partner. The SDO must define what "reporting to the SDO" means operationally when the engineer is not physically present.</div>
+<div class="oq-con">Including field engineers in the shared sprint cadence — even partially — maintains engineering culture continuity and prevents them from developing a separate operational identity disconnected from the product teams they support.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script>
+function show(id) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+const pg = document.getElementById('page-' + id);
+if (pg) { pg.classList.add('active'); document.querySelector('main').scrollTop = 0; }
+document.querySelectorAll('nav a').forEach(a => {
+if ((a.getAttribute('onclick') || '').includes("'" + id + "'")) a.classList.add('active');
+});
+}
+</script>
+</body>
+</html>
