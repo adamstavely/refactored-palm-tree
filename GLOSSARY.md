@@ -164,8 +164,6 @@ Vocabulary reference for the THEMIS platform. Terms are organized alphabetically
 
 ## Privilege & Governance
 
-**Attorney-client privilege** — A legal protection for confidential communications between an attorney and client made for the purpose of legal advice. PCES enforces this at the chunk level — privileged content cannot enter an AI context window without explicit authorization.
-
 **CoI** — Conflict of Interest. A situation where the firm's representation of one client may be adverse to another. PCES maintains a Conflict Graph and blocks retrieval of content that could expose adverse party information.
 
 **Hard stop** — A THEMIS enforcement action that cannot be overridden by any individual approval. Examples: active adverse-party CoI on a current client, sealed matter boundary violation. Requires formal out-of-band process involving ethics counsel.
