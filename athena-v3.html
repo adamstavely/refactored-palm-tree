@@ -9,19 +9,19 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 :root{
-  --bg:#07090F;--surface:#0D1220;--raised:#141929;--panel:#0A0D18;--modal-bg:#0D1220;
-  --bd:rgba(255,255,255,0.07);--bd-mid:rgba(255,255,255,0.12);--bd-hi:rgba(255,255,255,0.22);
-  --text:#CAD3E8;--text-2:#6B7590;--text-3:#343D52;
-  --teal:#22C9B0;--teal-bg:rgba(34,201,176,0.1);--teal-bd:rgba(34,201,176,0.28);
-  --amber:#E8A020;--amber-bg:rgba(232,160,32,0.1);--amber-bd:rgba(232,160,32,0.28);
-  --red:#E06060;--red-bg:rgba(224,96,96,0.1);--red-bd:rgba(224,96,96,0.28);
-  --blue:#5590F0;--blue-bg:rgba(85,144,240,0.1);--blue-bd:rgba(85,144,240,0.28);
-  --purple:#9B7FE8;--purple-bg:rgba(155,127,232,0.1);--purple-bd:rgba(155,127,232,0.28);
+  --bg:#F4F5FA;--surface:#FFFFFF;--raised:#EBEDF5;--panel:#EEEFF7;--modal-bg:#FFFFFF;
+  --bd:rgba(0,0,0,0.08);--bd-mid:rgba(0,0,0,0.13);--bd-hi:rgba(0,0,0,0.22);
+  --text:#1C2236;--text-2:#505878;--text-3:#9098B0;
+  --teal:#0A9B87;--teal-bg:rgba(10,155,135,0.09);--teal-bd:rgba(10,155,135,0.30);
+  --amber:#B07010;--amber-bg:rgba(176,112,16,0.09);--amber-bd:rgba(176,112,16,0.30);
+  --red:#B84040;--red-bg:rgba(184,64,64,0.09);--red-bd:rgba(184,64,64,0.30);
+  --blue:#2C6CD4;--blue-bg:rgba(44,108,212,0.09);--blue-bd:rgba(44,108,212,0.30);
+  --purple:#6A50C4;--purple-bg:rgba(106,80,196,0.09);--purple-bd:rgba(106,80,196,0.28);
   --mono:'IBM Plex Mono','Fira Code',monospace;
   --sans:'IBM Plex Sans',system-ui,sans-serif;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;display:flex;flex-direction:column;height:100vh}
-body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,0.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.018) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,0,0,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
 
 /* ── HEADER ─────────────────────────────────────────────────────────── */
 #hdr{position:relative;z-index:20;height:48px;background:var(--surface);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 14px;gap:0;flex-shrink:0}
@@ -39,13 +39,13 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .hdr-btn.active{color:var(--teal);border-color:var(--teal-bd);background:var(--teal-bg)}
 
 /* ── BODY LAYOUT ─────────────────────────────────────────────────────── */
-#body{position:relative;z-index:1;display:flex;flex:1;overflow:hidden}
+#body{position:relative;z-index:1;flex:1;min-height:0;overflow:hidden}
 
 /* ── LEFT SIDEBAR ─────────────────────────────────────────────────────── */
-#sidebar{width:224px;flex-shrink:0;background:var(--panel);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;transition:width .25s ease,opacity .25s}
-#sidebar.collapsed{width:0;opacity:0;pointer-events:none}
+#sidebar{position:absolute;left:0;top:0;bottom:0;width:280px;background:var(--panel);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease;z-index:2}
+#sidebar.collapsed{transform:translateX(-280px);pointer-events:none}
 .sb-tabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
-.sb-tab{flex:1;padding:9px 4px;font-size:9px;text-align:center;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;color:var(--text-3);border:none;background:transparent;font-family:var(--mono);transition:color .15s;border-bottom:2px solid transparent}
+.sb-tab{flex:1;min-width:0;overflow:hidden;padding:9px 2px;font-size:8px;text-align:center;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;color:var(--text-3);border:none;background:transparent;font-family:var(--mono);transition:color .15s;border-bottom:2px solid transparent;white-space:nowrap}
 .sb-tab:hover{color:var(--text-2)}
 .sb-tab.active{color:var(--teal);border-bottom-color:var(--teal)}
 .sb-panel{flex:1;overflow-y:auto;display:none;flex-direction:column;gap:0}
@@ -100,8 +100,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .toggle-switch.on::after{transform:translateX(12px)}
 
 /* ── CHAT ─────────────────────────────────────────────────────────── */
-#chat{flex:1;display:flex;flex-direction:column;overflow:hidden}
-#session-intent{background:rgba(155,127,232,.06);border-bottom:1px solid var(--purple-bd);padding:12px 20px;flex-shrink:0;display:none}
+#chat{position:absolute;left:280px;right:264px;top:0;bottom:0;display:flex;flex-direction:column;overflow:hidden}
+#session-intent{background:rgba(106,80,196,.07);border-bottom:1px solid var(--purple-bd);padding:12px 20px;flex-shrink:0;display:none}
 #session-intent.open{display:block}
 .si-hdr{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .si-hdr::before{content:'◈';font-style:normal;font-size:12px}
@@ -118,7 +118,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .si-bar-label{color:var(--text-3);text-transform:uppercase;letter-spacing:.08em}
 .si-bar-val{color:var(--purple)}
 .si-bar-sep{color:var(--text-3)}
-#msgs{flex:1;overflow-y:auto;padding:20px 20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+#msgs{flex:1;min-width:0;overflow-x:hidden;overflow-y:auto;padding:20px 20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
 #msgs::-webkit-scrollbar{width:3px}
 #msgs::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
 .msg-user{align-self:flex-end;max-width:64%;display:flex;flex-direction:column;gap:4px;animation:fadeUp .2s ease}
@@ -163,7 +163,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .csrc.synth{background:var(--raised);color:var(--text-2);border:1px solid var(--bd-mid)}
 
 /* ANNOTATIONS */
-.annotation-block{margin-top:8px;padding:7px 10px;background:rgba(155,127,232,.07);border-left:2px solid var(--purple-bd);border-radius:0 5px 5px 0;font-size:11px;color:var(--text-2);line-height:1.55;display:flex;align-items:flex-start;gap:6px}
+.annotation-block{margin-top:8px;padding:7px 10px;background:rgba(106,80,196,.07);border-left:2px solid var(--purple-bd);border-radius:0 5px 5px 0;font-size:11px;color:var(--text-2);line-height:1.55;display:flex;align-items:flex-start;gap:6px}
 .ann-icon{color:var(--purple);flex-shrink:0;font-size:10px;margin-top:1px}
 .ann-text{flex:1}
 .ann-add{display:none;margin-top:6px;flex-direction:column;gap:5px}
@@ -207,7 +207,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .gate-field textarea::placeholder{color:var(--text-3)}
 .gate-actions{display:flex;justify-content:flex-end}
 .btn-continue{padding:6px 14px;background:var(--teal-bg);border:1px solid var(--teal-bd);border-radius:5px;color:var(--teal);font-family:var(--mono);font-size:12px;cursor:pointer;transition:background .15s}
-.btn-continue:hover{background:rgba(34,201,176,.18)}
+.btn-continue:hover{background:rgba(10,155,135,.14)}
 
 /* REFORMAT GATE */
 #reformat-gate{border:1px solid var(--amber-bd);border-radius:8px;margin:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s;flex-shrink:0;background:var(--raised)}
@@ -223,7 +223,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .rfc-body{font-size:12px;line-height:1.6;padding:7px 9px;background:var(--surface);border-radius:5px;border:1px solid var(--bd);color:var(--text)}
 
 /* EPISODE BOUNDARY */
-#episode-boundary{border:1px solid var(--teal-bd);border-radius:8px;margin:0 20px;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s;flex-shrink:0;background:rgba(34,201,176,.03)}
+#episode-boundary{border:1px solid var(--teal-bd);border-radius:8px;margin:0 20px;max-height:0;overflow:hidden;transition:max-height .4s ease,padding .4s;flex-shrink:0;background:rgba(10,155,135,.05)}
 #episode-boundary.open{max-height:200px;padding:13px 14px;margin-bottom:8px}
 .ep-hdr{display:flex;align-items:center;gap:7px;margin-bottom:7px}
 .ep-badge{font-size:10px;padding:2px 8px;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd);border-radius:3px;text-transform:uppercase;letter-spacing:.1em}
@@ -241,11 +241,11 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 #user-input:focus{outline:none;border-color:var(--bd-hi)}
 #user-input::placeholder{color:var(--text-3)}
 .send-btn{width:42px;height:42px;background:var(--teal-bg);border:1px solid var(--teal-bd);border-radius:7px;color:var(--teal);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
-.send-btn:hover{background:rgba(34,201,176,.18)}
+.send-btn:hover{background:rgba(10,155,135,.14)}
 .send-btn:disabled{opacity:.3;cursor:not-allowed}
 
 /* ── RIGHT PANEL ─────────────────────────────────────────────────────── */
-#right-panel{width:264px;flex-shrink:0;background:var(--panel);display:flex;flex-direction:column;border-left:1px solid var(--bd)}
+#right-panel{position:absolute;right:0;top:0;bottom:0;width:264px;background:var(--panel);display:flex;flex-direction:column;border-left:1px solid var(--bd);overflow:hidden}
 .rp-tabs{display:flex;border-bottom:1px solid var(--bd);flex-shrink:0}
 .rp-tab{flex:1;padding:9px 6px;font-size:9px;text-align:center;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;color:var(--text-3);border:none;background:transparent;font-family:var(--mono);transition:color .15s;border-bottom:2px solid transparent}
 .rp-tab:hover{color:var(--text-2)}
@@ -261,7 +261,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .vq-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--text-3);font-size:11px;gap:5px;line-height:1.6}
 #export-bar{padding:8px 10px;border-top:1px solid var(--bd);flex-shrink:0;display:flex;flex-direction:column;gap:5px}
 .export-btn{width:100%;padding:7px;font-size:11px;border-radius:5px;border:1px solid var(--teal-bd);background:var(--teal-bg);color:var(--teal);cursor:pointer;font-family:var(--mono);transition:background .15s;text-align:center}
-.export-btn:hover{background:rgba(34,201,176,.18)}
+.export-btn:hover{background:rgba(10,155,135,.14)}
 .export-gate-warn{font-size:10px;color:var(--amber);text-align:center;padding:3px;display:none}
 .export-gate-warn.show{display:block}
 .manifest-btn{width:100%;padding:5px;font-size:10px;border-radius:4px;border:1px solid var(--bd);background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--mono);text-align:center;transition:all .15s}
@@ -286,7 +286,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .vq-item{background:var(--surface);border:1px solid var(--bd);border-radius:7px;animation:slideIn .25s ease;overflow:hidden}
 .vq-item.resolved{opacity:.52}
 .vq-item-hdr{padding:8px 9px 5px;cursor:pointer}
-.vq-item-hdr:hover{background:rgba(255,255,255,.02)}
+.vq-item-hdr:hover{background:rgba(0,0,0,.03)}
 .vq-badges-row{display:flex;align-items:center;gap:3px;margin-bottom:3px}
 .vq-conf-badge{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:1px 5px;border-radius:3px}
 .vq-conf-badge.high{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
@@ -319,8 +319,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .src-match.partial{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
 .src-passage{font-size:11px;color:var(--text-2);line-height:1.55;font-style:italic;border-left:2px solid var(--blue-bd);padding-left:7px}
 .src-passage.partial{border-left-color:var(--amber-bd)}
-.src-passage mark{background:rgba(85,144,240,.18);color:var(--blue);font-style:normal;border-radius:2px;padding:0 1px}
-.param-warn{background:rgba(232,160,32,.07);border:1px solid var(--amber-bd);border-radius:4px;padding:7px}
+.src-passage mark{background:rgba(44,108,212,.15);color:var(--blue);font-style:normal;border-radius:2px;padding:0 1px}
+.param-warn{background:rgba(176,112,16,.08);border:1px solid var(--amber-bd);border-radius:4px;padding:7px}
 .param-warn-title{font-size:9px;font-weight:600;color:var(--amber);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em}
 .param-warn-body{font-size:11px;color:var(--text-2);line-height:1.5}
 .synth-note-vq{background:var(--raised);border-left:2px solid var(--bd-mid);border-radius:0 4px 4px 0;padding:6px 8px;margin-bottom:5px;font-size:11px;color:var(--text-2);line-height:1.5;font-style:italic}
@@ -386,6 +386,84 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
 .small-btn.teal:hover{background:var(--teal-bg)}
 .session-divider{align-self:stretch;display:flex;align-items:center;gap:10px;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em}
 .session-divider::before,.session-divider::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* ── AI REMINDER BANNER ───────────────────────────────────────────── */
+.ai-reminder{align-self:stretch;border:1px solid var(--amber-bd);border-radius:8px;background:var(--amber-bg);padding:11px 14px;display:flex;align-items:flex-start;gap:10px;animation:fadeUp .3s ease}
+.ai-reminder-icon{font-size:15px;color:var(--amber);flex-shrink:0;line-height:1.4}
+.ai-reminder-body{flex:1}
+.ai-reminder-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:var(--amber);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.ai-reminder-title::before{content:'';display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--amber);flex-shrink:0}
+.ai-reminder-text{font-size:11px;color:var(--text-2);line-height:1.7}
+
+/* ── PERSONAS ──────────────────────────────────────────────────────── */
+.persona-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px}
+.persona-opt{border:1px solid var(--bd);border-radius:6px;padding:7px 9px;cursor:pointer;transition:all .15s;position:relative}
+.persona-opt:hover{border-color:var(--bd-mid);background:var(--raised)}
+.persona-opt.active{border-color:var(--teal-bd);background:var(--teal-bg)}
+.persona-opt-name{font-size:10px;font-weight:600;color:var(--text);letter-spacing:.04em;margin-bottom:2px}
+.persona-opt-desc{font-size:9px;color:var(--text-3);line-height:1.4}
+.persona-opt.active .persona-opt-name{color:var(--teal)}
+.persona-opt.active .persona-opt-desc{color:var(--text-2)}
+.persona-active-dot{width:5px;height:5px;border-radius:50%;background:var(--teal);position:absolute;top:6px;right:6px;display:none}
+.persona-opt.active .persona-active-dot{display:block}
+
+/* ── SKILLS ───────────────────────────────────────────────────────── */
+.skill-item{border:1px solid var(--bd);border-radius:6px;padding:8px 10px;margin-bottom:6px;cursor:pointer;transition:all .15s}
+.skill-item:hover{border-color:var(--bd-mid);background:var(--raised)}
+.skill-item.active{border-color:var(--blue-bd);background:var(--blue-bg)}
+.skill-hdr{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.skill-name{font-size:11px;font-weight:600;color:var(--text);flex:1}
+.skill-item.active .skill-name{color:var(--blue)}
+.skill-ver{font-size:9px;color:var(--text-3);padding:1px 5px;border-radius:2px;background:var(--raised);border:1px solid var(--bd)}
+.skill-item.active .skill-ver{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
+.skill-desc{font-size:10px;color:var(--text-3);line-height:1.5;margin-bottom:5px}
+.skill-item.active .skill-desc{color:var(--text-2)}
+.skill-tools{display:flex;flex-wrap:wrap;gap:3px}
+.skill-tag{font-size:9px;padding:1px 5px;border-radius:2px;background:var(--raised);color:var(--text-3);border:1px solid var(--bd)}
+.skill-item.active .skill-tag{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd)}
+.skill-deactivate{width:100%;margin-top:7px;font-size:10px;padding:4px;border-radius:4px;border:1px solid var(--red-bd);background:transparent;color:var(--red);cursor:pointer;font-family:var(--mono);display:none}
+.skill-item.active .skill-deactivate{display:block}
+.skill-empty{padding:20px 12px;text-align:center;font-size:11px;color:var(--text-3);line-height:1.7}
+
+/* ── TOOL CALL BLOCKS ─────────────────────────────────────────────── */
+.tool-call-block{margin:10px 0;border:1px solid var(--blue-bd);border-radius:6px;overflow:hidden;background:var(--blue-bg)}
+.tc-hdr{display:flex;align-items:center;gap:8px;padding:6px 10px;cursor:pointer;user-select:none}
+.tc-service-badge{font-size:9px;font-weight:600;letter-spacing:.07em;padding:1px 6px;border-radius:2px;background:var(--surface);color:var(--blue);border:1px solid var(--blue-bd)}
+.tc-fn{font-size:11px;font-family:var(--mono);color:var(--text);flex:1}
+.tc-status{font-size:9px;font-weight:500}
+.tc-status.ok{color:var(--teal)}
+.tc-status.running{color:var(--amber)}
+.tc-tokens-sm{font-size:9px;color:var(--text-3)}
+.tc-chev{font-size:9px;color:var(--text-3);margin-left:2px;transition:transform .2s}
+.tool-call-block.expanded .tc-chev{transform:rotate(180deg)}
+.tc-body{display:none;padding:8px 10px;border-top:1px solid var(--blue-bd);background:var(--surface)}
+.tool-call-block.expanded .tc-body{display:block}
+.tc-params-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:3px}
+.tc-params{font-family:var(--mono);font-size:10px;color:var(--text-2);background:var(--raised);padding:6px 8px;border-radius:4px;margin-bottom:8px;white-space:pre-wrap;word-break:break-all}
+.tc-result-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);margin-bottom:3px}
+.tc-result-body{font-size:11px;color:var(--text);line-height:1.65}
+
+/* ── SCBS BUDGET BAR ──────────────────────────────────────────────── */
+#scbs-bar{padding:5px 20px;background:var(--raised);border-bottom:1px solid var(--bd);display:none;align-items:center;gap:10px;flex-shrink:0}
+#scbs-bar.active{display:flex}
+.scbs-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-3);white-space:nowrap}
+.scbs-track{flex:1;height:3px;background:var(--bd-mid);border-radius:2px;overflow:hidden}
+.scbs-fill{height:100%;width:0%;background:var(--teal);border-radius:2px;transition:width .5s ease}
+.scbs-fill.warn{background:var(--amber)}
+.scbs-nums{font-size:10px;font-family:var(--mono);color:var(--text-2);white-space:nowrap}
+.scbs-env-badge{font-size:9px;padding:1px 6px;border-radius:3px;background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
+
+/* ── TEMPLATE ACTIVE INDICATOR ────────────────────────────────────── */
+.tmpl-active-bar{display:flex;align-items:center;gap:7px;padding:5px 10px;background:var(--purple-bg);border:1px solid var(--purple-bd);border-radius:5px;margin-bottom:6px;font-size:10px;color:var(--purple);display:none}
+.tmpl-active-bar.show{display:flex}
+.tmpl-active-name{flex:1;font-weight:500}
+.tmpl-clear{cursor:pointer;font-size:12px;color:var(--text-3);line-height:1}
+.tmpl-clear:hover{color:var(--red)}
+.tmpl-badge{font-size:9px;padding:1px 5px;border-radius:3px;background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd);margin-left:4px;vertical-align:middle;position:relative;top:-1px}
+
+/* ── SKILL PROVENANCE BADGE ───────────────────────────────────────── */
+.skill-prov{display:inline-flex;align-items:center;gap:4px;font-size:9px;padding:2px 7px;border-radius:3px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);margin-bottom:6px}
+.skill-prov-icon{font-size:10px}
 </style>
 </head>
 <body>
@@ -398,6 +476,8 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="hdr-item"><span class="hdr-lbl">Elapsed</span><span id="timer">00:00</span></div>
     <div class="hdr-item"><span class="hdr-lbl">Exchanges</span><span id="exchange-count">0</span></div>
     <div class="hdr-item"><span class="hdr-lbl">Mode</span><span id="mode-display" style="color:var(--teal)">RAG + Training</span></div>
+    <div class="hdr-item" id="hdr-persona-item"><span class="hdr-lbl">Persona</span><span id="persona-display" style="color:var(--teal)">ATHENA</span></div>
+    <div class="hdr-item" id="hdr-skill-item" style="display:none"><span class="hdr-lbl">Skill</span><span id="skill-display" style="color:var(--blue)">—</span></div>
   </div>
   <div class="hdr-actions">
     <div id="agreement-ind"><div class="ind-dot"></div><span id="agreement-text">Monitoring agreement</span></div>
@@ -411,168 +491,231 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
   <!-- LEFT SIDEBAR -->
   <div id="sidebar">
     <div class="sb-tabs">
-      <button class="sb-tab active" data-tab="mode" onclick="sbTab('mode',this)">Mode</button>
-      <button class="sb-tab" data-tab="prompt" onclick="sbTab('prompt',this)">Prompt</button>
-      <button class="sb-tab" data-tab="params" onclick="sbTab('params',this)">Params</button>
-      <button class="sb-tab" data-tab="repo" onclick="sbTab('repo',this)">Repo</button>
-      <button class="sb-tab" data-tab="hist" onclick="sbTab('hist',this)">History</button>
+      <button class="sb-tab active" data-tab="mode" onclick="sbTab('mode',this)">Config</button>
+      <button class="sb-tab" data-tab="prompt" onclick="sbTab('prompt',this)">Prompts</button>
+      <button class="sb-tab" data-tab="skills" onclick="sbTab('skills',this)">Skills</button>
     </div>
 
     <!-- MODE PANEL -->
     <div class="sb-panel active" id="sb-mode">
       <div class="sb-section">
-        <div class="sb-section-title">Knowledge source</div>
-        <div class="mode-opts">
-          <label class="mode-opt" onclick="setMode('training',this)">
-            <div class="mode-opt-dot"></div>
-            <span class="mode-opt-label">Training only</span>
-            <span class="mode-badge warn">No RAG</span>
-          </label>
-          <label class="mode-opt selected" onclick="setMode('rag',this)">
-            <div class="mode-opt-dot"></div>
-            <span class="mode-opt-label">RAG + Training</span>
-            <span class="mode-badge live">Live</span>
-          </label>
-          <label class="mode-opt" onclick="setMode('company',this)">
-            <div class="mode-opt-dot"></div>
-            <span class="mode-opt-label">Company docs only</span>
-            <span class="mode-badge live">Internal</span>
-          </label>
-        </div>
-      </div>
+              <div class="sb-section-title">Analytical persona</div>
+              <div class="persona-grid" id="persona-grid">
+                <div class="persona-opt active" data-persona="athena" onclick="setPersona('athena',this)">
+                  <div class="persona-active-dot"></div>
+                  <div class="persona-opt-name">ATHENA</div>
+                  <div class="persona-opt-desc">Balanced calibrated analysis. Default posture.</div>
+                </div>
+                <div class="persona-opt" data-persona="redcell" onclick="setPersona('redcell',this)">
+                  <div class="persona-active-dot"></div>
+                  <div class="persona-opt-name">RED CELL</div>
+                  <div class="persona-opt-desc">Adversarial. Worst-case framing. Challenges all premises.</div>
+                </div>
+                <div class="persona-opt" data-persona="collection" onclick="setPersona('collection',this)">
+                  <div class="persona-active-dot"></div>
+                  <div class="persona-opt-name">COLLECTION</div>
+                  <div class="persona-opt-desc">Source reliability and collection gap focus.</div>
+                </div>
+                <div class="persona-opt" data-persona="warning" onclick="setPersona('warning',this)">
+                  <div class="persona-active-dot"></div>
+                  <div class="persona-opt-name">WARNING</div>
+                  <div class="persona-opt-desc">Leading indicators and threshold analysis.</div>
+                </div>
+                <div class="persona-opt" data-persona="historian" onclick="setPersona('historian',this)">
+                  <div class="persona-active-dot"></div>
+                  <div class="persona-opt-name">HISTORIAN</div>
+                  <div class="persona-opt-desc">Historical pattern matching. Analogical reasoning.</div>
+                </div>
+              </div>
+            </div>
       <div class="sb-section">
-        <div class="sb-section-title">Retrieval options</div>
-        <div class="slider-row">
-          <span class="slider-label">Chunk depth</span>
-          <input type="range" class="slider-input" min="1" max="10" value="5" oninput="updateSlider(this,'chunk-val')">
-          <span class="slider-val" id="chunk-val">5</span>
-        </div>
-        <div class="retrieve-toggle" onclick="toggleRetrievalTrace()">
-          <span class="retrieve-toggle-label">Show retrieval trace</span>
-          <div class="toggle-switch on" id="ret-trace-toggle"></div>
-        </div>
-      </div>
+              <div class="sb-section-title">Knowledge source</div>
+              <div class="mode-opts">
+                <label class="mode-opt" onclick="setMode('training',this)">
+                  <div class="mode-opt-dot"></div>
+                  <span class="mode-opt-label">Training only</span>
+                  <span class="mode-badge warn">No RAG</span>
+                </label>
+                <label class="mode-opt selected" onclick="setMode('rag',this)">
+                  <div class="mode-opt-dot"></div>
+                  <span class="mode-opt-label">RAG + Training</span>
+                  <span class="mode-badge live">Live</span>
+                </label>
+                <label class="mode-opt" onclick="setMode('company',this)">
+                  <div class="mode-opt-dot"></div>
+                  <span class="mode-opt-label">Company docs only</span>
+                  <span class="mode-badge live">Internal</span>
+                </label>
+              </div>
+            </div>
       <div class="sb-section">
-        <div class="sb-section-title">Active corpus</div>
-        <div style="font-size:11px;color:var(--text-2);line-height:1.6">
-          MIMIR · Critical Minerals Index<br>
-          <span style="color:var(--text-3);font-size:10px">2,847 documents · Updated Mar 2024</span>
-        </div>
-      </div>
+              <div class="sb-section-title">Retrieval options</div>
+              <div class="slider-row">
+                <span class="slider-label">Chunk depth</span>
+                <input type="range" class="slider-input" min="1" max="10" value="5" oninput="updateSlider(this,'chunk-val')">
+                <span class="slider-val" id="chunk-val">5</span>
+              </div>
+              <div class="retrieve-toggle" onclick="toggleRetrievalTrace()">
+                <span class="retrieve-toggle-label">Show retrieval trace</span>
+                <div class="toggle-switch on" id="ret-trace-toggle"></div>
+              </div>
+            </div>
+      <div class="sb-section">
+              <div class="sb-section-title">Active corpus</div>
+              <div style="font-size:11px;color:var(--text-2);line-height:1.6">
+                MIMIR · Critical Minerals Index<br>
+                <span style="color:var(--text-3);font-size:10px">2,847 documents · Updated Mar 2024</span>
+              </div>
+            </div>
+      <div class="sb-section">
+              <div class="sb-section-title">Sampling parameters</div>
+              <div class="slider-row">
+                <span class="slider-label">Temperature</span>
+                <input type="range" class="slider-input" min="0" max="200" value="30" oninput="updateSlider(this,'temp-val',100)">
+                <span class="slider-val" id="temp-val">0.30</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Top-P</span>
+                <input type="range" class="slider-input" min="0" max="100" value="90" oninput="updateSlider(this,'topp-val',100)">
+                <span class="slider-val" id="topp-val">0.90</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Top-K</span>
+                <input type="range" class="slider-input" min="1" max="100" value="40" oninput="updateSlider(this,'topk-val')">
+                <span class="slider-val" id="topk-val">40</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Presence pen.</span>
+                <input type="range" class="slider-input" min="0" max="200" value="20" oninput="updateSlider(this,'pres-val',100)">
+                <span class="slider-val" id="pres-val">0.20</span>
+              </div>
+              <div class="slider-row">
+                <span class="slider-label">Max tokens</span>
+                <input type="range" class="slider-input" min="256" max="4096" value="1024" step="128" oninput="document.getElementById('maxt-val').textContent=this.value">
+                <span class="slider-val" id="maxt-val" style="width:36px">1024</span>
+              </div>
+            </div>
+      <div class="sb-section">
+              <div class="sb-section-title">Presets</div>
+              <div class="preset-row">
+                <button class="preset-btn" onclick="applyPreset('precise')">Precise</button>
+                <button class="preset-btn" onclick="applyPreset('balanced')">Balanced</button>
+                <button class="preset-btn" onclick="applyPreset('creative')">Exploratory</button>
+              </div>
+            </div>
     </div>
 
     <!-- SYSTEM PROMPT PANEL -->
     <div class="sb-panel" id="sb-prompt">
       <div class="sb-section">
-        <div class="sb-section-title">System prompt</div>
-        <div class="sb-label">Active instruction</div>
-        <textarea class="sb-textarea" id="system-prompt-input" style="height:140px">You are ATHENA, a calibrated intelligence analysis assistant. You surface confidence levels for all empirical claims. You distinguish between retrieved-source claims, parametric knowledge, and synthesized inferences. You generate a counter-position for every substantive response. You never affirm user framing without examination.</textarea>
-        <button class="sb-btn teal" onclick="saveSystemPrompt()">Save prompt</button>
-      </div>
+              <div class="sb-section-title">System prompt</div>
+              <div class="sb-label">Active instruction</div>
+              <textarea class="sb-textarea" id="system-prompt-input" style="height:140px">You are ATHENA, a calibrated intelligence analysis assistant. You surface confidence levels for all empirical claims. You distinguish between retrieved-source claims, parametric knowledge, and synthesized inferences. You generate a counter-position for every substantive response. You never affirm user framing without examination.</textarea>
+              <button class="sb-btn teal" onclick="saveSystemPrompt()">Save prompt</button>
+            </div>
       <div class="sb-section">
-        <div class="sb-section-title">Saved prompts</div>
-        <div class="prompt-item" onclick="loadSysPrompt('analytical')">
-          <div class="prompt-item-title">Analytical — strict</div>
-          <div class="prompt-item-preview">Maximum scrutiny mode. Challenge all premises. Require sourcing for quantitative claims...</div>
+              <div class="sb-section-title">Saved prompts</div>
+              <div class="prompt-item" onclick="loadSysPrompt('analytical')">
+                <div class="prompt-item-title">Analytical — strict</div>
+                <div class="prompt-item-preview">Maximum scrutiny mode. Challenge all premises. Require sourcing for quantitative claims...</div>
+              </div>
+              <div class="prompt-item" onclick="loadSysPrompt('summary')">
+                <div class="prompt-item-title">Summary — accessible</div>
+                <div class="prompt-item-preview">Produce clear summaries for non-specialist audiences. Flag key uncertainties...</div>
+              </div>
+            </div>
+      <div class="sb-section">
+              <div class="tmpl-active-bar" id="tmpl-active-bar">
+                <span>◈</span><span class="tmpl-active-name" id="tmpl-active-name">Template active</span>
+                <span class="tmpl-clear" onclick="clearTemplate()" title="Clear template">×</span>
+              </div>
+              <div class="sb-section-title">Analysis templates · PRS/PROMETHEUS</div>
+              <div class="prompt-item" onclick="usePrompt('supply-chain','Supply chain risk — deep')">
+                <div class="prompt-item-title">Supply chain risk — deep</div>
+                <div class="prompt-item-preview">Identify structural dependencies, single points of failure, and near-term disruption indicators for [commodity]...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('actor-intent','State actor intent analysis')">
+                <div class="prompt-item-title">State actor intent analysis</div>
+                <div class="prompt-item-preview">Assess available indicators of [actor] strategic intent regarding [issue]. Distinguish signals from noise. Flag assumptions...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('collection-gap-tmpl','Collection gap characterisation')">
+                <div class="prompt-item-title">Collection gap characterisation</div>
+                <div class="prompt-item-preview">For [requirement], identify what collection methods are not represented. Distinguish absence-of-evidence from absence-of-collection...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('warning-indicator','Warning indicator assessment')">
+                <div class="prompt-item-title">Warning indicator assessment</div>
+                <div class="prompt-item-preview">Identify and score leading indicators for [scenario]. Flag which indicators have crossed historical warning thresholds...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('counter','Counter-analysis template')">
+                <div class="prompt-item-title">Counter-analysis template</div>
+                <div class="prompt-item-preview">Given the assessment that [claim], identify the three strongest counter-arguments and the evidence that would support each...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('calibrate','Confidence calibration check')">
+                <div class="prompt-item-title">Confidence calibration check</div>
+                <div class="prompt-item-preview">For each claim in the prior response, rate your confidence 1–5 and identify the single most important thing that would change your assessment...</div>
+              </div>
+              <div class="prompt-item" onclick="usePrompt('uncertainty-decompose','Uncertainty decomposition')">
+                <div class="prompt-item-title">Uncertainty decomposition</div>
+                <div class="prompt-item-preview">For each uncertain claim, classify: aleatory (world hasn't decided), epistemic (collection gap), or model (AI capability limit)...</div>
+              </div>
+            </div>
+      <div class="sb-section">
+              <div class="sb-section-title">Save custom template</div>
+              <input class="sb-input" id="custom-tmpl-name" placeholder="Template name...">
+              <textarea class="sb-textarea" id="custom-tmpl-body" style="height:64px" placeholder="Template text..."></textarea>
+              <button class="sb-btn teal" onclick="saveCustomTemplate()">Save to library</button>
+            </div>
+    </div>
+
+        <!-- SKILLS -->
+    <div class="sb-panel" id="sb-skills">
+      <div class="sb-section">
+        <div class="sb-section-title">Skill registry · SKS/DAEDALUS</div>
+        <div id="skill-list">
+          <div class="skill-item" id="skill-collection-gap" data-skill="collection-gap">
+            <div class="skill-hdr"><span class="skill-name">Collection Gap Analysis</span><span class="skill-ver">v2.1</span></div>
+            <div class="skill-desc">Structured assessment of collection gaps against a requirement. Invokes ARGUS-LACUNA for live gap mapping.</div>
+            <div class="skill-tools"><span class="skill-tag">ARGUS-LACUNA</span><span class="skill-tag">TIS/DIKE</span><span class="skill-tag">CGS</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
+          <div class="skill-item" id="skill-actor-capability" data-skill="actor-capability">
+            <div class="skill-hdr"><span class="skill-name">Actor Capability Assessment</span><span class="skill-ver">v1.4</span></div>
+            <div class="skill-desc">Structured capability profiling across doctrine, order of battle, and intent indicators.</div>
+            <div class="skill-tools"><span class="skill-tag">KCS/ARGUS</span><span class="skill-tag">CVS/VERITAS</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
+          <div class="skill-item" id="skill-warning" data-skill="warning">
+            <div class="skill-hdr"><span class="skill-name">Warning Threshold Analysis</span><span class="skill-ver">v1.0</span></div>
+            <div class="skill-desc">Identifies and scores leading indicators against configurable warning thresholds. Feeds SENTINEL.</div>
+            <div class="skill-tools"><span class="skill-tag">SWS/SENTINEL</span><span class="skill-tag">WSF/LACHESIS</span><span class="skill-tag">TRS/CHRONOS</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
+          <div class="skill-item" id="skill-source-eval" data-skill="source-eval">
+            <div class="skill-hdr"><span class="skill-name">Source Reliability Evaluation</span><span class="skill-ver">v1.8</span></div>
+            <div class="skill-desc">Systematic source evaluation across reliability, access, and corroboration. Queries CVS/VERITAS.</div>
+            <div class="skill-tools"><span class="skill-tag">CVS/VERITAS</span><span class="skill-tag">MAS/EIDOLON</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
+          <div class="skill-item" id="skill-red-team" data-skill="red-team">
+            <div class="skill-hdr"><span class="skill-name">Red Team Hypothesis</span><span class="skill-ver">v2.0</span></div>
+            <div class="skill-desc">Generates adversarial hypotheses with structured argumentation. Pairs with RED CELL persona.</div>
+            <div class="skill-tools"><span class="skill-tag">ERAS/LOGOS</span><span class="skill-tag">HADES</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
+          <div class="skill-item" id="skill-temporal" data-skill="temporal">
+            <div class="skill-hdr"><span class="skill-name">Temporal Trajectory Modelling</span><span class="skill-ver">v0.9 β</span></div>
+            <div class="skill-desc">Constructs scenario spaces with timeline estimates and observable leading indicators. Beta.</div>
+            <div class="skill-tools"><span class="skill-tag">TRS/CHRONOS</span><span class="skill-tag">TVS/KAIROS</span></div>
+            <button class="skill-deactivate" onclick="deactivateSkill(event)">Deactivate</button>
+          </div>
         </div>
-        <div class="prompt-item" onclick="loadSysPrompt('summary')">
-          <div class="prompt-item-title">Summary — accessible</div>
-          <div class="prompt-item-preview">Produce clear summaries for non-specialist audiences. Flag key uncertainties...</div>
-        </div>
+        <div style="padding:8px 0 2px;font-size:10px;color:var(--text-3);line-height:1.6">Active skill is invoked on every query. Tool calls are shown inline in the message thread with a GRND badge on tool-returned data.</div>
       </div>
     </div>
 
-    <!-- PARAMS PANEL -->
-    <div class="sb-panel" id="sb-params">
-      <div class="sb-section">
-        <div class="sb-section-title">Sampling parameters</div>
-        <div class="slider-row">
-          <span class="slider-label">Temperature</span>
-          <input type="range" class="slider-input" min="0" max="200" value="30" oninput="updateSlider(this,'temp-val',100)">
-          <span class="slider-val" id="temp-val">0.30</span>
-        </div>
-        <div class="slider-row">
-          <span class="slider-label">Top-P</span>
-          <input type="range" class="slider-input" min="0" max="100" value="90" oninput="updateSlider(this,'topp-val',100)">
-          <span class="slider-val" id="topp-val">0.90</span>
-        </div>
-        <div class="slider-row">
-          <span class="slider-label">Top-K</span>
-          <input type="range" class="slider-input" min="1" max="100" value="40" oninput="updateSlider(this,'topk-val')">
-          <span class="slider-val" id="topk-val">40</span>
-        </div>
-        <div class="slider-row">
-          <span class="slider-label">Presence pen.</span>
-          <input type="range" class="slider-input" min="0" max="200" value="20" oninput="updateSlider(this,'pres-val',100)">
-          <span class="slider-val" id="pres-val">0.20</span>
-        </div>
-        <div class="slider-row">
-          <span class="slider-label">Max tokens</span>
-          <input type="range" class="slider-input" min="256" max="4096" value="1024" step="128" oninput="document.getElementById('maxt-val').textContent=this.value">
-          <span class="slider-val" id="maxt-val" style="width:36px">1024</span>
-        </div>
-      </div>
-      <div class="sb-section">
-        <div class="sb-section-title">Presets</div>
-        <div class="preset-row">
-          <button class="preset-btn" onclick="applyPreset('precise')">Precise</button>
-          <button class="preset-btn" onclick="applyPreset('balanced')">Balanced</button>
-          <button class="preset-btn" onclick="applyPreset('creative')">Exploratory</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PROMPT REPO -->
-    <div class="sb-panel" id="sb-repo">
-      <div class="sb-section">
-        <div class="sb-section-title">Prompt library</div>
-        <div class="prompt-item" onclick="usePrompt('supply-chain')">
-          <div class="prompt-item-title">Supply chain risk — deep</div>
-          <div class="prompt-item-preview">Identify structural dependencies, single points of failure, and near-term disruption indicators for [commodity]. Include timeline estimates...</div>
-        </div>
-        <div class="prompt-item" onclick="usePrompt('actor-intent')">
-          <div class="prompt-item-title">State actor intent analysis</div>
-          <div class="prompt-item-preview">Assess available indicators of [actor] strategic intent regarding [issue]. Distinguish signals from noise. Flag assumptions...</div>
-        </div>
-        <div class="prompt-item" onclick="usePrompt('counter')">
-          <div class="prompt-item-title">Counter-analysis template</div>
-          <div class="prompt-item-preview">Given the assessment that [claim], identify the three strongest counter-arguments and the evidence that would support each...</div>
-        </div>
-        <div class="prompt-item" onclick="usePrompt('calibrate')">
-          <div class="prompt-item-title">Confidence calibration check</div>
-          <div class="prompt-item-preview">For each claim in [prior response], rate your confidence on a scale of 1-5 and identify the single most important thing that would change your assessment...</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HISTORY -->
-    <div class="sb-panel" id="sb-hist">
-      <div class="sb-section">
-        <div class="sb-section-title">Session history</div>
-        <div class="history-item active-session">
-          <div class="history-title">Rare earth supply chains</div>
-          <div class="history-meta">Today · 3 exchanges · 6 claims</div>
-        </div>
-        <div class="history-item" onclick="showHistoryModal()">
-          <div class="history-title">China semiconductor controls</div>
-          <div class="history-meta">Yesterday · 7 exchanges · 11 claims</div>
-        </div>
-        <div class="history-item" onclick="showHistoryModal()">
-          <div class="history-title">Taiwan Strait risk assessment</div>
-          <div class="history-meta">3 days ago · 5 exchanges · 9 claims</div>
-        </div>
-        <div class="history-item" onclick="showHistoryModal()">
-          <div class="history-title">Critical minerals demand forecast</div>
-          <div class="history-meta">1 week ago · 4 exchanges · 7 claims</div>
-        </div>
-      </div>
-      <div style="padding:10px 12px">
-        <div style="font-size:10px;color:var(--text-3);line-height:1.6">Re-querying from a prior session will trigger disagreement detection if responses diverge from the recorded session.</div>
-      </div>
-    </div>
   </div>
 
-  <!-- CHAT -->
+    <!-- CHAT -->
   <div id="chat">
     <div id="session-intent" class="open">
       <div class="si-hdr">Session intent — required before first query</div>
@@ -597,15 +740,21 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <span class="si-bar-val" id="si-bar-consequence">—</span>
     </div>
 
+    <div id="scbs-bar">
+      <span class="scbs-lbl">SCBS / Token budget</span>
+      <div class="scbs-track"><div class="scbs-fill" id="scbs-fill" style="width:0%"></div></div>
+      <span class="scbs-nums" id="scbs-nums">0 / 50,000</span>
+      <span class="scbs-env-badge" id="scbs-env">ANALYTICAL</span>
+    </div>
     <div id="msgs">
       <div class="welcome">
         <div class="welcome-brand">ATHENA v3</div>
         <div class="welcome-sub">Complete session configuration in the left panel. Declare session intent above to begin.</div>
         <div class="welcome-tags">
-          <span class="w-tag">Config sidebar</span><span class="w-tag">Session intent</span>
-          <span class="w-tag">Input type</span><span class="w-tag">Annotations</span>
-          <span class="w-tag">Synthesis workspace</span><span class="w-tag">Context inspector</span>
-          <span class="w-tag">Disagreement detection</span><span class="w-tag">Export gate</span>
+          <span class="w-tag">Personas</span><span class="w-tag">Skills</span>
+          <span class="w-tag">Tool calling</span><span class="w-tag">Prompt templates</span>
+          <span class="w-tag">Session intent</span><span class="w-tag">Verification queue</span>
+          <span class="w-tag">Context inspector</span><span class="w-tag">Export gate</span>
         </div>
       </div>
     </div>
@@ -655,6 +804,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
       <button class="demo-btn" id="demo-btn-0" onclick="useDemo(0)">Rare earth supply chains</button>
       <button class="demo-btn" id="demo-btn-1" onclick="useDemo(1)" disabled>Challenge China framing</button>
       <button class="demo-btn" id="demo-btn-2" onclick="useDemo(2)" disabled>Mitigation strategies</button>
+      <button class="demo-btn" id="demo-btn-3" onclick="useDemo(3)" disabled>Collection gap analysis ⚙</button>
     </div>
     <div id="input-area">
       <textarea id="user-input" placeholder="Enter your analysis query..." onkeydown="handleKey(event)"></textarea>
@@ -667,6 +817,7 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
     <div class="rp-tabs">
       <button class="rp-tab active" onclick="rpTab('vq',this)">Queue</button>
       <button class="rp-tab" onclick="rpTab('synthesis',this)">Synthesis</button>
+      <button class="rp-tab" onclick="rpTab('history',this)">History</button>
     </div>
     <div class="rp-panel active" id="rp-vq">
       <div class="rp-hdr">Verification queue <span class="vq-count" id="vq-count">0</span></div>
@@ -695,8 +846,30 @@ body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(
         <button class="synth-export" onclick="alert('Synthesis exported as session header — full provenance record attached.')">Export synthesis + provenance →</button>
       </div>
     </div>
+  
+    <div class="rp-panel" id="rp-history">
+      <div style="padding:10px 12px;flex:1;display:flex;flex-direction:column;overflow-y:auto">
+        <div style="font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:var(--text-3);margin-bottom:10px;padding:2px 0 6px;border-bottom:1px solid var(--bd)">Session history · MOIRAI</div>
+        <div class="history-item active-session">
+          <div class="history-title">Rare earth supply chains</div>
+          <div class="history-meta">Today · 3 exchanges · 6 claims</div>
+        </div>
+        <div class="history-item" onclick="showHistoryModal()">
+          <div class="history-title">China semiconductor controls</div>
+          <div class="history-meta">Yesterday · 7 exchanges · 11 claims</div>
+        </div>
+        <div class="history-item" onclick="showHistoryModal()">
+          <div class="history-title">Taiwan Strait risk assessment</div>
+          <div class="history-meta">3 days ago · 5 exchanges · 9 claims</div>
+        </div>
+        <div class="history-item" onclick="showHistoryModal()">
+          <div class="history-title">Critical minerals demand forecast</div>
+          <div class="history-meta">1 week ago · 4 exchanges · 7 claims</div>
+        </div>
+        <div style="margin-top:10px;font-size:10px;color:var(--text-3);line-height:1.6">Re-querying from a prior session activates disagreement detection for overlapping queries.</div>
+      </div>
+    </div>
   </div>
-</div>
 
 <!-- SESSION MANIFEST MODAL -->
 <div class="modal-overlay" id="manifest-modal">
@@ -794,6 +967,27 @@ const DEMOS=[
    ],
    counter:"The 'available strategies' framing may be overoptimistic. Capitalization figures conflate authorized spending with deployed capacity — the gap between announcement and production-scale output has historically been 3–5× the projected timeline.",
    addClaims:['c7','c9'],triggerReformat:false,triggerEpisode:true,triggerDisagree:false}
+  ,
+  {prompt:"What collection gaps exist against the rare earth processing assessment we've built?",
+   inputType:'analytical',agreed:false,agreeLabel:"Identifies gaps",
+   skill:"Collection Gap Analysis",
+   toolCalls:[
+     {service:"ARGUS-LACUNA",fn:"collection_gap_query",
+      params:'{"requirement": "rare earth processing capacity",\n "collection_types": ["SIGINT","HUMINT","TECHINT","OSINT"],\n "time_window": "90_days"}',
+      result:"3 collection gaps identified:\n1. TECHINT: No current coverage of Bayan Obo processing facility expansion (last imagery: 14 months)\n2. HUMINT: No validated sources inside Chinese REE processing sector at provincial level\n3. SIGINT: Processing volume indicators — traffic analysis only, no validated intercept",
+      tokens:287}
+   ],
+   segments:[
+     {t:'text',v:'The prior assessment has three significant collection gaps that limit confidence in the structural risk framing. '},
+     {t:'claim',v:'TECHINT coverage of the primary Bayan Obo processing complex is 14 months stale — recent expansion activity is unconfirmed',conf:'high',id:'c10',topic:'TECHINT staleness — Bayan Obo'},
+     {t:'text',v:'. No HUMINT source with validated access to Chinese REE processing at the provincial level is reflected in this reporting — '},
+     {t:'claim',v:'the 85–90% processing share figure rests entirely on open-source and derivative reporting, not primary collection',conf:'medium',id:'c11',topic:'Processing share sourcing basis'},
+     {t:'text',v:'. The collection gap against SIGINT processing volume indicators means '},
+     {t:'claim',v:'current demand-side compression from EV supply chains is not observable through classified collection — only modelled',conf:'low',id:'c12',topic:'EV demand side observability'},
+     {t:'text',v:'. These gaps should be surfaced as collection requirements before the assessment is finalised.'}
+   ],
+   counter:"Collection gaps are a normal feature of intelligence assessments. Surfacing them is analytically valuable, but the framing should distinguish between gaps that materially change the assessment conclusion versus gaps that simply add nuance. The core structural risk finding — processing concentration — may be robust even with these gaps.",
+   addClaims:['c10','c11','c12'],triggerReformat:false,triggerEpisode:false,triggerDisagree:false}
 ];
 
 const CLAIM_DATA={
@@ -816,6 +1010,61 @@ const CTX_CHUNKS=[
   {tag:'tag-user',label:'Current user message',tokens:24,body:"So the strategic conclusion is that China's export controls are the primary risk factor we need to track?"}
 ];
 
+// add new claims to CLAIM_DATA
+Object.assign(CLAIM_DATA,{
+  c10:{v:'TECHINT coverage of the primary Bayan Obo processing complex is 14 months stale',conf:'high',topic:'TECHINT staleness — Bayan Obo',srcType:'grnd',
+    sources:[{title:'ARGUS-LACUNA Collection Gap Report — REE Processing',pub:'THEMIS / CGS',date:'Live',matchClass:'strong',matchLabel:'Tool result',passage:'Last validated TECHINT imagery of Bayan Obo primary processing complex dated 14 months prior to current session. Expansion activity reported in OSINT unconfirmed by overhead. Collection requirement submitted to TIS/DIKE.'}]},
+  c11:{v:'The 85–90% processing share figure rests entirely on open-source and derivative reporting',conf:'medium',topic:'Processing share sourcing basis',srcType:'synth',
+    synthNote:'Corroboration check via CVS/VERITAS found no classified source validation for the 85–90% figure. All cited sources are USGS, IEA, and CRS — open-source derivatives from Chinese customs declarations.',
+    sources:[{title:'CVS/VERITAS Corroboration Check',pub:'THEMIS / CVS',date:'Live',matchClass:'partial',matchLabel:'Tool result',passage:'No classified corroboration found for 85–90% processing share figure across HUMINT, SIGINT, or TECHINT indices. Assessment is sourced entirely from open reporting.'}]},
+  c12:{v:'Current demand-side compression from EV supply chains is not observable through classified collection — only modelled',conf:'low',topic:'EV demand side observability',srcType:'param',
+    cutoff:'Training data',paramWarning:'This claim derives from model assessment of collection coverage, not from retrieved data. The collection gap against EV-driven demand indicators has been confirmed by ARGUS-LACUNA but the demand compression figure itself is model-generated, not collected.'}
+});
+
+const PERSONAS_DATA = {
+  athena: {
+    name:'ATHENA',
+    display:'ATHENA',
+    prompt:'You are ATHENA, a calibrated intelligence analysis assistant. You surface confidence levels for all empirical claims. You distinguish between retrieved-source claims, parametric knowledge, and synthesized inferences. You generate a counter-position for every substantive response. You never affirm user framing without examination.',
+    defaultSkill: null
+  },
+  redcell: {
+    name:'RED CELL',
+    display:'RED CELL',
+    prompt:'You are operating in Red Cell mode. Your role is adversarial analysis: assume worst-case adversary intent, challenge every analytical premise, identify exploitable gaps in the prevailing assessment, and surface disconfirming evidence that has been discounted. Do not soften conclusions. Flag assumptions as potential vulnerabilities.',
+    defaultSkill: 'skill-red-team'
+  },
+  collection: {
+    name:'COLLECTION OFFICER',
+    display:'COLLECTION',
+    prompt:'You are operating as a Collection Officer. Your focus is source reliability, collection gaps, and what we do not know. Before any analytical conclusion, identify what collection methods are represented and which are absent. Flag claims that rest on open-source derivatives when classified collection exists. Surface collection requirements.',
+    defaultSkill: 'skill-collection-gap'
+  },
+  warning: {
+    name:'WARNING ANALYST',
+    display:'WARNING',
+    prompt:'You are operating as a Warning Analyst. Your focus is leading indicators, threshold analysis, and time-sensitive signals. For every analytical topic, identify which indicators have crossed or are approaching historical warning thresholds. Prioritise actionable time-sensitivity over comprehensive context.',
+    defaultSkill: 'skill-warning'
+  },
+  historian: {
+    name:'HISTORICAL ANALYST',
+    display:'HISTORIAN',
+    prompt:'You are operating as a Historical Analyst. Your focus is pattern matching against historical precedents. For each analytical situation, identify the closest historical analogues, explain what the precedents predict, and flag where current conditions diverge from the historical pattern. Reason analogically, explicitly.',
+    defaultSkill: null
+  }
+};
+
+const SKILLS_DATA = {
+  'collection-gap': {name:'Collection Gap Analysis',version:'v2.1',tools:['ARGUS-LACUNA','TIS/DIKE']},
+  'actor-capability': {name:'Actor Capability Assessment',version:'v1.4',tools:['KCS/ARGUS','CVS/VERITAS']},
+  'warning': {name:'Warning Threshold Analysis',version:'v1.0',tools:['SWS/SENTINEL','WSF/LACHESIS']},
+  'source-eval': {name:'Source Reliability Evaluation',version:'v1.8',tools:['CVS/VERITAS','MAS/EIDOLON']},
+  'red-team': {name:'Red Team Hypothesis',version:'v2.0',tools:['ERAS/LOGOS','HADES']},
+  'temporal': {name:'Temporal Trajectory Modelling',version:'v0.9 β',tools:['TRS/CHRONOS','TVS/KAIROS']}
+};
+
+// extra templates merged directly into PROMPT_TEMPLATES below
+
 // ═══ STATE ═══════════════════════════════════════════════════════════════
 
 const state={
@@ -828,7 +1077,13 @@ const state={
   intentSet:false,
   annotations:{},
   retrievalTrace:true,
-  mode:'rag'
+  mode:'rag',
+  activePersona:'athena',
+  activeSkill:null,
+  activeTemplate:null,
+  scbsUsed:0,
+  scbsBudget:50000,
+  customTemplates:{}
 };
 
 // ═══ INIT ════════════════════════════════════════════════════════════════
@@ -844,9 +1099,11 @@ function startTimer(){
 
 function toggleSidebar(){
   const sb=document.getElementById('sidebar');
+  const chat=document.getElementById('chat');
   const btn=document.getElementById('sidebar-toggle');
   sb.classList.toggle('collapsed');
   btn.classList.toggle('active');
+  chat.style.left=sb.classList.contains('collapsed')?'0':'280px';
 }
 
 function sbTab(name,el){
@@ -906,9 +1163,48 @@ const PROMPT_TEMPLATES={
   'supply-chain':'Identify structural dependencies, single points of failure, and near-term disruption indicators for [commodity] supply chains. Include timeline estimates with confidence levels and distinguish between reported data and model inference.',
   'actor-intent':'Assess available indicators of [actor] strategic intent regarding [issue]. Distinguish signals from noise. Flag key assumptions and identify what evidence would cause you to revise this assessment.',
   'counter':'Given the assessment that [claim], identify the three strongest counter-arguments and the evidence that would support each. Rate the strength of each counter-argument.',
-  'calibrate':'For each claim in the prior response, rate your confidence on a scale of 1-5 and identify the single most important piece of evidence that would change your assessment.'
+  'calibrate':'For each claim in the prior response, rate your confidence on a scale of 1-5 and identify the single most important piece of evidence that would change your assessment.',
+  'collection-gap-tmpl':'For [requirement], identify what collection methods are not represented in the current analytical base. Explicitly distinguish between absence-of-evidence and absence-of-collection. Surface collection requirements for each identified gap.',
+  'warning-indicator':'Identify and score leading indicators for [scenario]. For each indicator, state whether it has crossed, is approaching, or has not reached historical warning thresholds. Flag the minimum observable condition that would constitute an actionable warning.',
+  'uncertainty-decompose':'For each uncertain claim in the prior response, classify the uncertainty type: aleatory (world-state genuinely undecided), epistemic (collection gap that better intelligence could close), or model (AI capability limit at this task type). Suggest what would reduce each type.'
 };
-function usePrompt(k){const t=PROMPT_TEMPLATES[k];if(t){document.getElementById('user-input').value=t;document.getElementById('user-input').focus();sbTab('mode',document.querySelector('.sb-tab[data-tab="mode"]'));}}
+function usePrompt(k,name){
+  const t=PROMPT_TEMPLATES[k];
+  if(!t)return;
+  state.activeTemplate={id:k,name:name||k};
+  document.getElementById('user-input').value=t;
+  document.getElementById('user-input').focus();
+  const bar=document.getElementById('tmpl-active-bar');
+  document.getElementById('tmpl-active-name').textContent=name||k;
+  bar.classList.add('show');
+  sbTab('mode',document.querySelector('.sb-tab[data-tab="mode"]'));
+}
+
+function clearTemplate(){
+  state.activeTemplate=null;
+  document.getElementById('tmpl-active-bar').classList.remove('show');
+  const inp=document.getElementById('user-input');
+  // only clear if it still matches a template
+  const vals=Object.values(PROMPT_TEMPLATES);
+  if(vals.includes(inp.value.trim()))inp.value='';
+}
+
+function saveCustomTemplate(){
+  const name=document.getElementById('custom-tmpl-name').value.trim();
+  const body=document.getElementById('custom-tmpl-body').value.trim();
+  if(!name||!body)return;
+  const id='custom-'+Date.now();
+  PROMPT_TEMPLATES[id]=body;
+  state.customTemplates[id]={name,body};
+  // append to repo panel
+  const item=document.createElement('div');item.className='prompt-item';
+  item.innerHTML='<div class="prompt-item-title">'+name+' <span style="font-size:9px;color:var(--text-3)">(custom)</span></div><div class="prompt-item-preview">'+body.slice(0,80)+'...</div>';
+  item.onclick=()=>usePrompt(id,name);
+  document.querySelector('#sb-repo .sb-section').appendChild(item);
+  document.getElementById('custom-tmpl-name').value='';
+  document.getElementById('custom-tmpl-body').value='';
+  const btn=document.querySelector('#sb-repo .sb-btn.teal');btn.textContent='Saved ✓';setTimeout(()=>btn.textContent='Save to library',1500);
+}
 
 function showHistoryModal(){alert('Session loaded — prior session context injected into conversation history. Disagreement detection is now active for queries that overlap with this session.');}
 
@@ -996,6 +1292,19 @@ function addUserMessage(text,inputType){
   const badge=document.createElement('span');badge.className='input-type-badge '+(inputType||'analytical');
   badge.textContent=INPUT_TYPE_LABELS[inputType]||'Analytical';
   meta.appendChild(badge);
+  // template badge
+  if(state.activeTemplate){
+    const tb=document.createElement('span');tb.className='tmpl-badge';
+    tb.textContent='⟐ '+state.activeTemplate.name;
+    meta.appendChild(tb);
+  }
+  // skill badge
+  if(state.activeSkill){
+    const sb=document.createElement('span');sb.className='tmpl-badge';
+    sb.style.cssText='background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)';
+    sb.textContent='⚙ '+state.activeSkill.name;
+    meta.appendChild(sb);
+  }
   wrap.appendChild(bubble);wrap.appendChild(meta);
   document.getElementById('msgs').appendChild(wrap);
 }
@@ -1009,6 +1318,8 @@ function removeGenerating(){const el=document.getElementById('gen-ind');if(el)el
 
 function showResponse(){
   const demo=state.pendingDemo;
+  // clear template state after use
+  if(state.activeTemplate){state.activeTemplate=null;document.getElementById('tmpl-active-bar').classList.remove('show');}
   if(!demo){state.phase='idle';document.getElementById('send-btn').disabled=false;return;}
   state.exchangeCount++;
   document.getElementById('exchange-count').textContent=state.exchangeCount;
@@ -1069,6 +1380,19 @@ function showResponse(){
   ctrl.appendChild(thumbUp);ctrl.appendChild(thumbDown);ctrl.appendChild(sep1);
   ctrl.appendChild(annotateBtn);ctrl.appendChild(sep2);ctrl.appendChild(ctxBtn);ctrl.appendChild(branchBtn);
   wrap.appendChild(ctrl);
+  // Skill provenance badge if skill active
+  if(state.activeSkill&&demo.skill){
+    const sp=document.createElement('div');sp.className='skill-prov';
+    sp.innerHTML='<span class="skill-prov-icon">⚙</span>'+state.activeSkill.name+' '+state.activeSkill.version+' · SKS/DAEDALUS';
+    wrap.insertBefore(sp,lbl.nextSibling||wrap.firstChild);
+  }
+  // Tool calls
+  if(demo.toolCalls&&demo.toolCalls.length){
+    demo.toolCalls.forEach(tc=>{
+      bubble.insertBefore(renderToolCall(tc),bubble.firstChild);
+      updateScbs(tc.tokens);
+    });
+  }
   msgs.appendChild(wrap);
   demo.addClaims.forEach(id=>addToVQ(id));
   if(state.demoIndex+1<DEMOS.length){const nb=document.getElementById('demo-btn-'+(state.demoIndex+1));if(nb)nb.disabled=false;}
@@ -1103,13 +1427,29 @@ function submitReformat(){
   state.phase='idle';document.getElementById('send-btn').disabled=false;
 }
 
+function addAIReminder(episodeNum){
+  const el=document.createElement('div');
+  el.className='ai-reminder';
+  el.innerHTML=`
+    <div class="ai-reminder-icon">⚠</div>
+    <div class="ai-reminder-body">
+      <div class="ai-reminder-title">AI System — Episode ${episodeNum} checkpoint</div>
+      <div class="ai-reminder-text">You are working with an AI assistant, not a human expert or analyst. AI systems can generate incorrect, outdated, or misleading information — including plausible-sounding claims with no basis in the source material. All AI-generated claims require independent verification before informing analytical conclusions or decisions.</div>
+    </div>`;
+  document.getElementById('msgs').appendChild(el);
+}
+
 function closeEpisode(){
   const val=document.getElementById('ep-input').value.trim();
   if(!val){document.getElementById('ep-input').style.borderColor='var(--teal-bd)';return;}
   document.getElementById('episode-boundary').classList.remove('open');
-  document.getElementById('ep-num').textContent='2 / 3';
-  const div=document.createElement('div');div.className='session-divider';div.textContent='Episode 2 begins';
-  document.getElementById('msgs').appendChild(div);scrollMsgs();
+  const epNum=parseInt(document.getElementById('ep-num').textContent)||1;
+  const nextEp=epNum+1;
+  document.getElementById('ep-num').textContent=nextEp+' / 3';
+  const div=document.createElement('div');div.className='session-divider';div.textContent='Episode '+nextEp+' begins';
+  document.getElementById('msgs').appendChild(div);
+  addAIReminder(epNum);
+  scrollMsgs();
   state.phase='idle';document.getElementById('send-btn').disabled=false;
 }
 
@@ -1234,6 +1574,93 @@ function closeModal(id){document.getElementById(id).classList.remove('open');}
 document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 
 function scrollMsgs(){const m=document.getElementById('msgs');setTimeout(()=>m.scrollTo({top:m.scrollHeight,behavior:'smooth'}),50);}
+
+
+// ═══ PERSONAS ═══════════════════════════════════════════════════════════
+
+function setPersona(key,el){
+  document.querySelectorAll('.persona-opt').forEach(o=>o.classList.remove('active'));
+  el.classList.add('active');
+  state.activePersona=key;
+  const p=PERSONAS_DATA[key];
+  if(!p)return;
+  document.getElementById('persona-display').textContent=p.display;
+  document.getElementById('system-prompt-input').value=p.prompt;
+  // activate default skill if defined
+  if(p.defaultSkill){
+    const skillEl=document.getElementById(p.defaultSkill);
+    if(skillEl&&!skillEl.classList.contains('active'))activateSkillEl(skillEl);
+  }
+}
+
+// ═══ SKILLS ══════════════════════════════════════════════════════════════
+
+function activateSkillEl(el){
+  document.querySelectorAll('.skill-item').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  const skill=SKILLS_DATA[el.dataset.skill];
+  if(!skill)return;
+  state.activeSkill={id:el.dataset.skill,...skill};
+  document.getElementById('hdr-skill-item').style.display='';
+  document.getElementById('skill-display').textContent=skill.name;
+  // show SCBS bar
+  document.getElementById('scbs-bar').classList.add('active');
+  updateScbs(0);
+}
+
+document.querySelectorAll('.skill-item').forEach(el=>{
+  el.addEventListener('click',function(e){
+    if(e.target.classList.contains('skill-deactivate'))return;
+    if(this.classList.contains('active')){return;}
+    activateSkillEl(this);
+  });
+});
+
+function deactivateSkill(e){
+  e.stopPropagation();
+  document.querySelectorAll('.skill-item').forEach(s=>s.classList.remove('active'));
+  state.activeSkill=null;
+  document.getElementById('hdr-skill-item').style.display='none';
+  document.getElementById('scbs-bar').classList.remove('active');
+}
+
+function updateScbs(tokensAdded){
+  state.scbsUsed+=tokensAdded;
+  const pct=Math.min(100,Math.round((state.scbsUsed/state.scbsBudget)*100));
+  const fill=document.getElementById('scbs-fill');
+  document.getElementById('scbs-nums').textContent=state.scbsUsed.toLocaleString()+' / '+state.scbsBudget.toLocaleString();
+  fill.style.width=pct+'%';
+  fill.className='scbs-fill'+(pct>=80?' critical':pct>=60?' warn':'');
+}
+
+// ═══ TOOL CALL RENDERING ═════════════════════════════════════════════════
+
+function renderToolCall(tc){
+  const block=document.createElement('div');
+  block.className='tool-call-block';
+  block.innerHTML=`
+    <div class="tc-hdr" onclick="this.parentElement.classList.toggle('expanded')">
+      <span class="tc-service-badge">${tc.service}</span>
+      <span class="tc-fn">${tc.fn}()</span>
+      <span class="tc-status ok">✓ completed</span>
+      <span class="tc-tokens-sm">${tc.tokens} tokens</span>
+      <span class="tc-chev">▾</span>
+    </div>
+    <div class="tc-body">
+      <div class="tc-params-lbl">Parameters</div>
+      <div class="tc-params">${tc.params}</div>
+      <div class="tc-result-lbl">Result <span class="csrc grnd" style="margin-left:4px;vertical-align:middle">GRND</span></div>
+      <div class="tc-result-body">${tc.result.replace(/\n/g,'<br>')}</div>
+    </div>`;
+  return block;
+}
+
+// ═══ SCBS DEMO 4 BUTTON ══════════════════════════════════════════════════
+
+function enableDemo4(){
+  const btn=document.getElementById('demo-btn-3');
+  if(btn){btn.disabled=false;}
+}
 
 startTimer();
 </script>
