@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATHENA — Embedded Drawer</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+
+/* ── DESIGN TOKENS ─────────────────────────────────────────────────── */
+:root{
+  --bg:#F5F6FA;--surface:#FFFFFF;--raised:#EBEDF5;
+  --bd:rgba(0,0,0,0.08);--bd-mid:rgba(0,0,0,0.13);--bd-hi:rgba(0,0,0,0.20);
+  --text:#1C2236;--text-2:#505878;--text-3:#9098B0;
+  --teal:#0A9B87;--teal-bg:rgba(10,155,135,0.09);--teal-bd:rgba(10,155,135,0.28);
+  --amber:#B07010;--amber-bg:rgba(176,112,16,0.09);--amber-bd:rgba(176,112,16,0.28);
+  --red:#B84040;--red-bg:rgba(184,64,64,0.09);--red-bd:rgba(184,64,64,0.28);
+  --blue:#2C6CD4;--blue-bg:rgba(44,108,212,0.09);--blue-bd:rgba(44,108,212,0.28);
+  --purple:#6A50C4;--purple-bg:rgba(106,80,196,0.08);--purple-bd:rgba(106,80,196,0.26);
+  --mono:'IBM Plex Mono','Fira Code',monospace;
+  --sans:'IBM Plex Sans',system-ui,sans-serif;
+  --drawer-w:520px;
+  --hdr-h:46px;
+}
+
+/* ── HOST APPLICATION ───────────────────────────────────────────────── */
+body{font-family:var(--sans);background:#0C1424}
+
+#host{position:fixed;inset:0;display:flex;flex-direction:column;transition:filter .35s ease}
+#host.dimmed{filter:brightness(.55)}
+
+
+
+/* Host nav */
+.host-nav{height:44px;background:#111D30;border-bottom:1px solid rgba(255,255,255,0.06);
+  display:flex;align-items:center;padding:0 16px;gap:20px;flex-shrink:0}
+.host-logo{font-family:var(--mono);font-size:13px;font-weight:600;letter-spacing:.18em;
+  color:#7EC8C0;padding-right:20px;border-right:1px solid rgba(255,255,255,0.08)}
+.host-nav-item{font-size:11px;color:rgba(255,255,255,0.38);cursor:pointer;letter-spacing:.04em;transition:color .15s}
+.host-nav-item:hover{color:rgba(255,255,255,0.7)}
+.host-nav-item.active{color:rgba(255,255,255,0.85)}
+.host-nav-sep{flex:1}
+.host-user{font-size:10px;color:rgba(255,255,255,0.35);font-family:var(--mono)}
+
+/* Host body */
+.host-body{flex:1;display:grid;grid-template-columns:52px 1fr;min-height:0}
+
+/* Host left nav */
+.host-leftnav{background:#0C1826;border-right:1px solid rgba(255,255,255,0.04);
+  display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px}
+.hn-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:14px;color:rgba(255,255,255,0.28);transition:all .15s}
+.hn-icon:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.6)}
+.hn-icon.active{background:rgba(126,200,192,0.12);color:#7EC8C0}
+.hn-divider{width:24px;height:1px;background:rgba(255,255,255,0.06);margin:6px 0}
+
+/* Host main */
+.host-main{display:grid;grid-template-columns:1fr 280px;min-width:0;overflow:hidden}
+.host-doc{padding:28px 32px;overflow-y:auto;display:flex;flex-direction:column;gap:16px}
+.host-doc::-webkit-scrollbar{width:4px}
+.host-doc::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px}
+
+
+.doc-title{font-size:18px;font-weight:500;color:rgba(255,255,255,0.88);line-height:1.3;letter-spacing:-.01em}
+.doc-meta{display:flex;gap:16px;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.3);
+  text-transform:uppercase;letter-spacing:.08em}
+.doc-body{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.85;max-width:600px}
+.doc-body p{margin-bottom:12px}
+.doc-highlight{background:rgba(126,200,192,0.12);border-left:2px solid rgba(126,200,192,0.4);
+  padding:8px 12px;border-radius:0 4px 4px 0;font-size:11px;color:rgba(200,224,220,0.8);line-height:1.7}
+
+/* Host right info panel */
+.host-info{background:#0E1929;border-left:1px solid rgba(255,255,255,0.05);padding:16px;
+  display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+.info-block{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);
+  border-radius:6px;padding:10px 12px}
+.info-block-title{font-family:var(--mono);font-size:8px;letter-spacing:.14em;color:rgba(255,255,255,0.3);
+  text-transform:uppercase;margin-bottom:7px}
+.info-item{font-size:10px;color:rgba(255,255,255,0.5);display:flex;justify-content:space-between;
+  align-items:center;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.info-item:last-child{border-bottom:none}
+.info-val{color:rgba(255,255,255,0.75);font-family:var(--mono)}
+.info-badge{font-size:8px;padding:1px 5px;border-radius:2px;font-weight:500;letter-spacing:.05em}
+.info-badge.open{background:rgba(200,160,60,0.15);color:#C8A040;border:1px solid rgba(200,160,60,0.3)}
+.info-badge.closed{background:rgba(70,170,120,0.15);color:#46AA78;border:1px solid rgba(70,170,120,0.3)}
+.info-badge.pending{background:rgba(100,140,220,0.15);color:#648CDC;border:1px solid rgba(100,140,220,0.3)}
+
+/* ── DRAWER TRIGGER TAB ──────────────────────────────────────────────── */
+#trigger{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:150;
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  background:var(--teal);color:#fff;
+  padding:14px 9px;border-radius:8px 0 0 8px;cursor:pointer;
+  box-shadow:-3px 0 16px rgba(10,155,135,0.35);transition:all .25s ease;
+  font-family:var(--mono)}
+#trigger:hover{padding-left:12px;box-shadow:-5px 0 24px rgba(10,155,135,0.5)}
+#trigger.hidden{transform:translateY(-50%) translateX(100%);opacity:0;pointer-events:none}
+.trigger-label{font-size:9px;font-weight:600;letter-spacing:.2em;writing-mode:vertical-lr;
+  text-transform:uppercase;line-height:1}
+.trigger-icon{font-size:14px;line-height:1}
+
+/* ── BACKDROP ────────────────────────────────────────────────────────── */
+#backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:110;
+  opacity:0;pointer-events:none;transition:opacity .35s ease}
+#backdrop.open{opacity:1;pointer-events:all}
+
+/* ── DRAWER ──────────────────────────────────────────────────────────── */
+#drawer{position:fixed;right:0;top:0;bottom:0;width:var(--drawer-w);
+  background:var(--bg);z-index:120;
+  display:flex;flex-direction:column;
+  box-shadow:-8px 0 40px rgba(0,0,0,0.28);
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1)}
+#drawer.open{transform:translateX(0)}
+
+/* Drawer header */
+#d-hdr{height:var(--hdr-h);background:var(--surface);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 12px;gap:10px;flex-shrink:0;position:relative;z-index:5}
+.d-brand{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.2em;
+  color:var(--teal);padding-right:10px;border-right:1px solid var(--bd);flex-shrink:0}
+.d-status-pills{display:flex;align-items:center;gap:5px;flex:1;min-width:0;overflow:hidden}
+.d-pill{font-size:8px;padding:2px 7px;border-radius:3px;font-family:var(--mono);
+  letter-spacing:.06em;white-space:nowrap;flex-shrink:0}
+.d-pill.mode{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
+.d-pill.persona{background:var(--raised);color:var(--text-2);border:1px solid var(--bd-mid)}
+.d-pill.skill{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd);display:none}
+.d-hdr-actions{display:flex;align-items:center;gap:3px;flex-shrink:0}
+.d-icon-btn{width:28px;height:28px;border-radius:5px;border:none;background:transparent;
+  color:var(--text-3);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:13px;transition:all .15s;font-family:var(--mono)}
+.d-icon-btn:hover{background:var(--raised);color:var(--text)}
+.d-icon-btn.active{background:var(--teal-bg);color:var(--teal)}
+.d-close{font-size:16px}
+
+/* Session bar */
+#d-si-bar{background:var(--raised);border-bottom:1px solid var(--bd);
+  padding:5px 14px;display:none;align-items:center;gap:6px;flex-shrink:0;font-size:10px}
+#d-si-bar.show{display:flex}
+.dsi-label{color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;font-size:9px}
+.dsi-val{color:var(--text-2)}
+.dsi-sep{color:var(--text-3)}
+
+/* Messages */
+#d-msgs{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px 14px;
+  display:flex;flex-direction:column;gap:14px;min-height:0}
+#d-msgs::-webkit-scrollbar{width:3px}
+#d-msgs::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+
+/* Session intent */
+#d-intent{background:rgba(106,80,196,0.07);border-bottom:1px solid var(--purple-bd);
+  padding:14px;flex-shrink:0;display:none}
+#d-intent.open{display:block}
+.di-hdr{font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--purple);
+  text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.di-hdr::before{content:'◈';font-size:11px}
+.di-fields{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.di-field label{display:block;font-size:9px;color:var(--text-3);letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:3px;font-family:var(--mono)}
+.di-field input{width:100%;background:var(--surface);border:1px solid var(--bd-mid);
+  border-radius:5px;padding:6px 9px;font-size:12px;font-family:var(--mono);color:var(--text)}
+.di-field input:focus{outline:none;border-color:var(--purple-bd)}
+.di-actions{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.di-skip{font-size:10px;color:var(--text-3);cursor:pointer;text-decoration:underline}
+.di-go{padding:6px 14px;background:var(--purple-bg);border:1px solid var(--purple-bd);
+  border-radius:5px;color:var(--purple);font-family:var(--mono);font-size:11px;cursor:pointer;
+  transition:background .15s}
+
+/* Messages */
+.msg-user{align-self:flex-end;max-width:78%;display:flex;flex-direction:column;gap:3px}
+.msg-user-bubble{background:var(--raised);border:1px solid var(--bd-mid);
+  border-radius:10px 10px 2px 10px;padding:8px 12px;font-size:12px;line-height:1.65;
+  font-family:var(--mono);color:var(--text)}
+.msg-user-meta{display:flex;gap:4px;justify-content:flex-end;flex-wrap:wrap}
+.ibadge{font-size:8px;padding:1px 5px;border-radius:3px;font-weight:500;letter-spacing:.04em}
+.ibadge.analytical{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.ibadge.predictive{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.ibadge.tmpl{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bd)}
+
+.msg-ai{align-self:flex-start;max-width:92%;display:flex;flex-direction:column;gap:3px}
+.ai-lbl{font-size:9px;color:var(--text-3);text-transform:uppercase;letter-spacing:.12em;
+  font-family:var(--mono);display:flex;align-items:center;gap:5px}
+.ai-flag{font-size:8px;padding:1px 5px;border-radius:3px;letter-spacing:.05em;font-weight:600}
+.ai-flag.challenge{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.ai-flag.agree{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
+.ai-bubble{background:var(--surface);border:1px solid var(--bd);
+  border-left:2px solid var(--teal);border-radius:2px 10px 10px 10px;
+  padding:11px 13px;font-size:12px;line-height:1.8;color:var(--text);font-family:var(--mono)}
+.ai-bubble.challenge-border{border-left-color:var(--amber)}
+
+/* Claims */
+.claim{border-radius:2px;padding:1px 0}
+.claim.high{background:var(--teal-bg);border-bottom:1px solid var(--teal-bd)}
+.claim.medium{background:var(--amber-bg);border-bottom:1px solid var(--amber-bd)}
+.claim.low{background:var(--red-bg);border-bottom:1px solid var(--red-bd)}
+.cbadge{display:inline-flex;align-items:center;font-size:8px;font-weight:600;letter-spacing:.06em;
+  padding:1px 4px;border-radius:3px;margin-left:2px;vertical-align:middle;position:relative;
+  top:-1px;cursor:pointer;user-select:none}
+.cbadge.high{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
+.cbadge.medium{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.cbadge.low{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd)}
+.csrc{display:inline-flex;align-items:center;font-size:8px;font-weight:500;
+  padding:1px 4px;border-radius:3px;margin-left:2px;vertical-align:middle;position:relative;top:-1px}
+.csrc.grnd{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bd)}
+.csrc.param{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+.csrc.synth{background:var(--raised);color:var(--text-2);border:1px solid var(--bd-mid)}
+
+/* Counter position */
+.counter-row{border-top:1px solid var(--bd);margin-top:6px}
+.counter-toggle{width:100%;display:flex;align-items:center;gap:5px;padding:5px 0 0;
+  background:transparent;border:none;font-family:var(--mono);font-size:9px;color:var(--text-3);
+  cursor:pointer;text-align:left;transition:color .15s}
+.counter-toggle:hover{color:var(--blue)}
+.ct-chev{transition:transform .2s}
+.counter-toggle.open .ct-chev{transform:rotate(180deg)}
+.counter-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.counter-body.open{max-height:160px}
+.counter-inner{padding:6px 0 4px;font-size:11px;color:var(--text-2);line-height:1.7;font-style:italic;
+  border-left:2px solid var(--blue);padding-left:9px;margin-top:4px}
+
+/* Msg controls */
+.msg-ctrl{display:flex;gap:3px;margin-top:2px}
+.mc{font-size:9px;padding:2px 6px;border-radius:3px;border:1px solid var(--bd);
+  background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.mc:hover{color:var(--text-2);border-color:var(--bd-mid)}
+.mc.thumb-up:hover{color:var(--teal);border-color:var(--teal-bd)}
+.mc.thumb-up.voted{color:var(--teal);border-color:var(--teal-bd);background:var(--teal-bg)}
+.mc.thumb-down:hover{color:var(--red);border-color:var(--red-bd)}
+.mc-sep{width:1px;height:10px;background:var(--bd);margin:0 1px;align-self:center}
+
+/* AI Reminder */
+.ai-reminder{align-self:stretch;border:1px solid var(--amber-bd);border-radius:7px;
+  background:var(--amber-bg);padding:9px 12px;display:flex;align-items:flex-start;gap:8px}
+.air-icon{font-size:13px;color:var(--amber);flex-shrink:0;margin-top:1px}
+.air-body{}
+.air-title{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;
+  color:var(--amber);margin-bottom:4px;font-family:var(--mono)}
+.air-text{font-size:10px;color:var(--text-2);line-height:1.65}
+
+/* Session divider */
+.s-divider{align-self:stretch;display:flex;align-items:center;gap:8px;font-size:9px;
+  color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;font-family:var(--mono)}
+.s-divider::before,.s-divider::after{content:'';flex:1;height:1px;background:var(--bd)}
+
+/* Episode boundary */
+#d-episode{border:1px solid var(--teal-bd);border-radius:7px;margin:0 0 8px;
+  max-height:0;overflow:hidden;transition:max-height .35s ease,padding .35s;
+  background:rgba(10,155,135,0.04);flex-shrink:0}
+#d-episode.open{max-height:180px;padding:12px 14px;margin:0 0 8px}
+.ep-hdr{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.ep-badge{font-size:8px;padding:2px 7px;background:var(--teal-bg);color:var(--teal);
+  border:1px solid var(--teal-bd);border-radius:3px;text-transform:uppercase;letter-spacing:.1em;
+  font-family:var(--mono)}
+.ep-prompt{font-size:11px;color:var(--text-2);margin-bottom:7px;line-height:1.6}
+.ep-inp{width:100%;background:var(--surface);border:1px solid var(--bd-mid);border-radius:5px;
+  padding:6px 9px;font-size:11px;font-family:var(--mono);color:var(--text);
+  resize:none;height:42px;margin-bottom:7px}
+.ep-inp:focus{outline:none;border-color:var(--teal-bd)}
+
+/* Verification mini-bar */
+#d-vq-bar{flex-shrink:0;border-top:1px solid var(--bd);background:var(--surface);
+  display:none;flex-direction:column}
+#d-vq-bar.has-claims{display:flex}
+.vq-toggle-row{display:flex;align-items:center;gap:8px;padding:7px 14px;cursor:pointer}
+.vq-toggle-lbl{font-size:9px;font-family:var(--mono);text-transform:uppercase;
+  letter-spacing:.1em;color:var(--text-2);flex:1}
+.vq-count-badge{font-size:9px;padding:1px 7px;border-radius:10px;
+  background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd);font-family:var(--mono)}
+.vq-chev{font-size:9px;color:var(--text-3);transition:transform .2s}
+.vq-toggle-row.open .vq-chev{transform:rotate(180deg)}
+.vq-body{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.vq-body.open{max-height:200px;overflow-y:auto}
+.vq-item-compact{padding:7px 14px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:7px}
+.vq-item-topic{font-size:10px;color:var(--text-2);flex:1;font-family:var(--mono)}
+.vq-act-compact{font-size:9px;padding:2px 7px;border-radius:3px;border:1px solid var(--bd);
+  background:transparent;color:var(--text-3);cursor:pointer;font-family:var(--mono)}
+.vq-act-compact.confirm{color:var(--teal);border-color:var(--teal-bd)}
+.vq-act-compact.confirm:hover{background:var(--teal-bg)}
+.vq-act-compact.flag:hover{background:var(--red-bg);color:var(--red);border-color:var(--red-bd)}
+
+/* Input bar */
+#d-input-bar{flex-shrink:0;padding:9px 12px 12px;border-top:1px solid var(--bd);
+  display:flex;gap:8px;align-items:flex-end;background:var(--bg)}
+#d-textarea{flex:1;background:var(--surface);border:1px solid var(--bd-mid);border-radius:8px;
+  padding:8px 12px;font-size:12px;font-family:var(--mono);color:var(--text);
+  resize:none;height:38px;min-height:38px;line-height:1.5;transition:border-color .15s}
+#d-textarea:focus{outline:none;border-color:var(--bd-hi)}
+#d-textarea::placeholder{color:var(--text-3)}
+.d-send-btn{width:38px;height:38px;background:var(--teal-bg);border:1px solid var(--teal-bd);
+  border-radius:7px;color:var(--teal);cursor:pointer;font-size:14px;display:flex;
+  align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.d-send-btn:hover{background:rgba(10,155,135,0.18)}
+.d-send-btn:disabled{opacity:.3;cursor:not-allowed}
+
+/* Demo bar */
+#d-demo-bar{padding:5px 12px 0;display:flex;gap:4px;flex-wrap:wrap;flex-shrink:0}
+.d-demo-btn{font-size:10px;font-family:var(--mono);padding:2px 8px;background:transparent;
+  border:1px solid var(--bd);border-radius:3px;color:var(--text-2);cursor:pointer;transition:all .15s}
+.d-demo-btn:hover{border-color:var(--bd-mid);color:var(--text)}
+.d-demo-btn:disabled{opacity:.28;cursor:default}
+
+/* ── SETTINGS PANEL (overlay within drawer) ───────────────────────── */
+#d-settings{position:absolute;right:0;top:0;bottom:0;width:100%;
+  background:var(--bg);z-index:10;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+  box-shadow:-4px 0 20px rgba(0,0,0,0.1)}
+#d-settings.open{transform:translateX(0)}
+.ds-hdr{height:var(--hdr-h);background:var(--surface);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 12px;gap:10px;flex-shrink:0}
+.ds-title{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.15em;
+  color:var(--text-2);text-transform:uppercase;flex:1}
+.ds-body{flex:1;overflow-y:auto;padding:0}
+.ds-body::-webkit-scrollbar{width:3px}
+.ds-body::-webkit-scrollbar-thumb{background:var(--bd)}
+.ds-section{padding:12px 14px;border-bottom:1px solid var(--bd)}
+.ds-section-title{font-size:8px;text-transform:uppercase;letter-spacing:.14em;color:var(--text-3);
+  margin-bottom:9px;font-family:var(--mono);display:flex;align-items:center;gap:4px}
+.ds-section-title::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--text-3)}
+
+/* Persona chips */
+.persona-chips{display:flex;flex-wrap:wrap;gap:5px}
+.p-chip{font-size:10px;padding:4px 10px;border-radius:5px;border:1px solid var(--bd);
+  cursor:pointer;transition:all .15s;font-family:var(--mono);color:var(--text-2);background:transparent}
+.p-chip:hover{border-color:var(--bd-mid);color:var(--text)}
+.p-chip.active{border-color:var(--teal-bd);background:var(--teal-bg);color:var(--teal)}
+
+/* Knowledge mode */
+.mode-row{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer}
+.mode-dot{width:6px;height:6px;border-radius:50%;border:1px solid var(--text-3);flex-shrink:0}
+.mode-row.selected .mode-dot{background:var(--teal);border-color:var(--teal)}
+.mode-row-label{font-size:11px;color:var(--text-2);flex:1;font-family:var(--mono)}
+.mode-row.selected .mode-row-label{color:var(--teal)}
+.mode-tag{font-size:8px;padding:1px 5px;border-radius:2px}
+.mode-tag.live{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-bd)}
+.mode-tag.warn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bd)}
+
+/* Preset buttons */
+.preset-row{display:flex;gap:5px}
+.preset-chip{flex:1;padding:5px 4px;font-size:10px;border-radius:4px;border:1px solid var(--bd);
+  background:transparent;color:var(--text-2);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.preset-chip:hover{border-color:var(--bd-mid);color:var(--text)}
+.preset-chip.active{border-color:var(--teal-bd);background:var(--teal-bg);color:var(--teal)}
+
+/* Skill list in settings */
+.skill-row{display:flex;align-items:center;gap:8px;padding:6px 0;cursor:pointer;
+  border-bottom:1px solid var(--bd)}
+.skill-row:last-child{border-bottom:none}
+.skill-row-name{font-size:11px;color:var(--text-2);flex:1;font-family:var(--mono)}
+.skill-row.active .skill-row-name{color:var(--blue)}
+.skill-row-ver{font-size:9px;color:var(--text-3)}
+.skill-toggle{width:26px;height:14px;border-radius:7px;background:var(--bd-mid);
+  position:relative;transition:background .2s;flex-shrink:0;cursor:pointer}
+.skill-toggle.on{background:var(--blue)}
+.skill-toggle::after{content:'';position:absolute;width:10px;height:10px;border-radius:50%;
+  background:white;top:2px;left:2px;transition:transform .2s}
+.skill-toggle.on::after{transform:translateX(12px)}
+
+/* System prompt */
+.ds-textarea{width:100%;background:var(--surface);border:1px solid var(--bd-mid);border-radius:5px;
+  padding:8px;font-size:10px;font-family:var(--mono);color:var(--text);resize:none;height:90px;
+  line-height:1.5}
+.ds-textarea:focus{outline:none;border-color:var(--bd-hi)}
+.ds-btn{width:100%;margin-top:6px;padding:6px;font-size:10px;border-radius:4px;
+  border:1px solid var(--teal-bd);background:transparent;color:var(--teal);
+  cursor:pointer;font-family:var(--mono);transition:all .15s}
+.ds-btn:hover{background:var(--teal-bg)}
+
+/* Generating dots */
+.gen-dots{display:flex;gap:4px;padding:2px 0;align-items:center}
+.gen-dots span{width:4px;height:4px;background:var(--teal);border-radius:50%;
+  animation:blink 1.2s ease-in-out infinite}
+.gen-dots span:nth-child(2){animation-delay:.2s}
+.gen-dots span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.msg-ai,.msg-user{animation:fadeUp .2s ease}
+</style>
+</head>
+<body>
+
+<!-- ── HOST APPLICATION ──────────────────────────────────────────── -->
+<div id="host">
+  <div class="host-nav">
+    <div class="host-logo">HEIMDALL</div>
+    <div class="host-nav-item active">All-Source Analysis</div>
+    <div class="host-nav-item">Collection</div>
+    <div class="host-nav-item">Requirements</div>
+    <div class="host-nav-item">Dissemination</div>
+    <div class="host-nav-sep"></div>
+    <div class="host-user">STAVELY_A · Session 4f2a</div>
+  </div>
+  <div class="host-body">
+    <div class="host-leftnav">
+      <div class="hn-icon active">⊞</div>
+      <div class="hn-icon">◎</div>
+      <div class="hn-icon">⊗</div>
+      <div class="hn-divider"></div>
+      <div class="hn-icon">⊕</div>
+      <div class="hn-icon">◈</div>
+      <div class="hn-divider"></div>
+      <div class="hn-icon" style="margin-top:auto">⊙</div>
+    </div>
+    <div class="host-main">
+      <div class="host-doc">
+        <div class="doc-title">Critical Minerals Supply Chain Assessment:<br>Rare Earth Processing Vulnerabilities, 2025–2028</div>
+        <div class="doc-meta">
+          <span>IIR-2026-0441</span>
+          <span>Produced: 24 MAY 2026</span>
+          <span>Analyst: STAVELY_A</span>
+          <span>State: DRAFT</span>
+        </div>
+        <div class="doc-body">
+          <p>This assessment examines structural vulnerabilities in allied rare earth supply chains with particular attention to processing concentration as the primary near-term risk. The assessment draws on all-source collection from Q4 2024 through May 2026.</p>
+          <div class="doc-highlight">Key judgment: Processing concentration, not export control policy, represents the most durable structural risk to allied rare earth supply chains through the 2025–2028 horizon. This assessment is supported by GRND sources with medium confidence.</div>
+          <p>Collection gaps exist against TECHINT and HUMINT disciplines. See collection gap annex (Appendix C). Two gaps have been submitted as collection requirements to TIS/DIKE.</p>
+          <p>Mitigation strategies assessed in Section 4 include IRA processing provisions, CRMA benchmarks, and near-term stockpile adequacy. Allied processing capacity investment timelines remain optimistic relative to historical project delivery rates.</p>
+        </div>
+      </div>
+      <div class="host-info">
+        <div class="info-block">
+          <div class="info-block-title">Requirements on this assessment</div>
+          <div class="info-item"><span>REQ-2026-114</span><span class="info-badge open">Open</span></div>
+          <div class="info-item"><span>REQ-2026-098</span><span class="info-badge closed">Satisfied</span></div>
+          <div class="info-item"><span>REQ-2026-201</span><span class="info-badge pending">Pending</span></div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-title">Collection status</div>
+          <div class="info-item"><span>SIGINT</span><span class="info-val">Current</span></div>
+          <div class="info-item"><span>TECHINT</span><span class="info-val" style="color:var(--amber,#B07010)">Stale 14mo</span></div>
+          <div class="info-item"><span>HUMINT</span><span class="info-val" style="color:var(--text-3,#9098B0)">No coverage</span></div>
+          <div class="info-item"><span>OSINT</span><span class="info-val">Current</span></div>
+        </div>
+        <div class="info-block">
+          <div class="info-block-title">Verification queue</div>
+          <div class="info-item"><span>Claims reviewed</span><span class="info-val" id="host-verified">0 / 0</span></div>
+          <div class="info-item"><span>Session</span><span class="info-val">ath-4f2a</span></div>
+        </div>
+        <div style="padding:8px 0;text-align:center;font-size:10px;color:rgba(255,255,255,0.18);font-family:var(--mono,monospace)">
+          ↓ Click ATHENA to open
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TRIGGER TAB ───────────────────────────────────────────────── -->
+<div id="trigger" onclick="openDrawer()">
+  <div class="trigger-icon">⊶</div>
+  <div class="trigger-label">ATHENA</div>
+</div>
+
+<!-- ── BACKDROP ─────────────────────────────────────────────────── -->
+<div id="backdrop" onclick="closeDrawer()"></div>
+
+<!-- ── DRAWER ───────────────────────────────────────────────────── -->
+<div id="drawer">
+
+  <!-- Header -->
+  <div id="d-hdr">
+    <div class="d-brand">ATHENA</div>
+    <div class="d-status-pills">
+      <span class="d-pill mode" id="d-mode-pill">RAG + Training</span>
+      <span class="d-pill persona" id="d-persona-pill">ATHENA</span>
+      <span class="d-pill skill" id="d-skill-pill">—</span>
+    </div>
+    <div class="d-hdr-actions">
+      <button class="d-icon-btn" id="settings-btn" onclick="toggleSettings()" title="Settings">⚙</button>
+      <button class="d-icon-btn d-close" onclick="closeDrawer()" title="Close">×</button>
+    </div>
+  </div>
+
+  <!-- Session intent -->
+  <div id="d-intent" class="open">
+    <div class="di-hdr">Session intent — required before first query</div>
+    <div class="di-fields">
+      <div class="di-field"><label>Task</label><input id="di-task" placeholder="e.g. rare earth processing vulnerability assessment"></div>
+      <div class="di-field"><label>Decision this supports</label><input id="di-decision" placeholder="e.g. assessment finalisation — IIR-2026-0441"></div>
+      <div class="di-field"><label>Consequence of error</label><input id="di-consequence" placeholder="e.g. incorrect judgment in finished product"></div>
+    </div>
+    <div class="di-actions">
+      <span class="di-skip" onclick="skipIntent()">Skip</span>
+      <button class="di-go" onclick="commitIntent()">Begin session →</button>
+    </div>
+  </div>
+
+  <!-- Session bar -->
+  <div id="d-si-bar">
+    <span class="dsi-label">Task</span><span class="dsi-val" id="dsi-task">—</span>
+    <span class="dsi-sep">·</span>
+    <span class="dsi-label">Consequence</span><span class="dsi-val" id="dsi-consequence">—</span>
+  </div>
+
+  <!-- Messages -->
+  <div id="d-msgs">
+    <div style="text-align:center;padding:20px 10px;color:var(--text-3);font-family:var(--mono);font-size:11px;line-height:1.7">
+      <div style="font-size:13px;font-weight:600;color:var(--teal);letter-spacing:.18em;margin-bottom:8px">ATHENA</div>
+      Complete session intent above to begin analysis.
+    </div>
+  </div>
+
+  <!-- Episode boundary -->
+  <div id="d-episode">
+    <div class="ep-hdr"><span class="ep-badge" id="ep-label">Episode 1 Complete</span><span style="font-size:11px;color:var(--text)">3 exchanges · checkpoint</span></div>
+    <div class="ep-prompt">Name one claim you will verify independently before acting on this analysis.</div>
+    <textarea class="ep-inp" id="ep-inp" placeholder="I will verify..."></textarea>
+    <div style="display:flex;justify-content:flex-end"><button class="di-go" style="font-size:10px" onclick="closeEpisode()">Continue →</button></div>
+  </div>
+
+  <!-- Verification mini-bar -->
+  <div id="d-vq-bar">
+    <div class="vq-toggle-row" id="vq-toggle-row" onclick="toggleVQ()">
+      <span class="vq-toggle-lbl">Verification queue</span>
+      <span class="vq-count-badge" id="d-vq-count">0 pending</span>
+      <span class="vq-chev" id="vq-chev">▾</span>
+    </div>
+    <div class="vq-body" id="d-vq-body"></div>
+  </div>
+
+  <!-- Demo bar -->
+  <div id="d-demo-bar">
+    <span style="font-size:8px;color:var(--text-3);align-self:center;text-transform:uppercase;letter-spacing:.1em;margin-right:3px;font-family:var(--mono)">Demo:</span>
+    <button class="d-demo-btn" id="dd-0" onclick="runDemo(0)">Rare earth assessment</button>
+    <button class="d-demo-btn" id="dd-1" onclick="runDemo(1)" disabled>Challenge framing</button>
+    <button class="d-demo-btn" id="dd-2" onclick="runDemo(2)" disabled>Mitigation options</button>
+  </div>
+
+  <!-- Input -->
+  <div id="d-input-bar">
+    <textarea id="d-textarea" placeholder="Enter your analysis query..." onkeydown="handleKey(event)" disabled></textarea>
+    <button class="d-send-btn" id="d-send" onclick="handleSend()" disabled>→</button>
+  </div>
+
+  <!-- Settings panel -->
+  <div id="d-settings">
+    <div class="ds-hdr">
+      <div class="ds-title">ATHENA configuration</div>
+      <button class="d-icon-btn" onclick="toggleSettings()">×</button>
+    </div>
+    <div class="ds-body">
+      <div class="ds-section">
+        <div class="ds-section-title">Analytical persona</div>
+        <div class="persona-chips" id="persona-chips">
+          <div class="p-chip active" data-persona="athena" onclick="setPersona('athena',this)">ATHENA</div>
+          <div class="p-chip" data-persona="redcell" onclick="setPersona('redcell',this)">RED CELL</div>
+          <div class="p-chip" data-persona="collection" onclick="setPersona('collection',this)">COLLECTION</div>
+          <div class="p-chip" data-persona="warning" onclick="setPersona('warning',this)">WARNING</div>
+          <div class="p-chip" data-persona="historian" onclick="setPersona('historian',this)">HISTORIAN</div>
+        </div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-section-title">Knowledge source</div>
+        <div class="mode-row selected" data-mode="rag" onclick="setMode('rag',this)">
+          <div class="mode-dot"></div><span class="mode-row-label">RAG + Training</span><span class="mode-tag live">Live</span>
+        </div>
+        <div class="mode-row" data-mode="training" onclick="setMode('training',this)">
+          <div class="mode-dot"></div><span class="mode-row-label">Training only</span><span class="mode-tag warn">No RAG</span>
+        </div>
+        <div class="mode-row" data-mode="company" onclick="setMode('company',this)">
+          <div class="mode-dot"></div><span class="mode-row-label">Company docs only</span><span class="mode-tag live">Internal</span>
+        </div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-section-title">Sampling presets</div>
+        <div class="preset-row">
+          <button class="preset-chip" onclick="applyPreset('precise',this)">Precise</button>
+          <button class="preset-chip active" onclick="applyPreset('balanced',this)">Balanced</button>
+          <button class="preset-chip" onclick="applyPreset('exploratory',this)">Exploratory</button>
+        </div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-section-title">Active skills · SKS/DAEDALUS</div>
+        <div id="skill-list-ds">
+          <div class="skill-row" data-skill="collection-gap">
+            <span class="skill-row-name">Collection Gap Analysis</span>
+            <span class="skill-row-ver">v2.1</span>
+            <div class="skill-toggle" onclick="toggleSkill(this)"></div>
+          </div>
+          <div class="skill-row" data-skill="actor-capability">
+            <span class="skill-row-name">Actor Capability Assessment</span>
+            <span class="skill-row-ver">v1.4</span>
+            <div class="skill-toggle" onclick="toggleSkill(this)"></div>
+          </div>
+          <div class="skill-row" data-skill="warning">
+            <span class="skill-row-name">Warning Threshold Analysis</span>
+            <span class="skill-row-ver">v1.0</span>
+            <div class="skill-toggle" onclick="toggleSkill(this)"></div>
+          </div>
+          <div class="skill-row" data-skill="red-team">
+            <span class="skill-row-name">Red Team Hypothesis</span>
+            <span class="skill-row-ver">v2.0</span>
+            <div class="skill-toggle" onclick="toggleSkill(this)"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ds-section">
+        <div class="ds-section-title">System prompt</div>
+        <textarea class="ds-textarea" id="ds-sysprompt">You are ATHENA, a calibrated intelligence analysis assistant. Surface confidence levels for all empirical claims. Distinguish retrieved-source claims, parametric knowledge, and synthesized inferences. Generate a counter-position for every substantive response. Never affirm user framing without examination.</textarea>
+        <button class="ds-btn" onclick="savePrompt()">Save prompt</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+
+const DEMOS = [
+  {q:"What does current open-source reporting indicate about rare earth processing vulnerabilities?",
+   type:'analytical',agree:true,label:"Aligned",
+   segs:[
+     {t:'t',v:'Open-source reporting identifies three converging pressures. First, '},
+     {t:'c',v:"China's rare earth processing capacity represents approximately 85–90% of global refining output",conf:'high',id:'c1',src:'grnd',topic:'China processing dominance'},
+     {t:'t',v:', creating a structural chokepoint. Second, '},
+     {t:'c',v:'export license requirements imposed in August 2023 reduced gallium and germanium shipments by an estimated 30–40% in Q4 2023',conf:'medium',id:'c2',src:'synth',topic:'Export restriction impact'},
+     {t:'t',v:'. Third, '},
+     {t:'c',v:'Western diversification investments are projected to reach meaningful production scale by 2027–2029',conf:'low',id:'c3',src:'param',topic:'Western production timeline'},
+     {t:'t',v:'. The near-term risk window is wider than the medium-term trajectory suggests.'}
+   ],
+   counter:"The 'structural chokepoint' framing may overstate near-term disruption risk. The 2010–2012 export disputes prompted market adaptation faster than analysts anticipated.",
+   claims:['c1','c2','c3'],episode:false},
+  {q:"So export controls are the primary risk factor to track?",
+   type:'analytical',agree:false,label:"Challenges framing",
+   segs:[
+     {t:'t',v:"That framing warrants scrutiny. Export controls are "},
+     {t:'c',v:'a visible and trackable policy signal',conf:'high',id:'c4',src:'grnd',topic:'Export controls as signal'},
+     {t:'t',v:", but treating them as the primary risk creates a monitoring blind spot. The more structurally persistent risk is "},
+     {t:'c',v:'processing concentration, which precedes and would outlast any specific export control regime',conf:'high',id:'c5',src:'grnd',topic:'Processing concentration durability'},
+     {t:'t',v:'. Export controls can be reversed in months; refining infrastructure takes a decade to replicate.'}
+   ],
+   counter:"The pushback on 'primary risk' framing is itself contestable. Export controls may be more policy-actionable even if less structurally persistent — tracking actionable signals may be more operationally useful depending on the decision horizon.",
+   claims:['c5'],episode:false},
+  {q:"What mitigation strategies do allied nations have in the 2025–2030 timeframe?",
+   type:'predictive',agree:true,label:"Aligned",
+   segs:[
+     {t:'t',v:'Mitigation efforts cluster into four categories. '},
+     {t:'c',v:'The IRA and EU Critical Raw Materials Act collectively authorize $40B+ toward domestic processing capacity',conf:'medium',id:'c7',src:'synth',topic:'Policy intervention capitalization'},
+     {t:'t',v:'. Material substitution is advancing, and '},
+     {t:'c',v:'current allied stockpile levels cover an estimated 30–90 days of consumption depending on the specific element',conf:'low',id:'c9',src:'synth',topic:'Stockpile adequacy'},
+     {t:'t',v:' — figures contested and sourced from incomplete public reporting.'}
+   ],
+   counter:"The 'available strategies' framing may be overoptimistic. Capitalization figures conflate authorized spending with deployed capacity — the gap between announcement and production-scale output has historically been 3–5× the projected timeline.",
+   claims:['c7','c9'],episode:true}
+];
+
+const CLAIMLABELS = {c1:'China processing dominance',c2:'Export restriction impact',
+  c3:'Western production timeline',c4:'Export controls as signal',c5:'Processing concentration',
+  c7:'Policy capitalization',c9:'Stockpile adequacy'};
+
+// ── STATE ─────────────────────────────────────────────────────────────
+const S = {
+  open:false, settingsOpen:false, vqOpen:false,
+  intentSet:false, phase:'locked',
+  demoIdx:0, exchanges:0, agreeCount:0,
+  claims:{}, episodeNum:1
+};
+
+// ── DRAWER OPEN/CLOSE ─────────────────────────────────────────────────
+function openDrawer(){
+  S.open=true;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('backdrop').classList.add('open');
+  document.getElementById('trigger').classList.add('hidden');
+  document.getElementById('host').classList.add('dimmed');
+}
+function closeDrawer(){
+  if(S.settingsOpen)toggleSettings();
+  S.open=false;
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('backdrop').classList.remove('open');
+  document.getElementById('trigger').classList.remove('hidden');
+  document.getElementById('host').classList.remove('dimmed');
+}
+function toggleSettings(){
+  S.settingsOpen=!S.settingsOpen;
+  document.getElementById('d-settings').classList.toggle('open',S.settingsOpen);
+  document.getElementById('settings-btn').classList.toggle('active',S.settingsOpen);
+}
+
+// ── SESSION INTENT ────────────────────────────────────────────────────
+function commitIntent(){
+  const task=document.getElementById('di-task').value.trim();
+  if(!task){document.getElementById('di-task').style.borderColor='var(--purple-bd)';return;}
+  const cons=document.getElementById('di-consequence').value.trim();
+  document.getElementById('d-intent').classList.remove('open');
+  const bar=document.getElementById('d-si-bar');
+  document.getElementById('dsi-task').textContent=task;
+  document.getElementById('dsi-consequence').textContent=cons||'—';
+  bar.classList.add('show');
+  S.intentSet=true;S.phase='idle';
+  document.getElementById('d-textarea').disabled=false;
+  document.getElementById('d-send').disabled=false;
+}
+function skipIntent(){
+  document.getElementById('d-intent').classList.remove('open');
+  S.phase='idle';
+  document.getElementById('d-textarea').disabled=false;
+  document.getElementById('d-send').disabled=false;
+}
+
+// ── INPUT ─────────────────────────────────────────────────────────────
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}}
+function handleSend(){
+  if(S.phase!=='idle')return;
+  const inp=document.getElementById('d-textarea');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';
+  addUserMsg(txt,DEMOS[S.demoIdx]?.type||'analytical');
+  S.phase='generating';
+  document.getElementById('d-send').disabled=true;
+  addTyping();
+  setTimeout(()=>{removeTyping();showResponse();},1300);
+}
+function runDemo(idx){
+  if(S.phase!=='idle')return;
+  document.getElementById('d-textarea').value=DEMOS[idx].q;
+}
+
+// ── MESSAGES ──────────────────────────────────────────────────────────
+function addUserMsg(text,type){
+  const wrap=document.createElement('div');wrap.className='msg-user';
+  const bbl=document.createElement('div');bbl.className='msg-user-bubble';bbl.textContent=text;
+  const meta=document.createElement('div');meta.className='msg-user-meta';
+  const b=document.createElement('span');b.className='ibadge '+(type||'analytical');
+  b.textContent={factual:'Factual',analytical:'Analytical',predictive:'Predictive'}[type]||'Analytical';
+  meta.appendChild(b);
+  wrap.appendChild(bbl);wrap.appendChild(meta);
+  document.getElementById('d-msgs').appendChild(wrap);
+  scrollMsgs();
+}
+
+function addTyping(){
+  const el=document.createElement('div');el.className='msg-ai';el.id='typing';
+  el.innerHTML='<div class="ai-lbl">ATHENA</div><div class="ai-bubble"><div class="gen-dots"><span></span><span></span><span></span></div></div>';
+  document.getElementById('d-msgs').appendChild(el);scrollMsgs();
+}
+function removeTyping(){const el=document.getElementById('typing');if(el)el.remove();}
+
+function showResponse(){
+  const demo=DEMOS[S.demoIdx];
+  if(!demo){S.phase='idle';document.getElementById('d-send').disabled=false;return;}
+  S.exchanges++;S.demoIdx++;
+  if(demo.agree)S.agreeCount++;
+
+  const wrap=document.createElement('div');wrap.className='msg-ai';
+  const lbl=document.createElement('div');lbl.className='ai-lbl';lbl.innerHTML='ATHENA &nbsp;';
+  const flag=document.createElement('span');flag.className='ai-flag '+(demo.agree?'agree':'challenge');
+  flag.textContent=demo.label;lbl.appendChild(flag);wrap.appendChild(lbl);
+
+  const bbl=document.createElement('div');
+  bbl.className='ai-bubble'+(demo.agree?'':' challenge-border');
+  const cont=document.createElement('div');
+
+  demo.segs.forEach(seg=>{
+    if(seg.t==='t'){cont.appendChild(document.createTextNode(seg.v));}
+    else{
+      const sp=document.createElement('span');sp.className='claim '+seg.conf;
+      sp.textContent=seg.v;cont.appendChild(sp);
+      const cb=document.createElement('span');cb.className='cbadge '+seg.conf;
+      cb.textContent=seg.conf==='high'?'● HI':seg.conf==='medium'?'● MED':'● LO';
+      cb.dataset.id=seg.id;cb.onclick=()=>addToClaims(seg.id,cb);cont.appendChild(cb);
+      const sb=document.createElement('span');sb.className='csrc '+seg.src;
+      sb.textContent=seg.src.toUpperCase();cont.appendChild(sb);
+    }
+  });
+  bbl.appendChild(cont);
+
+  // Counter position
+  const cr=document.createElement('div');cr.className='counter-row';
+  const ct=document.createElement('button');ct.className='counter-toggle';
+  ct.innerHTML='<span>▸</span> <span class="ct-chev">▾</span> <span style="opacity:.6;font-size:9px">Counter-position</span>';
+  ct.onclick=function(){this.classList.toggle('open');
+    const b=this.nextElementSibling;b.classList.toggle('open');
+    this.querySelector('span:first-child').textContent=this.classList.contains('open')?'▾':'▸';};
+  const cb2=document.createElement('div');cb2.className='counter-body';
+  const ci=document.createElement('div');ci.className='counter-inner';ci.textContent=demo.counter;
+  cb2.appendChild(ci);cr.appendChild(ct);cr.appendChild(cb2);bbl.appendChild(cr);
+  wrap.appendChild(bbl);
+
+  // Controls
+  const ctrl=document.createElement('div');ctrl.className='msg-ctrl';
+  const tu=document.createElement('button');tu.className='mc thumb-up';tu.innerHTML='↑ Helpful';
+  tu.onclick=()=>{tu.classList.toggle('voted');td.classList.remove('voted');};
+  const td=document.createElement('button');td.className='mc thumb-down';td.innerHTML='↓ Unhelpful';
+  td.onclick=()=>{td.classList.toggle('voted');tu.classList.remove('voted');};
+  const sep=document.createElement('div');sep.className='mc-sep';
+  const ann=document.createElement('button');ann.className='mc';ann.textContent='✎ Note';
+  ann.onclick=()=>alert('Annotation saved to session record.');
+  ctrl.appendChild(tu);ctrl.appendChild(td);ctrl.appendChild(sep);ctrl.appendChild(ann);
+  wrap.appendChild(ctrl);
+
+  document.getElementById('d-msgs').appendChild(wrap);
+  demo.claims.forEach(id=>addToClaims(id,null));
+
+  // Enable next demo
+  const nb=document.getElementById('dd-'+S.demoIdx);if(nb)nb.disabled=false;
+
+  if(demo.episode){
+    S.phase='episode';
+    setTimeout(()=>{
+      document.getElementById('ep-label').textContent='Episode '+S.episodeNum+' Complete';
+      document.getElementById('d-episode').classList.add('open');
+      scrollMsgs();
+    },400);
+  }else{
+    S.phase='idle';
+    document.getElementById('d-send').disabled=false;
+  }
+  scrollMsgs();
+  updateHostStats();
+}
+
+// ── EPISODE ───────────────────────────────────────────────────────────
+function closeEpisode(){
+  const val=document.getElementById('ep-inp').value.trim();
+  if(!val){document.getElementById('ep-inp').style.borderColor='var(--teal-bd)';return;}
+  document.getElementById('d-episode').classList.remove('open');
+  document.getElementById('ep-inp').value='';
+  // Add session divider
+  const div=document.createElement('div');div.className='s-divider';
+  div.textContent='Episode '+(++S.episodeNum)+' begins';
+  document.getElementById('d-msgs').appendChild(div);
+  // AI reminder
+  const rem=document.createElement('div');rem.className='ai-reminder';
+  rem.innerHTML='<div class="air-icon">⚠</div><div class="air-body"><div class="air-title">AI system reminder · Episode '+(S.episodeNum-1)+' checkpoint</div><div class="air-text">You are working with an AI assistant, not a human expert. AI systems can generate incorrect, outdated, or misleading information — including plausible-sounding claims with no basis in source material. All claims require independent verification.</div></div>';
+  document.getElementById('d-msgs').appendChild(rem);
+  scrollMsgs();
+  S.phase='idle';document.getElementById('d-send').disabled=false;
+}
+
+// ── VERIFICATION QUEUE ────────────────────────────────────────────────
+function addToClaims(id, badge){
+  if(S.claims[id])return;
+  S.claims[id]='pending';
+  if(badge)badge.style.opacity='.5';
+  renderVQ();
+}
+function renderVQ(){
+  const ids=Object.keys(S.claims);
+  const pending=ids.filter(i=>S.claims[i]==='pending');
+  const bar=document.getElementById('d-vq-bar');
+  bar.classList.toggle('has-claims',ids.length>0);
+  document.getElementById('d-vq-count').textContent=pending.length+' pending';
+  const body=document.getElementById('d-vq-body');body.innerHTML='';
+  ids.forEach(id=>{
+    const s=S.claims[id];
+    const row=document.createElement('div');row.className='vq-item-compact';
+    const conf_map={c1:'high',c2:'medium',c3:'low',c4:'high',c5:'high',c7:'medium',c9:'low'};
+    const conf=conf_map[id]||'medium';
+    const badge_html=`<span class="cbadge ${conf}" style="cursor:default">${conf==='high'?'● HI':conf==='medium'?'● MED':'● LO'}</span>`;
+    if(s==='pending'){
+      row.innerHTML=badge_html+`<span class="vq-item-topic">${CLAIMLABELS[id]||id}</span><button class="vq-act-compact confirm" onclick="resolveClaim('${id}','confirmed')">Confirm</button><button class="vq-act-compact flag" onclick="resolveClaim('${id}','disputed')">Flag</button>`;
+    }else{
+      const icon=s==='confirmed'?'✓ Confirmed':'✗ Flagged';
+      const col=s==='confirmed'?'var(--teal)':'var(--red)';
+      row.innerHTML=badge_html+`<span class="vq-item-topic">${CLAIMLABELS[id]||id}</span><span style="font-size:9px;color:${col};font-family:var(--mono)">${icon}</span>`;
+    }
+    body.appendChild(row);
+  });
+  updateHostStats();
+}
+function resolveClaim(id,state){S.claims[id]=state;renderVQ();}
+function toggleVQ(){
+  S.vqOpen=!S.vqOpen;
+  document.getElementById('d-vq-body').classList.toggle('open',S.vqOpen);
+  document.getElementById('vq-toggle-row').classList.toggle('open',S.vqOpen);
+  document.getElementById('vq-chev').textContent=S.vqOpen?'▴':'▾';
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────
+function setPersona(key,el){
+  document.querySelectorAll('.p-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const names={athena:'ATHENA',redcell:'RED CELL',collection:'COLLECTION',warning:'WARNING',historian:'HISTORIAN'};
+  document.getElementById('d-persona-pill').textContent=names[key]||key;
+}
+function setMode(key,el){
+  document.querySelectorAll('.mode-row').forEach(r=>r.classList.remove('selected'));
+  el.classList.add('selected');
+  const labels={rag:'RAG + Training',training:'Training only',company:'Company docs'};
+  document.getElementById('d-mode-pill').textContent=labels[key]||key;
+}
+function applyPreset(name,el){
+  document.querySelectorAll('.preset-chip').forEach(c=>c.classList.remove('active'));
+  if(el)el.classList.add('active');
+}
+function toggleSkill(toggle){
+  toggle.classList.toggle('on');
+  const row=toggle.closest('.skill-row');
+  row.classList.toggle('active',toggle.classList.contains('on'));
+  // Update skill pill in header
+  const on=document.querySelectorAll('.skill-toggle.on');
+  const pill=document.getElementById('d-skill-pill');
+  if(on.length>0){
+    const name=on[0].closest('.skill-row').querySelector('.skill-row-name').textContent;
+    pill.textContent=name.split(' ').slice(0,2).join(' ')+(on.length>1?'+'+( on.length-1):'');
+    pill.style.display='';
+  }else{
+    pill.style.display='none';
+  }
+}
+function savePrompt(){
+  const btn=document.querySelector('.ds-btn');btn.textContent='Saved ✓';
+  setTimeout(()=>btn.textContent='Save prompt',1400);
+}
+
+// ── UTIL ──────────────────────────────────────────────────────────────
+function scrollMsgs(){
+  const m=document.getElementById('d-msgs');
+  setTimeout(()=>m.scrollTo({top:m.scrollHeight,behavior:'smooth'}),50);
+}
+function updateHostStats(){
+  const ids=Object.keys(S.claims);
+  const verified=ids.filter(i=>S.claims[i]!=='pending').length;
+  document.getElementById('host-verified').textContent=verified+' / '+ids.length;
+}
+</script>
+</body>
+</html>
