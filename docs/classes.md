@@ -1,1 +1,23 @@
+# AI 804 - Ethics of AI
 Artificial Intelligence (AI) is the use of machines to do tasks that seem to require human intelligence and cognitive skills (thinking, natural language, inference, decision making etc.) The Ethics of Artificial Intelligence is the young branch of applied ethics that seeks to study the far-reaching and diverse ethical issues that arise with the widespread and rapid integration of AI technologies into various aspects of our lives. The challenge is that we are in an uncharted ethical territory with regard to AI: we need to radically adjust our existing ethical paradigms or introduce new ones as we experience and acquire a better grasp of the problems involved in AI-human interaction. A large portion of these issues reflect our concerns about the harm that the use and misuse of AI might cause for humanity. Such issues range from threats to individual privacy and freedom to wider social implications regarding economic justice and race and gender equality. However, as AI systems develop and attain higher levels of intelligence, questions about their moral status become more pressing. If these systems are capable of moral agency, then not only do they have responsibilities towards other moral agents like us, but they also have rights that we should respect in our conduct towards them. This course offers an overview of the nature and extent of the ethical issues arising from AI-human interaction as well as the philosophical background (particularly, in ethics and philosophy of mind) required to develop an informed methodology in approaching these issues, with the help of the flourishing literature on the subject.
+
+
+# SYSEN 880 - Systems Architecture 
+System architecture is an abstract view of a complex system distinct from the details of how such a system is implemented. It plays a significant role in developing complex systems that meet expectations of their stakeholders and achieve the mission and life cycle concepts of the system. This course covers the fundamental concepts, techniques, and methods for creating and analyzing system architecture of complex systems. System engineers, system architects, product design engineers, product managers, and project managers working in system development of commercial or military engineering systems will benefit from this course.
+Major topics to be covered include analysis of form and function, the process of mapping form to function, and methods of decomposition and re-integration, application of model based systems engineering for development and analysis of system architecture, and view-based architectural frameworks for documentation of system architecture.
+Students will:
+- Learn the significance of system architecture,
+- Learn fundamental concepts underlying a system architecture,
+- Learn models, methods, and tools for architecture development and analysis,
+- Demonstrate understanding of influences on system architecture decisions
+- Explore architectural frameworks for documentation of system architecture
+
+# SYSEN 507 - Systems Thinking 
+The theory and practice of systems thinking. General systems theory; system dynamics, emergent properties, strcuture, feedback and leverage.
+
+# ENGR 804 - Engineering Product Innovation
+Develop competencies for leading new product/process development or participating in corporate spin-outs using entrepreneurial skills within a corporation.
+
+This course focuses on the development of the competencies required to become a successful new product leader or corporate innovator within an engineering context. Course topics include: identification and development of the knowledge, skills, and attitudes of entrepreneurial leaders; fundamentals of corporate entrepreneurship; methods to leveraging intellectual property (IP); and development and use of the Business Model Canvas (BMC) for product development and commercialization. These topics are central to leading new product/process development within an existing engineering corporation.
+
+Upon successful completion of this course, students will be able to: describe the successful engineering leadership competencies of a corporate innovator, discuss and apply leadership strategies for leading innovation and creativity within engineering teams, analyze corporate innovation successes and failures and identify factors that play a role, outline the innovation management process and determine barriers to implementation inside the organization, define a successful new product launch using the Business Model Canvas (BMC), and describe the value of intellectual property and patent process to new product innovation within a corporation.
