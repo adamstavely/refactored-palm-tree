@@ -1,0 +1,2059 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System · Style Guide v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── TOKENS ──────────────────────────────────────────────────── */
+:root, [data-theme="light"] {
+  --color-primary:#1D3557; --color-primary-hover:#162840; --color-primary-active:#0f1e30;
+  --color-accent:#0073E6;  --color-accent-hover:#005DC0;  --color-accent-active:#004899;
+  --color-accent-subtle:#EBF4FF;
+  --color-warning:#EABA1C; --color-warning-subtle:#FFFBEB;
+  --neutral-0:#FFFFFF;   --neutral-50:#F8FAFC;  --neutral-100:#F1F5F9;
+  --neutral-200:#E2E8F0; --neutral-300:#CBD5E1; --neutral-400:#94A3B8;
+  --neutral-500:#64748B; --neutral-600:#475569; --neutral-700:#334155;
+  --neutral-800:#1E293B; --neutral-900:#0F172A; --neutral-950:#020617;
+  --color-success:#16A34A; --color-success-subtle:#F0FDF4;
+  --color-info:#0EA5E9;    --color-info-subtle:#F0F9FF;
+  --color-danger:#DC2626;  --color-danger-subtle:#FEF2F2;
+  --color-disabled:#CBD5E1;
+  --text-primary:#24272D; --text-secondary:#475569; --text-tertiary:#94A3B8;
+  --text-inverse:#FFFFFF; --text-accent:#0073E6;   --text-danger:#DC2626;
+  --text-success:#16A34A; --text-warning:#92600A;
+  --surface-page:#F8FAFC; --surface-base:#FFFFFF; --surface-subtle:#F1F5F9;
+  --border-default:#E2E8F0; --border-strong:#CBD5E1;
+  --border-accent:#0073E6; --border-danger:#DC2626; --border-success:#16A34A;
+  --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code','Consolas',monospace;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px;
+  --space-6:24px; --space-8:32px; --space-10:40px; --space-12:48px;
+  --space-16:64px; --space-24:96px;
+  --radius-sm:4px; --radius-md:6px; --radius-lg:9px; --radius-xl:12px; --radius-pill:9999px;
+  --shadow-none:none;
+  --shadow-sm:0 1px 2px rgba(15,23,42,.06);
+  --shadow-md:0 4px 12px rgba(15,23,42,.10);
+  --shadow-lg:0 12px 24px rgba(15,23,42,.14);
+  --duration-fast:120ms; --duration-base:180ms; --duration-slow:240ms;
+  --ease-out:cubic-bezier(0.0,0.0,0.2,1);
+  --btn-sm-h:28px; --btn-sm-r:var(--radius-sm); --btn-sm-fs:12px; --btn-sm-px:10px;
+  --btn-md-h:36px; --btn-md-r:var(--radius-md); --btn-md-fs:14px; --btn-md-px:14px;
+  --btn-lg-h:42px; --btn-lg-r:var(--radius-md); --btn-lg-fs:14px; --btn-lg-px:18px;
+  --card-radius:var(--radius-xl); --card-padding:17px 18px 16px;
+  --card-min-height:168px; --card-gap:12px;
+  --card-logo-size:38px; --card-logo-radius:var(--radius-lg);
+  --mesh-a:#E6F1FB;
+  --mesh-b:#ECEBFF;
+}
+[data-theme="dark"] {
+  --surface-page:#0F172A; --surface-base:#1E293B; --surface-subtle:#334155;
+  --text-primary:#F1F5F9; --text-secondary:#94A3B8; --text-tertiary:#475569;
+  --border-default:#334155; --border-strong:#475569;
+}
+/* ── BASE ────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);font-size:14px;color:var(--text-primary);
+  background:transparent;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+a{color:var(--text-accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:var(--font-mono);font-size:12px;background:var(--neutral-100);
+  color:var(--color-primary);padding:1px 6px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-default)}
+/* ── ICONS ───────────────────────────────────────────────────── */
+.ds-icon{display:inline-block;width:18px;height:18px;stroke:currentColor;fill:none;
+  stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;
+  vertical-align:middle;overflow:visible}
+.ds-icon--xs{width:12px;height:12px} .ds-icon--sm{width:14px;height:14px}
+.ds-icon--md{width:16px;height:16px} .ds-icon--lg{width:20px;height:20px}
+/* ── MESH BACKGROUND ─────────────────────────────────────────── */
+.mesh-bg{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:#F4F7FC;
+}
+.mesh-bg::before{
+  content:"";position:absolute;inset:-20%;
+  background:
+    radial-gradient(40% 38% at 12%  8%,  rgba(230,241,251,.95), transparent 70%),
+    radial-gradient(46% 42% at 88%  4%,  rgba(236,235,255,.90), transparent 72%),
+    radial-gradient(42% 40% at 78% 60%,  rgba(231,240,251,.70), transparent 70%),
+    radial-gradient(50% 46% at 22% 78%,  rgba(238,236,255,.65), transparent 72%);
+  filter:saturate(1.02);
+}
+/* ── LAYOUT ──────────────────────────────────────────────────── */
+.sg-layout{display:flex;min-height:100vh;position:relative;z-index:1}
+.sg-sidebar{
+  width:248px;flex-shrink:0;background:var(--surface-base);
+  border-right:1px solid var(--border-default);
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.sg-content{flex:1;min-width:0;padding:0 52px 96px;max-width:960px}
+/* ── SIDEBAR ─────────────────────────────────────────────────── */
+.sg-brand{padding:24px 20px 16px;border-bottom:1px solid var(--border-default)}
+.sg-brand-name{font-size:13px;font-weight:700;color:var(--color-primary);
+  letter-spacing:-0.01em;display:block;line-height:1.3}
+.sg-brand-meta{font-size:11px;color:var(--text-tertiary);margin-top:3px;
+  font-family:var(--font-mono);display:block}
+.sg-nav{padding:12px 0 24px;flex:1;min-height:0;overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.22) transparent}
+.sg-nav::-webkit-scrollbar{width:3px}
+.sg-nav::-webkit-scrollbar-track{background:transparent}
+.sg-nav::-webkit-scrollbar-button{display:none}
+.sg-nav::-webkit-scrollbar-thumb{background:rgba(148,163,184,.22);border-radius:9999px;
+  transition:background var(--duration-fast)}
+.sg-nav::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.55)}
+.sg-nav-group{margin-bottom:2px}
+.sg-nav-group-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-tertiary);padding:10px 20px 4px;display:block}
+.sg-nav-link{display:block;padding:5px 20px;font-size:13px;color:var(--text-secondary);
+  text-decoration:none;border-left:2px solid transparent;
+  transition:color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out)}
+.sg-nav-link:hover{color:var(--text-primary);background:var(--surface-subtle);text-decoration:none}
+.sg-nav-link.active{color:var(--color-accent);border-left-color:var(--color-accent);
+  background:var(--color-accent-subtle);font-weight:500}
+/* ── SECTIONS ────────────────────────────────────────────────── */
+.sg-section{
+  background:transparent;border:none;box-shadow:none;border-radius:0;
+  padding:64px 0 0;margin-bottom:0;scroll-margin-top:28px;
+  border-top:1px solid var(--border-default);
+}
+.sg-hero + .sg-section{border-top:none;padding-top:56px}
+.sg-section-eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--color-accent);margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.sg-section-eyebrow::before{content:'';width:5px;height:5px;border-radius:50%;
+  background:var(--color-accent);flex-shrink:0}
+.sg-section-title{font-size:30px;font-weight:700;color:var(--text-primary);
+  line-height:1.2;margin-bottom:10px;letter-spacing:-0.025em}
+.sg-section-desc{font-size:15px;color:var(--text-secondary);line-height:1.7;
+  max-width:600px;margin-bottom:32px}
+.sg-subsection{margin-bottom:36px}
+.sg-subsection:last-child{margin-bottom:0}
+.sg-subsection-title{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--text-tertiary);margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border-default)}
+/* ── HERO ────────────────────────────────────────────────────── */
+.sg-hero{background:transparent;border-radius:0;
+  padding:80px 0 72px;margin-bottom:0;position:relative;overflow:visible}
+.sg-hero::before,.sg-hero::after{display:none}
+.sg-hero-inner{position:relative}
+.sg-hero-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--color-accent);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.sg-hero-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--color-accent)}
+.sg-hero-title{font-size:58px;font-weight:800;color:var(--text-primary);line-height:1.04;
+  margin-bottom:18px;letter-spacing:-0.04em}
+.sg-hero-sub{font-size:16px;color:var(--text-secondary);line-height:1.7;
+  margin-bottom:48px;max-width:520px}
+.sg-hero-stats{display:flex;border-top:1px solid var(--border-default);padding-top:28px}
+.sg-hero-stat{padding-right:32px;margin-right:32px;border-right:1px solid var(--border-default)}
+.sg-hero-stat:last-child{border-right:none;margin-right:0;padding-right:0}
+.sg-hero-stat-val{font-size:18px;font-weight:700;color:var(--color-primary);display:block;letter-spacing:-0.02em}
+.sg-hero-stat-label{font-size:11px;color:var(--text-tertiary);display:block;margin-top:3px;letter-spacing:.02em}
+/* ── DEMOS ───────────────────────────────────────────────────── */
+.sg-demo{background:#ffffff;border:1px solid var(--border-default);
+  border-radius:var(--radius-xl);padding:24px;margin-bottom:16px}
+.sg-demo--white{background:#ffffff}
+.sg-demo-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.sg-demo-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--text-tertiary);margin-bottom:10px}
+.sg-code{background:var(--neutral-900);border-radius:var(--radius-lg);padding:20px 24px;
+  font-family:var(--font-mono);font-size:12px;line-height:1.75;color:#cbd5e1;
+  overflow-x:auto;margin:16px 0;border:1px solid var(--neutral-800)}
+.sg-code .k{color:#7dd3fc} .sg-code .s{color:#86efac}
+.sg-code .c{color:#475569;font-style:italic} .sg-code .p{color:#fca5a5} .sg-code .v{color:#fde68a}
+.sg-token{display:inline-block;font-family:var(--font-mono);font-size:11px;background:var(--neutral-100);
+  color:var(--color-primary);padding:2px 7px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-default)}
+/* ── SWATCHES ────────────────────────────────────────────────── */
+.sg-swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px}
+.sg-swatch-grid--lg{grid-template-columns:repeat(2,1fr);gap:16px;max-width:520px}
+.sg-swatch{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border-default)}
+.sg-swatch-color{height:72px;display:block} .sg-swatch-color--lg{height:100px}
+.sg-swatch-info{padding:10px 12px;background:var(--surface-base)}
+.sg-swatch-name{font-size:12px;font-weight:600;color:var(--text-primary);display:block}
+.sg-swatch-var{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);display:block;margin-top:2px}
+.sg-swatch-hex{font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);display:block}
+/* Semantic color scale */
+.sg-swatch-scale{display:flex;height:64px;overflow:hidden}
+.sg-swatch-scale-stop{
+  flex:1;position:relative;
+  transition:flex var(--duration-slow) var(--ease-out);
+  cursor:default;
+}
+.sg-swatch-scale-stop:hover{flex:2.2}
+.sg-swatch-scale-stop::after{
+  content:attr(data-label);
+  position:absolute;bottom:5px;left:50%;transform:translateX(-50%);
+  font-size:8px;font-family:var(--font-mono);white-space:nowrap;
+  color:rgba(0,0,0,.35);opacity:0;
+  transition:opacity var(--duration-fast);
+}
+.sg-swatch-scale-stop:hover::after{opacity:1}
+/* Text color rows — class-based for responsive control */
+.sg-text-color-list{display:flex;flex-direction:column;gap:10px}
+.sg-text-color-row{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
+.sg-text-color-sample{font-size:15px;min-width:200px;flex-shrink:0;line-height:1.4}
+.sg-text-color-meta{display:flex;align-items:center;gap:10px;min-width:0}
+.sg-text-color-ratio{font-family:var(--font-mono);font-size:11px;color:var(--text-tertiary);white-space:nowrap}
+.sg-neutral-strip{display:flex;border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-default)}
+.sg-neutral-step{flex:1;height:44px;position:relative}
+.sg-neutral-step-label{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);
+  font-size:9px;font-weight:500;white-space:nowrap}
+/* ── TYPE DEMOS ──────────────────────────────────────────────── */
+.sg-type-row{display:flex;align-items:baseline;gap:24px;padding:14px 0;
+  border-bottom:1px solid var(--border-default)}
+.sg-type-row:last-child{border-bottom:none}
+.sg-type-meta{min-width:170px;flex-shrink:0}
+.sg-type-name{font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-tertiary);display:block;margin-bottom:2px}
+.sg-type-spec{font-size:10px;color:var(--text-tertiary);font-family:var(--font-mono)}
+.sg-type-sample{flex:1}
+/* ── SPACING DEMOS ───────────────────────────────────────────── */
+.sg-spacing-row{display:flex;align-items:center;gap:14px;padding:4px 0}
+.sg-spacing-bar{background:var(--color-accent-subtle);border:1px solid var(--color-accent);
+  border-radius:2px;height:18px;flex-shrink:0}
+.sg-spacing-token{font-family:var(--font-mono);font-size:12px;color:var(--color-primary);min-width:80px}
+.sg-spacing-px{font-size:12px;color:var(--text-tertiary);min-width:32px}
+/* ── RADIUS / ELEVATION DEMOS ────────────────────────────────── */
+.sg-radius-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.sg-radius-item{text-align:center}
+.sg-radius-box{width:80px;height:60px;background:var(--color-accent-subtle);
+  border:2px solid var(--color-accent);display:block;margin:0 auto 8px}
+.sg-radius-label{font-family:var(--font-mono);font-size:11px;color:var(--text-primary);display:block}
+.sg-radius-px{font-size:10px;color:var(--text-tertiary);display:block;margin-top:2px}
+.sg-elevation-row{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end;padding:20px 0 8px}
+.sg-elevation-item{text-align:center}
+.sg-elevation-box{width:120px;height:76px;background:var(--surface-base);
+  border:1px solid var(--border-default);border-radius:var(--radius-lg);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.sg-elevation-label{font-family:var(--font-mono);font-size:11px;color:var(--text-primary);display:block}
+.sg-elevation-desc{font-size:10px;color:var(--text-tertiary);display:block;margin-top:2px}
+/* ── ICON GRID ───────────────────────────────────────────────── */
+.sg-icon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:8px}
+.sg-icon-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;
+  border-radius:var(--radius-md);border:1px solid var(--border-default);
+  background:var(--surface-base);transition:background var(--duration-fast)}
+.sg-icon-item:hover{background:var(--neutral-50)}
+.sg-icon-item span{font-size:10px;color:var(--text-tertiary);text-align:center;line-height:1.3}
+/* ── TOKEN TABLE ─────────────────────────────────────────────── */
+.sg-token-table{width:100%;border-collapse:collapse;font-size:13px}
+.sg-token-table th{text-align:left;font-size:10px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text-tertiary);padding:8px 12px;
+  border-bottom:1px solid var(--border-default)}
+.sg-token-table td{padding:9px 12px;border-bottom:1px solid var(--border-default);vertical-align:middle}
+.sg-token-table tr:last-child td{border-bottom:none}
+.sg-token-table tr:hover td{background:var(--neutral-50)}
+.sg-token-dot{width:20px;height:20px;border-radius:var(--radius-sm);
+  border:1px solid rgba(0,0,0,.08);display:inline-block;vertical-align:middle}
+/* ── COMING SOON ─────────────────────────────────────────────── */
+.sg-coming-soon{background:var(--neutral-50);border:1px dashed var(--border-strong);
+  border-radius:var(--radius-xl);padding:40px;text-align:center}
+.sg-coming-soon-badge{display:inline-flex;align-items:center;gap:6px;background:var(--neutral-200);
+  border-radius:var(--radius-pill);padding:4px 12px;font-size:11px;font-weight:600;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:16px}
+.sg-coming-soon h3{font-size:17px;font-weight:600;color:var(--text-primary);margin-bottom:8px}
+.sg-coming-soon p{font-size:14px;color:var(--text-secondary);max-width:480px;margin:0 auto;line-height:1.6}
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  font-family:var(--font-sans);font-weight:500;line-height:1;text-decoration:none;
+  border:1px solid transparent;cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:background-color var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+  height:var(--btn-md-h);padding:0 var(--btn-md-px);
+  border-radius:var(--btn-md-r);font-size:var(--btn-md-fs)}
+.ds-btn:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+.ds-btn:disabled,.ds-btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed;pointer-events:none}
+.ds-btn--sm{height:var(--btn-sm-h);padding:0 var(--btn-sm-px);border-radius:var(--btn-sm-r);font-size:var(--btn-sm-fs)}
+.ds-btn--lg{height:var(--btn-lg-h);padding:0 var(--btn-lg-px);border-radius:var(--btn-lg-r);font-size:var(--btn-lg-fs)}
+.ds-btn--primary{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+.ds-btn--primary:hover:not(:disabled){background:var(--color-primary-hover);border-color:var(--color-primary-hover)}
+.ds-btn--primary:active:not(:disabled){background:var(--color-primary-active);border-color:var(--color-primary-active)}
+.ds-btn--secondary{background:var(--surface-base);color:var(--text-primary);border-color:var(--border-default)}
+.ds-btn--secondary:hover:not(:disabled){background:var(--neutral-50);border-color:var(--border-strong)}
+.ds-btn--secondary:active:not(:disabled){background:var(--neutral-100);border-color:var(--border-strong)}
+.ds-btn--outline{background:transparent;color:var(--color-primary);border-color:var(--border-strong)}
+.ds-btn--outline:hover:not(:disabled){background:var(--neutral-50);border-color:var(--color-primary)}
+.ds-btn--outline:active:not(:disabled){background:var(--neutral-100)}
+.ds-btn--ghost{background:transparent;color:var(--text-secondary);border-color:transparent}
+.ds-btn--ghost:hover:not(:disabled){background:var(--neutral-100);color:var(--text-primary)}
+.ds-btn--ghost:active:not(:disabled){background:var(--neutral-200)}
+.ds-btn--danger{background:var(--color-danger);color:#fff;border-color:var(--color-danger)}
+.ds-btn--danger:hover:not(:disabled){background:#B91C1C;border-color:#B91C1C}
+.ds-btn--link{background:transparent;color:var(--color-accent);border-color:transparent;
+  padding:0;height:auto;font-weight:400;text-decoration:underline;text-underline-offset:2px}
+.ds-btn--link:hover:not(:disabled){color:var(--color-accent-hover)}
+.ds-btn--loading{cursor:wait;pointer-events:none}
+.ds-btn-spinner{width:14px;height:14px;border:2px solid currentColor;border-top-color:transparent;
+  border-radius:50%;animation:spin 600ms linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ds-btn--state-hover.ds-btn--primary{background:var(--color-primary-hover);border-color:var(--color-primary-hover)}
+.ds-btn--state-hover.ds-btn--secondary{background:var(--neutral-50);border-color:var(--border-strong)}
+.ds-btn--state-focus{outline:2px solid var(--color-accent);outline-offset:2px}
+.ds-btn--state-active.ds-btn--primary{background:var(--color-primary-active);border-color:var(--color-primary-active)}
+/* ── BADGES ──────────────────────────────────────────────────── */
+.ds-badge{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;
+  font-size:12px;font-weight:500;border-radius:var(--radius-sm);white-space:nowrap;line-height:1}
+.ds-badge--pill{border-radius:var(--radius-pill)}
+.ds-badge--neutral{background:var(--neutral-100);color:var(--neutral-700)}
+.ds-badge--primary{background:var(--color-accent-subtle);color:var(--color-accent)}
+.ds-badge--success{background:var(--color-success-subtle);color:var(--color-success)}
+.ds-badge--info{background:var(--color-info-subtle);color:var(--color-info)}
+.ds-badge--warning{background:var(--color-warning-subtle);color:var(--text-warning)}
+.ds-badge--danger{background:var(--color-danger-subtle);color:var(--color-danger)}
+.ds-chip{display:inline-flex;align-items:center;gap:5px;height:28px;padding:0 12px;
+  font-size:12px;font-weight:500;border-radius:var(--radius-pill);
+  border:1px solid var(--border-default);background:var(--surface-base);color:var(--text-secondary);
+  cursor:pointer;transition:border-color var(--duration-fast),background var(--duration-fast),color var(--duration-fast)}
+.ds-chip:hover{border-color:var(--border-strong);color:var(--text-primary)}
+.ds-chip--selected{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+/* ── FORMS ───────────────────────────────────────────────────── */
+.ds-field{display:flex;flex-direction:column;gap:5px}
+.ds-label{font-size:13px;font-weight:500;color:var(--text-primary);line-height:1.4}
+.ds-input,.ds-select,.ds-textarea{display:block;width:100%;height:36px;padding:0 12px;
+  font-family:var(--font-sans);font-size:14px;color:var(--text-primary);
+  background:var(--surface-base);border:1px solid var(--border-default);
+  border-radius:var(--radius-md);
+  transition:border-color var(--duration-fast),box-shadow var(--duration-fast);
+  outline:none;appearance:none}
+.ds-input::placeholder,.ds-textarea::placeholder{color:var(--text-tertiary)}
+.ds-input:hover:not(:disabled),.ds-select:hover:not(:disabled),.ds-textarea:hover:not(:disabled){border-color:var(--border-strong)}
+.ds-input:focus,.ds-select:focus,.ds-textarea:focus{border-color:var(--color-accent);box-shadow:0 0 0 3px var(--color-accent-subtle)}
+.ds-input:disabled,.ds-select:disabled,.ds-textarea:disabled{background:var(--neutral-50);color:var(--text-tertiary);cursor:not-allowed;border-color:var(--neutral-200)}
+.ds-input--sm{height:28px;font-size:12px;padding:0 10px}
+.ds-input--lg{height:42px;font-size:15px;padding:0 14px}
+.ds-input--error,.ds-input--error:hover,.ds-input--error:focus{border-color:var(--color-danger);box-shadow:0 0 0 3px rgba(220,38,38,.10)}
+.ds-textarea{height:auto;min-height:88px;padding:10px 12px;resize:vertical;line-height:1.5}
+.ds-select-wrap{position:relative}
+.ds-select-wrap::after{content:'';position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;
+  border-top:5px solid var(--text-tertiary);pointer-events:none}
+.ds-select{padding-right:32px;cursor:pointer}
+.ds-field-hint{font-size:12px;color:var(--text-tertiary);line-height:1.4}
+.ds-field-error{font-size:12px;color:var(--text-danger);display:flex;align-items:center;gap:4px;line-height:1.4}
+.ds-checkbox-wrap,.ds-radio-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.ds-checkbox,.ds-radio-input{width:18px;height:18px;border:1.5px solid var(--border-strong);
+  border-radius:var(--radius-sm);background:var(--surface-base);appearance:none;
+  cursor:pointer;position:relative;flex-shrink:0;
+  transition:border-color var(--duration-fast),background var(--duration-fast)}
+.ds-radio-input{border-radius:50%}
+.ds-checkbox:checked{background:var(--color-accent);border-color:var(--color-accent)}
+.ds-checkbox:checked::after{content:'';position:absolute;left:4px;top:1px;width:5px;height:9px;
+  border:2px solid #fff;border-top:none;border-left:none;transform:rotate(42deg)}
+.ds-radio-input:checked{border-color:var(--color-accent);border-width:5px}
+.ds-checkbox:focus-visible,.ds-radio-input:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+.ds-checkbox-label,.ds-radio-label{font-size:14px;color:var(--text-primary)}
+.ds-switch-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
+.ds-switch{position:relative;width:36px;height:20px;flex-shrink:0}
+.ds-switch input{opacity:0;width:0;height:0;position:absolute}
+.ds-switch-track{position:absolute;inset:0;background:var(--neutral-300);border-radius:var(--radius-pill);
+  transition:background var(--duration-base) var(--ease-out);cursor:pointer}
+.ds-switch-thumb{position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;
+  border-radius:50%;transition:transform var(--duration-base) var(--ease-out);
+  box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.ds-switch input:checked + .ds-switch-track{background:var(--color-accent)}
+.ds-switch input:checked ~ .ds-switch-thumb{transform:translateX(16px)}
+.ds-switch-label{font-size:14px;color:var(--text-primary)}
+/* ── CARDS ───────────────────────────────────────────────────── */
+.ds-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.ds-card{background:var(--surface-base);border:1px solid var(--border-default);
+  border-radius:var(--card-radius);padding:var(--card-padding);
+  min-height:var(--card-min-height);box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;gap:var(--card-gap)}
+.ds-card--clickable{cursor:pointer;
+  transition:transform var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out)}
+.ds-card--clickable:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--border-strong)}
+.ds-card-header{display:flex;align-items:center;gap:12px}
+.ds-card-logo{width:var(--card-logo-size);height:var(--card-logo-size);
+  border-radius:var(--card-logo-radius);flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;color:#fff;overflow:hidden}
+.ds-card-title{font-size:15px;font-weight:600;color:var(--text-primary);line-height:1.3}
+.ds-card-subtitle{font-size:12px;color:var(--text-tertiary);margin-top:2px}
+.ds-card-body{font-size:13px;color:var(--text-secondary);line-height:1.5;flex:1}
+.ds-card-footer{display:flex;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:8px;border-top:1px solid var(--border-default)}
+.ds-card-meta{font-size:11px;color:var(--text-tertiary);display:flex;align-items:center;gap:4px}
+/* ── CALLOUTS ────────────────────────────────────────────────── */
+.ds-callout{display:flex;gap:12px;padding:12px 16px;
+  border-radius:0 var(--radius-md) var(--radius-md) 0;border-left:3px solid;margin-bottom:12px}
+.ds-callout--info{background:var(--color-info-subtle);border-left-color:var(--color-info)}
+.ds-callout--success{background:var(--color-success-subtle);border-left-color:var(--color-success)}
+.ds-callout--warning{background:var(--color-warning-subtle);border-left-color:var(--color-warning)}
+.ds-callout--danger{background:var(--color-danger-subtle);border-left-color:var(--color-danger)}
+.ds-callout-icon{flex-shrink:0;margin-top:1px;width:16px;height:16px}
+.ds-callout--info .ds-callout-icon{color:var(--color-info)}
+.ds-callout--success .ds-callout-icon{color:var(--color-success)}
+.ds-callout--warning .ds-callout-icon{color:var(--color-warning)}
+.ds-callout--danger .ds-callout-icon{color:var(--color-danger)}
+.ds-callout-body{flex:1}
+.ds-callout-title{display:block;font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:3px}
+.ds-callout-body p{font-size:13px;color:var(--text-secondary);line-height:1.5;margin:0}
+/* ── STEPS ───────────────────────────────────────────────────── */
+.ds-steps--horizontal{display:flex;align-items:flex-start;list-style:none}
+.ds-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
+.ds-steps--horizontal .ds-step::before{content:'';position:absolute;top:14px;
+  left:calc(-50% + 14px);right:calc(50% + 14px);height:1px;background:var(--border-default)}
+.ds-steps--horizontal .ds-step:first-child::before{display:none}
+.ds-steps--horizontal .ds-step--complete::before,
+.ds-steps--horizontal .ds-step--active::before{background:var(--color-accent)}
+.ds-step-indicator{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:600;border:2px solid;
+  position:relative;z-index:1;background:var(--surface-base)}
+.ds-step--complete .ds-step-indicator{background:var(--color-accent);border-color:var(--color-accent);color:#fff}
+.ds-step--active   .ds-step-indicator{border-color:var(--color-accent);color:var(--color-accent);background:var(--color-accent-subtle)}
+.ds-step--upcoming .ds-step-indicator{border-color:var(--neutral-300);color:var(--text-tertiary)}
+.ds-step-label{font-size:12px;font-weight:500;text-align:center}
+.ds-step--complete .ds-step-label{color:var(--text-secondary)}
+.ds-step--active   .ds-step-label{color:var(--text-primary);font-weight:600}
+.ds-step--upcoming .ds-step-label{color:var(--text-tertiary)}
+.ds-steps--vertical{list-style:none;display:flex;flex-direction:column}
+.ds-step--v{display:flex;gap:16px;position:relative;padding-bottom:24px}
+.ds-step--v:last-child{padding-bottom:0}
+.ds-step--v::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border-default)}
+.ds-step--v:last-child::before{display:none}
+.ds-step--v.ds-step--complete::before,.ds-step--v.ds-step--active::before{background:var(--color-accent)}
+.ds-step-v-content{padding-top:4px}
+.ds-step-v-title{font-size:14px;font-weight:500;color:var(--text-primary);display:block;margin-bottom:4px}
+.ds-step-v-desc{font-size:13px;color:var(--text-secondary);line-height:1.5}
+/* ── TABS ────────────────────────────────────────────────────── */
+.ds-tabs{display:flex;border-bottom:1px solid var(--border-default)}
+.ds-tab{padding:10px 16px;font-family:var(--font-sans);font-size:14px;font-weight:400;
+  color:var(--text-secondary);background:transparent;border:none;
+  border-bottom:2px solid transparent;cursor:pointer;margin-bottom:-1px;
+  transition:color var(--duration-fast),border-bottom-color var(--duration-fast);white-space:nowrap}
+.ds-tab:hover{color:var(--text-primary)}
+.ds-tab--active{color:var(--color-accent);font-weight:500;border-bottom-color:var(--color-accent)}
+.ds-tab:focus-visible{outline:2px solid var(--color-accent);outline-offset:-2px;
+  border-radius:var(--radius-sm) var(--radius-sm) 0 0}
+.ds-tab-panel{padding:24px 0;display:none}
+.ds-tab-panel--active{display:block}
+/* ── MOBILE HEADER (desktop: hidden) ────────────────────────── */
+.sg-mobile-header{
+  display:none;align-items:center;justify-content:space-between;
+  padding:0 16px;height:52px;background:#fff;
+  border-bottom:1px solid var(--border-default);
+  position:sticky;top:0;z-index:200;flex-shrink:0;
+}
+.sg-mobile-brand{font-size:13px;font-weight:700;color:var(--color-primary)}
+.sg-mobile-actions{display:flex;align-items:center;gap:4px}
+.sg-mobile-btn{
+  width:36px;height:36px;border:none;background:transparent;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius-md);color:var(--text-primary);
+  transition:background var(--duration-fast);
+}
+.sg-mobile-btn:hover{background:var(--neutral-100)}
+/* Sidebar scrim (desktop: hidden) */
+.sg-sidebar-scrim{
+  display:none;position:fixed;inset:0;
+  background:rgba(15,23,42,.32);z-index:999;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--duration-slow) var(--ease-out);
+}
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width:900px){
+  /* Show mobile header */
+  .sg-mobile-header{display:flex}
+  .sg-sidebar-scrim{display:block}
+  /* Sidebar becomes fixed off-screen drawer */
+  .sg-layout{display:block}
+  /* Hide redundant brand header and search in drawer (shown in mobile header already) */
+  .sg-brand{display:none}
+  .sg-cmd-trigger{display:none}
+  .sg-nav{padding-top:8px}
+  .sg-sidebar{
+    position:fixed;top:52px;left:-272px;width:272px;height:calc(100vh - 52px);
+    z-index:1000;transition:left var(--duration-slow) var(--ease-out),
+      box-shadow var(--duration-slow) var(--ease-out);
+    overflow-y:auto;box-shadow:none;
+  }
+  .sg-sidebar.drawer-open{left:0;box-shadow:var(--shadow-lg)}
+  .sg-sidebar-scrim.drawer-open{opacity:1;pointer-events:all}
+  /* Content fills full width */
+  .sg-content{padding:0 20px 60px;max-width:100%}
+  /* Hero */
+  .sg-hero{padding:40px 0 36px}
+  .sg-hero-title{font-size:clamp(32px,9vw,52px);letter-spacing:-0.03em}
+  .sg-hero-sub{font-size:15px;margin-bottom:32px}
+  .sg-hero-stats{flex-wrap:wrap;gap:0;border-top:1px solid var(--border-default);padding-top:20px}
+  .sg-hero-stat{
+    width:50%;padding:0 0 16px 0;margin:0;
+    border-right:none;border-bottom:none;
+  }
+  .sg-hero-stat:nth-child(3),.sg-hero-stat:nth-child(4){padding-top:16px;border-top:1px solid var(--border-default)}
+  /* Sections */
+  .sg-section{padding:44px 0 0}
+  .sg-hero + .sg-section{padding-top:40px}
+  /* Demo containers scroll horizontally when needed */
+  .sg-demo{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  /* Typography demo stacks */
+  .sg-type-row{flex-direction:column;gap:6px;align-items:flex-start}
+  .sg-type-meta{min-width:0}
+  /* Text color rows stack */
+  .sg-text-color-row{flex-wrap:wrap;gap:6px}
+  .sg-text-color-sample{min-width:0;flex-shrink:1}
+  .sg-text-color-meta{flex-wrap:wrap;gap:6px}
+  /* Swatch grids */
+  .sg-swatch-grid--lg{grid-template-columns:1fr;max-width:100%}
+  .sg-swatch-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}
+  /* Radius/elevation rows wrap */
+  .sg-radius-row,.sg-elevation-row{gap:12px}
+  .sg-elevation-box{width:100px;height:64px}
+  /* Token table scrolls */
+  .sg-token-table{font-size:12px}
+  /* Neutral strip condensed */
+  .sg-neutral-step-label{display:none}
+  /* Card grid: single column below 520px */
+  .ds-card-grid{grid-template-columns:1fr}
+  /* Form max-width full */
+  .sg-demo[style*="max-width"]{max-width:100%!important}
+  /* Button groups wrap */
+  .sg-demo-row{gap:8px}
+  /* Spacing bars truncate gracefully */
+  .sg-spacing-bar{max-width:200px}
+  /* Steps horizontal compresses */
+  .ds-step-label{font-size:11px}
+  /* Coming soon block */
+  .sg-coming-soon{padding:28px 20px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important}
+}
+/* ── COMMAND PALETTE ─────────────────────────────────────────── */
+#cmd-overlay{
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(15,23,42,.28);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:flex-start;justify-content:center;
+  padding-top:14vh;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--duration-base) var(--ease-out);
+}
+#cmd-overlay.open{opacity:1;pointer-events:all}
+#cmd-modal{
+  background:#fff;border-radius:16px;width:100%;max-width:560px;
+  box-shadow:0 32px 80px rgba(15,23,42,.22),0 0 0 1px rgba(15,23,42,.06);
+  overflow:hidden;
+  transform:translateY(-10px) scale(.98);
+  transition:transform var(--duration-base) var(--ease-out);
+}
+#cmd-overlay.open #cmd-modal{transform:none}
+#cmd-search-wrap{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 20px;border-bottom:1px solid var(--border-default);
+}
+#cmd-input{
+  flex:1;border:none;outline:none;font-family:var(--font-sans);
+  font-size:15px;color:var(--text-primary);background:transparent;
+}
+#cmd-input::placeholder{color:var(--text-tertiary)}
+#cmd-results{max-height:360px;overflow-y:auto;padding:6px 0;
+  scrollbar-width:thin;scrollbar-color:rgba(148,163,184,.2) transparent}
+#cmd-results::-webkit-scrollbar{width:3px}
+#cmd-results::-webkit-scrollbar-thumb{background:rgba(148,163,184,.2);border-radius:9999px}
+.cmd-group-label{
+  font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-tertiary);padding:8px 20px 4px;display:block;
+}
+.cmd-item{
+  display:flex;align-items:center;gap:12px;padding:8px 20px;
+  font-size:14px;color:var(--text-primary);cursor:pointer;
+  transition:background var(--duration-fast);
+  border-radius:0;
+}
+.cmd-item:hover,.cmd-item.cmd-active{background:var(--color-accent-subtle);color:var(--color-accent)}
+.cmd-item-icon{
+  width:30px;height:30px;border-radius:var(--radius-md);
+  background:var(--neutral-100);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;color:var(--text-secondary);
+}
+.cmd-item:hover .cmd-item-icon,.cmd-item.cmd-active .cmd-item-icon{
+  background:var(--color-accent-subtle);color:var(--color-accent);
+}
+#cmd-footer{
+  display:flex;align-items:center;gap:16px;padding:10px 20px;
+  border-top:1px solid var(--border-default);
+}
+.cmd-hint{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-tertiary)}
+.cmd-key{
+  display:inline-block;background:var(--neutral-100);border:1px solid var(--border-default);
+  border-radius:4px;padding:1px 6px;font-family:var(--font-mono);
+  font-size:10px;color:var(--text-secondary);line-height:1.6;
+}
+/* ⌘K sidebar trigger */
+.sg-cmd-trigger{
+  display:flex;align-items:center;gap:8px;width:calc(100% - 24px);
+  margin:8px 12px 4px;padding:7px 12px;
+  background:var(--neutral-50);border:1px solid var(--border-default);
+  border-radius:var(--radius-md);cursor:pointer;
+  font-family:var(--font-sans);font-size:12px;color:var(--text-tertiary);
+  transition:border-color var(--duration-fast),background var(--duration-fast);
+  text-align:left;
+}
+.sg-cmd-trigger:hover{background:#fff;border-color:var(--border-strong);color:var(--text-secondary)}
+.sg-cmd-trigger-label{flex:1}
+.sg-cmd-badge{font-family:var(--font-mono);font-size:10px;color:var(--text-tertiary);
+  background:var(--neutral-100);border:1px solid var(--border-default);
+  border-radius:4px;padding:1px 5px;}
+/* ── AVATAR ──────────────────────────────────────────────────── */
+.avatar{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-weight:600;color:#fff;background:var(--color-primary);flex-shrink:0;font-size:13px;width:32px;height:32px;overflow:hidden;vertical-align:middle}
+.avatar--sm{width:24px;height:24px;font-size:10px}
+.avatar--lg{width:40px;height:40px;font-size:16px}
+.avatar--xl{width:56px;height:56px;font-size:22px}
+.avatar-group{display:flex}
+.avatar-group .avatar{border:2px solid var(--surface-base);margin-left:-8px}
+.avatar-group .avatar:first-child{margin-left:0}
+/* ── STAT CARDS ──────────────────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.stat-card{background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:20px 24px;box-shadow:var(--shadow-sm)}
+.stat-card__label{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:8px;display:block}
+.stat-card__value{font-size:28px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;line-height:1.1;margin-bottom:8px;display:block}
+.stat-card__delta{font-size:13px;display:flex;align-items:center;gap:4px}
+.stat-card__delta--up{color:var(--color-success)}
+.stat-card__delta--down{color:var(--color-danger)}
+.stat-card__delta--neutral{color:var(--text-tertiary)}
+.stat-card--featured{border-color:var(--color-accent);border-width:2px}
+/* ── DATA TABLE ──────────────────────────────────────────────── */
+.data-table-wrap{background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+.data-table-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border-default)}
+.data-table-head__title{font-size:15px;font-weight:600;color:var(--text-primary)}
+.data-table-head__actions{display:flex;gap:8px}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.data-table{width:100%;border-collapse:collapse;font-size:14px}
+.data-table thead th{text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);padding:10px 16px;border-bottom:1px solid var(--border-default);background:var(--surface-subtle);white-space:nowrap}
+.data-table tbody td{padding:12px 16px;border-bottom:1px solid var(--border-default);color:var(--text-primary);vertical-align:middle}
+.data-table tbody tr:last-child td{border-bottom:none}
+.data-table tbody tr:hover td{background:var(--neutral-50)}
+.data-table .row--selected td{background:var(--color-accent-subtle)}
+.data-table .col-check{width:44px;padding-left:16px;padding-right:8px}
+.data-table .col-num{text-align:right;font-variant-numeric:tabular-nums}
+.data-table .col-date{text-align:right;white-space:nowrap;color:var(--text-secondary);font-size:13px}
+.data-table .col-action{text-align:right;white-space:nowrap;width:1%}
+.data-table-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-top:1px solid var(--border-default);background:var(--surface-subtle)}
+.table-count{font-size:13px;color:var(--text-secondary)}
+/* ── PAGINATION ──────────────────────────────────────────────── */
+.pagination{display:flex;align-items:center;gap:2px}
+.pagination__btn{min-width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px;font-size:13px;font-family:var(--font-sans);color:var(--text-secondary);background:transparent;border:1px solid transparent;border-radius:var(--radius-md);cursor:pointer;transition:background var(--duration-fast),border-color var(--duration-fast),color var(--duration-fast)}
+.pagination__btn:hover:not(:disabled){background:var(--surface-subtle);border-color:var(--border-default);color:var(--text-primary)}
+.pagination__btn:disabled{opacity:.4;cursor:not-allowed}
+.pagination__btn--active{background:var(--color-primary);color:#fff;border-color:var(--color-primary);font-weight:600}
+.pagination__ellipsis{min-width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:13px;color:var(--text-tertiary)}
+/* ── FILTER BAR ──────────────────────────────────────────────── */
+.filter-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 0}
+.filter-bar__search{flex:1;min-width:180px;max-width:300px}
+.filter-bar__filters{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-bar__actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.input-icon-wrap{position:relative}
+.input-icon-wrap .ds-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--text-tertiary)}
+.input-icon-wrap .ds-input{padding-left:32px}
+/* ── PAGE HEADER ─────────────────────────────────────────────── */
+.page-header-demo{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+.page-header-demo__actions{display:flex;align-items:center;gap:8px;flex-shrink:0;padding-top:4px}
+.page-title-demo{font-size:26px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;line-height:1.2;margin-bottom:4px}
+.page-desc-demo{font-size:14px;color:var(--text-secondary);line-height:1.6}
+.breadcrumb__list{display:flex;align-items:center;gap:6px;list-style:none;margin-bottom:8px}
+.breadcrumb__item{font-size:12px;color:var(--text-tertiary);display:flex;align-items:center;gap:6px}
+.breadcrumb__link{color:var(--text-secondary);text-decoration:none}
+.breadcrumb__link:hover{color:var(--text-primary)}
+.breadcrumb__current{color:var(--text-primary);font-weight:500}
+/* ── MODAL ───────────────────────────────────────────────────── */
+.modal-demo{background:var(--surface-base);border-radius:16px;overflow:hidden;border:1px solid var(--border-default);box-shadow:0 24px 64px rgba(15,23,42,.16),0 0 0 1px rgba(15,23,42,.04);max-width:560px;margin:0 auto}
+.modal__header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border-default)}
+.modal__title{font-size:17px;font-weight:600;color:var(--text-primary)}
+.modal__body{padding:20px 24px;font-size:14px;color:var(--text-secondary);line-height:1.6}
+.modal__footer{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:16px 24px;border-top:1px solid var(--border-default)}
+.modal-size-label{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-tertiary);text-align:center;margin-top:8px}
+/* ── EMPTY STATE ─────────────────────────────────────────────── */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px}
+.empty-state__icon{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--surface-subtle);border-radius:var(--radius-xl);color:var(--text-tertiary);margin-bottom:16px}
+.empty-state__title{font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:6px}
+.empty-state__desc{font-size:14px;color:var(--text-secondary);line-height:1.6;max-width:360px;margin-bottom:20px}
+/* ── SKELETON ────────────────────────────────────────────────── */
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.skeleton__line{height:14px;border-radius:4px;margin-bottom:8px;background:linear-gradient(90deg,var(--neutral-100) 25%,var(--neutral-200) 50%,var(--neutral-100) 75%);background-size:400% 100%;animation:shimmer 1.5s ease-in-out infinite}
+.skeleton__line--title{height:20px;width:60%}
+.skeleton__line--short{width:40%}
+.skeleton__line--label{height:10px;width:50%}
+.skeleton__block{border-radius:4px;background:linear-gradient(90deg,var(--neutral-100) 25%,var(--neutral-200) 50%,var(--neutral-100) 75%);background-size:400% 100%;animation:shimmer 1.5s ease-in-out infinite;display:inline-block}
+.skeleton__block--badge{height:22px;width:64px;border-radius:9999px}
+.skeleton__block--avatar{width:32px;height:32px;border-radius:50%}
+.skeleton__block--text{height:12px;width:120px}
+.skeleton__block--btn{height:32px;width:80px;border-radius:var(--radius-md)}
+.skeleton-stat{background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:20px 24px}
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);margin-bottom:8px;max-width:380px}
+.toast__icon{width:18px;height:18px;flex-shrink:0}
+.toast__message{flex:1;font-size:14px;color:var(--text-primary)}
+.toast--success{border-left:3px solid var(--color-success)}
+.toast--success .toast__icon{color:var(--color-success)}
+.toast--info{border-left:3px solid var(--color-info)}
+.toast--info .toast__icon{color:var(--color-info)}
+.toast--warning{border-left:3px solid var(--color-warning)}
+.toast--warning .toast__icon{color:var(--color-warning)}
+.toast--error{border-left:3px solid var(--color-danger)}
+.toast--error .toast__icon{color:var(--color-danger)}
+/* ── AI SURFACE COMPONENTS ───────────────────────────────────── */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes ai-pulse{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.ai-stream{font-size:14px;line-height:1.7;color:var(--text-primary)}
+.ai-stream__cursor{display:inline-block;width:2px;height:1em;background:var(--color-accent);margin-left:2px;animation:blink 1s step-end infinite;vertical-align:text-bottom;border-radius:1px}
+.ai-thinking{display:flex;align-items:center;gap:10px;padding:4px 0}
+.ai-thinking__dots{display:flex;gap:5px}
+.ai-thinking__dots span{width:7px;height:7px;border-radius:50%;background:var(--color-accent);display:block;animation:ai-pulse 1.2s ease-in-out infinite}
+.ai-thinking__dots span:nth-child(2){animation-delay:.2s}
+.ai-thinking__dots span:nth-child(3){animation-delay:.4s}
+.ai-thinking__label{font-size:13px;color:var(--text-secondary)}
+.ai-attribution{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);padding:4px 10px;background:var(--color-accent-subtle);border-radius:var(--radius-pill);border:1px solid rgba(0,115,230,.15)}
+.ai-attribution__icon{width:14px;height:14px;color:var(--color-accent);flex-shrink:0}
+.ai-attribution__sep{color:var(--border-strong);margin:0 2px}
+.ai-content{background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-xl);overflow:hidden;border-top:2px solid var(--color-accent)}
+.ai-content__header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border-default);background:var(--color-accent-subtle)}
+.ai-content__body{padding:20px;font-size:14px;color:var(--text-primary);line-height:1.7}
+.ai-content__actions{display:flex;align-items:center;gap:2px}
+</style>
+</head><body>
+<div class="mesh-bg" aria-hidden="true"></div>
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="icon-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+  <symbol id="icon-check-circle" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></symbol>
+  <symbol id="icon-alert-triangle" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="icon-alert-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></symbol>
+  <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  <symbol id="icon-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="icon-trash-2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></symbol>
+  <symbol id="icon-edit-3" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></symbol>
+  <symbol id="icon-filter" viewBox="0 0 24 24"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></symbol>
+  <symbol id="icon-arrow-right" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="icon-chevron-down" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></symbol>
+  <symbol id="icon-external-link" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="icon-more-horizontal" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+  <symbol id="icon-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="icon-bar-chart-2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+  <symbol id="icon-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></symbol>
+  <symbol id="icon-archive" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="5" rx="2"/><path d="M4 9v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9"/><path d="M10 13h4"/></symbol>
+  <symbol id="icon-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="icon-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+  <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+  <symbol id="icon-trending-up" viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></symbol>
+  <symbol id="icon-trending-down" viewBox="0 0 24 24"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="icon-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+  <symbol id="icon-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.937A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/></symbol>
+</svg>
+
+<header class="sg-mobile-header" id="mobile-header">
+  <span class="sg-mobile-brand">Design System</span>
+  <div class="sg-mobile-actions">
+    <button class="sg-mobile-btn" id="cmd-trigger-mobile" aria-label="Search documentation">
+      <svg class="ds-icon" aria-hidden="true"><use href="#icon-search"/></svg>
+    </button>
+    <button class="sg-mobile-btn" id="hamburger-btn" aria-label="Open navigation" aria-expanded="false">
+      <svg class="ds-icon" aria-hidden="true"><use href="#icon-menu"/></svg>
+    </button>
+  </div>
+</header>
+<div class="sg-layout">
+<div class="sg-sidebar-scrim" id="sidebar-scrim" aria-hidden="true"></div>
+<aside class="sg-sidebar" aria-label="Style guide navigation">
+  <div class="sg-brand"><span class="sg-brand-name">Design System</span><span class="sg-brand-meta">v1.0 · Enterprise SaaS</span></div>
+  <nav class="sg-nav">
+    <div class="sg-nav-group"><span class="sg-nav-group-label">Overview</span>
+      <a href="#overview" class="sg-nav-link active">Getting Started</a>
+      <a href="#tokens-css" class="sg-nav-link">Token Reference</a></div>
+    <div class="sg-nav-group"><span class="sg-nav-group-label">Foundations</span>
+      <a href="#colors" class="sg-nav-link">Colors</a>
+      <a href="#typography" class="sg-nav-link">Typography</a>
+      <a href="#spacing" class="sg-nav-link">Spacing</a>
+      <a href="#radius" class="sg-nav-link">Radius</a>
+      <a href="#elevation" class="sg-nav-link">Elevation</a>
+      <a href="#icons" class="sg-nav-link">Icons</a>
+      <a href="#motion" class="sg-nav-link">Motion</a></div>
+    <div class="sg-nav-group"><span class="sg-nav-group-label">Components</span>
+      <a href="#buttons" class="sg-nav-link">Buttons</a>
+      <a href="#badges" class="sg-nav-link">Badges &amp; Chips</a>
+      <a href="#avatars" class="sg-nav-link">Avatars</a>
+      <a href="#forms" class="sg-nav-link">Forms</a>
+      <a href="#cards" class="sg-nav-link">Cards</a>
+      <a href="#callouts" class="sg-nav-link">Callouts</a>
+      <a href="#steps" class="sg-nav-link">Steps</a>
+      <a href="#tabs" class="sg-nav-link">Tabs</a></div>
+    <div class="sg-nav-group"><span class="sg-nav-group-label">Dashboard</span>
+      <a href="#stat-cards" class="sg-nav-link">Stat Cards</a>
+      <a href="#data-table" class="sg-nav-link">Data Table</a>
+      <a href="#filter-bar" class="sg-nav-link">Filter Bar</a>
+      <a href="#page-header" class="sg-nav-link">Page Header</a>
+      <a href="#modals" class="sg-nav-link">Modals</a>
+      <a href="#empty-states" class="sg-nav-link">Empty States</a>
+      <a href="#skeleton" class="sg-nav-link">Skeleton</a>
+      <a href="#toasts" class="sg-nav-link">Toasts</a></div>
+    <div class="sg-nav-group"><span class="sg-nav-group-label">AI &amp; Agents</span>
+      <a href="#ai-surfaces" class="sg-nav-link">AI Surface Components</a></div>
+    <div class="sg-nav-group"><span class="sg-nav-group-label">Theming</span>
+      <a href="#dark-mode" class="sg-nav-link">Dark Mode</a>
+      <a href="#accessibility" class="sg-nav-link">Accessibility</a></div>
+  </nav>
+</aside>
+
+<main class="sg-content">
+
+<!-- HERO -->
+<div class="sg-hero"><div class="sg-hero-inner">
+  <span class="sg-hero-label">Enterprise SaaS · v1.0</span>
+  <h1 class="sg-hero-title">Design<br>System</h1>
+  <p class="sg-hero-sub">Built for humans and AI. One source of truth for every token, component, and pattern — defined once, used everywhere.</p>
+  <div class="sg-hero-stats">
+    <div class="sg-hero-stat"><span class="sg-hero-stat-val">37</span><span class="sg-hero-stat-label">Design tokens</span></div>
+    <div class="sg-hero-stat"><span class="sg-hero-stat-val">7</span><span class="sg-hero-stat-label">Components</span></div>
+    <div class="sg-hero-stat"><span class="sg-hero-stat-val">WCAG AA</span><span class="sg-hero-stat-label">Accessibility</span></div>
+    <div class="sg-hero-stat"><span class="sg-hero-stat-val">Angular</span><span class="sg-hero-stat-label">Framework</span></div>
+  </div>
+</div></div>
+
+<!-- GETTING STARTED -->
+<section class="sg-section" id="overview">
+  <span class="sg-section-eyebrow">Overview</span>
+  <h2 class="sg-section-title">Getting Started</h2>
+  <p class="sg-section-desc">Reference this guide for every new feature or screen. For Claude Design sessions, link this repository so all generated UI inherits the correct tokens automatically.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Tech Stack</div>
+    <div class="sg-demo sg-demo--white"><table class="sg-token-table">
+      <thead><tr><th>Layer</th><th>Choice</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Framework</strong></td><td>Angular</td><td>Components extracted from HTML prototypes</td></tr>
+        <tr><td><strong>Styling</strong></td><td>Vanilla CSS + custom properties</td><td>No frameworks, no Tailwind</td></tr>
+        <tr><td><strong>Font</strong></td><td>Inter, weights 100–900</td><td>Google Fonts</td></tr>
+        <tr><td><strong>Icons</strong></td><td>Lucide inline SVG sprite</td><td>No external dependency, 1.5px stroke</td></tr>
+        <tr><td><strong>Hosting</strong></td><td>GitHub Pages + Netlify previews</td><td>Auto-deploy on push</td></tr>
+      </tbody>
+    </table></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Design Principles</div>
+    <div class="sg-demo sg-demo--white"><div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div><div style="font-size:13px;font-weight:600;margin-bottom:4px">Clarity over decoration</div><div style="font-size:13px;color:var(--text-secondary)">Every element earns its place. If it doesn't communicate, it doesn't belong.</div></div>
+      <div><div style="font-size:13px;font-weight:600;margin-bottom:4px">Efficiency over novelty</div><div style="font-size:13px;color:var(--text-secondary)">Familiar patterns reduce cognitive load.</div></div>
+      <div><div style="font-size:13px;font-weight:600;margin-bottom:4px">Confidence over friendliness</div><div style="font-size:13px;color:var(--text-secondary)">A professional tool used by people making real decisions.</div></div>
+      <div><div style="font-size:13px;font-weight:600;margin-bottom:4px">Strong information hierarchy</div><div style="font-size:13px;color:var(--text-secondary)">Primary actions dominant. Secondary information recedes.</div></div>
+    </div></div></div>
+</section>
+
+<!-- TOKEN REFERENCE -->
+<section class="sg-section" id="tokens-css">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Token Reference</h2>
+  <p class="sg-section-desc">Copy into your root stylesheet. Never hardcode hex values in component CSS.</p>
+  <pre class="sg-code"><span class="k">:root</span>, <span class="k">[data-theme="light"]</span> {
+  <span class="c">/* Brand */</span>
+  <span class="p">--color-primary</span>:        <span class="v">#1D3557</span>;   <span class="c">/* buttons, nav, dominant UI */</span>
+  <span class="p">--color-accent</span>:         <span class="v">#0073E6</span>;   <span class="c">/* links, focus rings — not buttons */</span>
+  <span class="p">--color-accent-subtle</span>:  <span class="v">#EBF4FF</span>;
+
+  <span class="c">/* Semantic */</span>
+  <span class="p">--color-success</span>: <span class="v">#16A34A</span>;  <span class="p">--color-info</span>:    <span class="v">#0EA5E9</span>;
+  <span class="p">--color-warning</span>: <span class="v">#EABA1C</span>;  <span class="p">--color-danger</span>:  <span class="v">#DC2626</span>;
+
+  <span class="c">/* Text */</span>
+  <span class="p">--text-primary</span>:   <span class="v">#24272D</span>;   <span class="p">--text-secondary</span>: <span class="v">#475569</span>;
+  <span class="p">--text-tertiary</span>:  <span class="v">#94A3B8</span>;   <span class="p">--text-inverse</span>:   <span class="v">#FFFFFF</span>;
+
+  <span class="c">/* Surface & Border */</span>
+  <span class="p">--surface-page</span>:   <span class="v">#F8FAFC</span>;   <span class="p">--surface-base</span>:   <span class="v">#FFFFFF</span>;
+  <span class="p">--border-default</span>: <span class="v">#E2E8F0</span>;   <span class="p">--border-strong</span>:  <span class="v">#CBD5E1</span>;
+
+  <span class="c">/* Radius */</span>
+  <span class="p">--radius-sm</span>: <span class="v">4px</span>; <span class="p">--radius-md</span>: <span class="v">6px</span>; <span class="p">--radius-lg</span>: <span class="v">9px</span>;
+  <span class="p">--radius-xl</span>: <span class="v">12px</span>; <span class="p">--radius-pill</span>: <span class="v">9999px</span>;
+
+  <span class="c">/* Shadow */</span>
+  <span class="p">--shadow-sm</span>: <span class="v">0 1px 2px rgba(15,23,42,.06)</span>;
+  <span class="p">--shadow-md</span>: <span class="v">0 4px 12px rgba(15,23,42,.10)</span>;
+  <span class="p">--shadow-lg</span>: <span class="v">0 12px 24px rgba(15,23,42,.14)</span>;
+
+  <span class="c">/* Motion */</span>
+  <span class="p">--duration-fast</span>: <span class="v">120ms</span>; <span class="p">--duration-base</span>: <span class="v">180ms</span>;
+  <span class="p">--ease-out</span>: <span class="v">cubic-bezier(0.0, 0.0, 0.2, 1)</span>;
+}</pre>
+</section>
+
+<!-- COLORS -->
+<section class="sg-section" id="colors">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Colors</h2>
+  <p class="sg-section-desc">Brand colors drive buttons and navigation. Accent is reserved for links and interactive states only — never button backgrounds.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Brand Colors</div>
+    <div class="sg-swatch-grid sg-swatch-grid--lg">
+      <div class="sg-swatch"><div class="sg-swatch-color sg-swatch-color--lg" style="background:#1D3557"></div><div class="sg-swatch-info"><span class="sg-swatch-name">Primary</span><span class="sg-swatch-var">--color-primary</span><span class="sg-swatch-hex">#1D3557 · Buttons, nav, dominant UI</span></div></div>
+      <div class="sg-swatch"><div class="sg-swatch-color sg-swatch-color--lg" style="background:#0073E6"></div><div class="sg-swatch-info"><span class="sg-swatch-name">Accent</span><span class="sg-swatch-var">--color-accent</span><span class="sg-swatch-hex">#0073E6 · Links, focus rings, interactive</span></div></div>
+    </div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Neutral Scale</div>
+    <div class="sg-neutral-strip">
+      <div class="sg-neutral-step" style="background:#FFFFFF"><span class="sg-neutral-step-label" style="color:#94A3B8">0</span></div>
+      <div class="sg-neutral-step" style="background:#F8FAFC"><span class="sg-neutral-step-label" style="color:#94A3B8">50</span></div>
+      <div class="sg-neutral-step" style="background:#F1F5F9"><span class="sg-neutral-step-label" style="color:#94A3B8">100</span></div>
+      <div class="sg-neutral-step" style="background:#E2E8F0"><span class="sg-neutral-step-label" style="color:#94A3B8">200</span></div>
+      <div class="sg-neutral-step" style="background:#CBD5E1"><span class="sg-neutral-step-label" style="color:#64748B">300</span></div>
+      <div class="sg-neutral-step" style="background:#94A3B8"><span class="sg-neutral-step-label" style="color:#fff">400</span></div>
+      <div class="sg-neutral-step" style="background:#64748B"><span class="sg-neutral-step-label" style="color:#fff">500</span></div>
+      <div class="sg-neutral-step" style="background:#475569"><span class="sg-neutral-step-label" style="color:#fff">600</span></div>
+      <div class="sg-neutral-step" style="background:#334155"><span class="sg-neutral-step-label" style="color:#fff">700</span></div>
+      <div class="sg-neutral-step" style="background:#1E293B"><span class="sg-neutral-step-label" style="color:#fff">800</span></div>
+      <div class="sg-neutral-step" style="background:#0F172A"><span class="sg-neutral-step-label" style="color:#fff">900</span></div>
+      <div class="sg-neutral-step" style="background:#020617"><span class="sg-neutral-step-label" style="color:#fff">950</span></div>
+    </div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Semantic Colors</div>
+    <div class="sg-swatch-grid">
+      <div class="sg-swatch">
+        <div class="sg-swatch-scale">
+          <div class="sg-swatch-scale-stop" style="background:#F0FDF4" data-label="subtle"></div>
+          <div class="sg-swatch-scale-stop" style="background:#86EFAC" data-label="light"></div>
+          <div class="sg-swatch-scale-stop" style="background:#16A34A" data-label="base"></div>
+          <div class="sg-swatch-scale-stop" style="background:#14532D" data-label="dark"></div>
+        </div>
+        <div class="sg-swatch-info"><span class="sg-swatch-name">Success</span><span class="sg-swatch-var">--color-success</span><span class="sg-swatch-hex">#16A34A</span></div>
+      </div>
+      <div class="sg-swatch">
+        <div class="sg-swatch-scale">
+          <div class="sg-swatch-scale-stop" style="background:#F0F9FF" data-label="subtle"></div>
+          <div class="sg-swatch-scale-stop" style="background:#7DD3FC" data-label="light"></div>
+          <div class="sg-swatch-scale-stop" style="background:#0EA5E9" data-label="base"></div>
+          <div class="sg-swatch-scale-stop" style="background:#0C4A6E" data-label="dark"></div>
+        </div>
+        <div class="sg-swatch-info"><span class="sg-swatch-name">Info</span><span class="sg-swatch-var">--color-info</span><span class="sg-swatch-hex">#0EA5E9</span></div>
+      </div>
+      <div class="sg-swatch">
+        <div class="sg-swatch-scale">
+          <div class="sg-swatch-scale-stop" style="background:#FFFBEB" data-label="subtle"></div>
+          <div class="sg-swatch-scale-stop" style="background:#FCD34D" data-label="light"></div>
+          <div class="sg-swatch-scale-stop" style="background:#EABA1C" data-label="base"></div>
+          <div class="sg-swatch-scale-stop" style="background:#78350F" data-label="dark"></div>
+        </div>
+        <div class="sg-swatch-info"><span class="sg-swatch-name">Warning</span><span class="sg-swatch-var">--color-warning</span><span class="sg-swatch-hex">#EABA1C</span></div>
+      </div>
+      <div class="sg-swatch">
+        <div class="sg-swatch-scale">
+          <div class="sg-swatch-scale-stop" style="background:#FEF2F2" data-label="subtle"></div>
+          <div class="sg-swatch-scale-stop" style="background:#FCA5A5" data-label="light"></div>
+          <div class="sg-swatch-scale-stop" style="background:#DC2626" data-label="base"></div>
+          <div class="sg-swatch-scale-stop" style="background:#7F1D1D" data-label="dark"></div>
+        </div>
+        <div class="sg-swatch-info"><span class="sg-swatch-name">Danger</span><span class="sg-swatch-var">--color-danger</span><span class="sg-swatch-hex">#DC2626</span></div>
+      </div>
+      <div class="sg-swatch">
+        <div class="sg-swatch-scale">
+          <div class="sg-swatch-scale-stop" style="background:#F8FAFC" data-label="subtle"></div>
+          <div class="sg-swatch-scale-stop" style="background:#E2E8F0" data-label="light"></div>
+          <div class="sg-swatch-scale-stop" style="background:#CBD5E1" data-label="base"></div>
+          <div class="sg-swatch-scale-stop" style="background:#94A3B8" data-label="dark"></div>
+        </div>
+        <div class="sg-swatch-info"><span class="sg-swatch-name">Disabled</span><span class="sg-swatch-var">--color-disabled</span><span class="sg-swatch-hex">#CBD5E1</span></div>
+      </div>
+    </div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Text Colors</div>
+    <div class="sg-demo sg-demo--white">
+      <div class="sg-text-color-list">
+        <div class="sg-text-color-row"><span class="sg-text-color-sample" style="color:#24272D;font-weight:600">Primary text</span><div class="sg-text-color-meta"><span class="sg-token">--text-primary</span><span class="sg-text-color-ratio">#24272D · 15.1:1 AAA</span></div></div>
+        <div class="sg-text-color-row"><span class="sg-text-color-sample" style="color:#475569">Secondary text</span><div class="sg-text-color-meta"><span class="sg-token">--text-secondary</span><span class="sg-text-color-ratio">#475569 · 5.9:1 AA</span></div></div>
+        <div class="sg-text-color-row"><span class="sg-text-color-sample" style="color:#94A3B8">Tertiary / placeholder</span><div class="sg-text-color-meta"><span class="sg-token">--text-tertiary</span><span class="sg-text-color-ratio">#94A3B8 · decorative only</span></div></div>
+        <div class="sg-text-color-row"><span class="sg-text-color-sample" style="color:#0073E6">Accent / link</span><div class="sg-text-color-meta"><span class="sg-token">--text-accent</span><span class="sg-text-color-ratio">#0073E6 · 4.6:1 AA ✅</span></div></div>
+        <div class="sg-text-color-row"><span class="sg-text-color-sample" style="color:#DC2626">Danger / error</span><div class="sg-text-color-meta"><span class="sg-token">--text-danger</span><span class="sg-text-color-ratio">#DC2626 · 4.5:1 AA ✅</span></div></div>
+      </div>
+    </div></div>
+</section>
+
+<!-- TYPOGRAPHY -->
+<section class="sg-section" id="typography">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Typography</h2>
+  <p class="sg-section-desc">Inter at all weights 100–900. Section labels are always uppercase with 0.07em tracking. Minimum text size: 12px.</p>
+  <div class="sg-demo sg-demo--white" style="padding:8px 20px">
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Hero Display</span><span class="sg-type-spec">48 / 800 / 1.1</span></div><div class="sg-type-sample" style="font-size:48px;font-weight:800;line-height:1.1;letter-spacing:-0.025em">Data at scale</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Display</span><span class="sg-type-spec">40 / 700 / 1.15</span></div><div class="sg-type-sample" style="font-size:40px;font-weight:700;line-height:1.15;letter-spacing:-0.02em">Dashboard</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Page H1</span><span class="sg-type-spec">32 / 700 / 1.2</span></div><div class="sg-type-sample" style="font-size:32px;font-weight:700;line-height:1.2">Project settings</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Section H2</span><span class="sg-type-spec">24 / 600 / 1.3</span></div><div class="sg-type-sample" style="font-size:24px;font-weight:600;line-height:1.3">Team members</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Section H3</span><span class="sg-type-spec">20 / 600 / 1.4</span></div><div class="sg-type-sample" style="font-size:20px;font-weight:600;line-height:1.4">Permissions</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Body Large</span><span class="sg-type-spec">16 / 400 / 1.6</span></div><div class="sg-type-sample" style="font-size:16px;line-height:1.6">Lead paragraph and introductory text.</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Body</span><span class="sg-type-spec">14 / 400 / 1.6</span></div><div class="sg-type-sample" style="font-size:14px;line-height:1.6">Standard body text for all UI copy and descriptions.</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Small / Meta</span><span class="sg-type-spec">12 / 400 / 1.5</span></div><div class="sg-type-sample" style="font-size:12px;line-height:1.5;color:var(--text-secondary)">Timestamps, helper text, captions — minimum size.</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Section Label</span><span class="sg-type-spec">11 / 600 / 1.4 · CAPS</span></div><div class="sg-type-sample" style="font-size:11px;font-weight:600;line-height:1.4;letter-spacing:.07em;text-transform:uppercase;color:var(--color-accent)">Foundations</div></div>
+    <div class="sg-type-row"><div class="sg-type-meta"><span class="sg-type-name">Mono</span><span class="sg-type-spec">13 / 400 / 1.5</span></div><div class="sg-type-sample" style="font-size:13px;line-height:1.5;font-family:var(--font-mono)">--color-primary: #1D3557;</div></div>
+  </div>
+</section>
+
+<!-- SPACING -->
+<section class="sg-section" id="spacing">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Spacing</h2>
+  <p class="sg-section-desc">8-point base grid. All values are multiples of 4px.</p>
+  <div class="sg-demo sg-demo--white" style="padding:16px 20px"><div style="display:flex;flex-direction:column;gap:4px">
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-1</span><span class="sg-spacing-px">4px</span><div class="sg-spacing-bar" style="width:4px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-2</span><span class="sg-spacing-px">8px</span><div class="sg-spacing-bar" style="width:8px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-3</span><span class="sg-spacing-px">12px</span><div class="sg-spacing-bar" style="width:12px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-4</span><span class="sg-spacing-px">16px</span><div class="sg-spacing-bar" style="width:16px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-6</span><span class="sg-spacing-px">24px</span><div class="sg-spacing-bar" style="width:24px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-8</span><span class="sg-spacing-px">32px</span><div class="sg-spacing-bar" style="width:32px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-10</span><span class="sg-spacing-px">40px</span><div class="sg-spacing-bar" style="width:40px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-12</span><span class="sg-spacing-px">48px</span><div class="sg-spacing-bar" style="width:48px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-16</span><span class="sg-spacing-px">64px</span><div class="sg-spacing-bar" style="width:64px"></div></div>
+    <div class="sg-spacing-row"><span class="sg-spacing-token">--space-24</span><span class="sg-spacing-px">96px</span><div class="sg-spacing-bar" style="width:96px"></div></div>
+  </div></div>
+</section>
+
+<!-- RADIUS -->
+<section class="sg-section" id="radius">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Border Radius</h2>
+  <p class="sg-section-desc">Five values from small elements to full cards. Pill is reserved for badges and switches.</p>
+  <div class="sg-demo"><div class="sg-radius-row">
+    <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius:4px"></div><span class="sg-radius-label">--radius-sm</span><span class="sg-radius-px">4px · Badges, sm btn</span></div>
+    <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius:6px"></div><span class="sg-radius-label">--radius-md</span><span class="sg-radius-px">6px · Inputs, buttons</span></div>
+    <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius:9px"></div><span class="sg-radius-label">--radius-lg</span><span class="sg-radius-px">9px · Logos, avatars</span></div>
+    <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius:12px"></div><span class="sg-radius-label">--radius-xl</span><span class="sg-radius-px">12px · Cards, modals</span></div>
+    <div class="sg-radius-item"><div class="sg-radius-box" style="border-radius:9999px;width:120px;height:40px"></div><span class="sg-radius-label">--radius-pill</span><span class="sg-radius-px">9999px · Chips, toggles</span></div>
+  </div></div>
+</section>
+
+<!-- ELEVATION -->
+<section class="sg-section" id="elevation">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Elevation</h2>
+  <p class="sg-section-desc">Cards default to sm. Hover elevates to md. Modals use lg. Border and shadow always pair together on card elements.</p>
+  <div class="sg-demo"><div class="sg-elevation-row">
+    <div class="sg-elevation-item"><div class="sg-elevation-box" style="box-shadow:none"><span style="font-size:11px;color:var(--text-tertiary)">Flat</span></div><span class="sg-elevation-label">--shadow-none</span><span class="sg-elevation-desc">Flat elements</span></div>
+    <div class="sg-elevation-item"><div class="sg-elevation-box" style="box-shadow:0 1px 2px rgba(15,23,42,.06)"><span style="font-size:11px;color:var(--text-tertiary)">Default</span></div><span class="sg-elevation-label">--shadow-sm</span><span class="sg-elevation-desc">Cards, inputs</span></div>
+    <div class="sg-elevation-item"><div class="sg-elevation-box" style="box-shadow:0 4px 12px rgba(15,23,42,.10)"><span style="font-size:11px;color:var(--text-tertiary)">Hover</span></div><span class="sg-elevation-label">--shadow-md</span><span class="sg-elevation-desc">Hover, dropdowns</span></div>
+    <div class="sg-elevation-item"><div class="sg-elevation-box" style="box-shadow:0 12px 24px rgba(15,23,42,.14)"><span style="font-size:11px;color:var(--text-tertiary)">Elevated</span></div><span class="sg-elevation-label">--shadow-lg</span><span class="sg-elevation-desc">Modals, overlays</span></div>
+  </div></div>
+</section>
+
+<!-- ICONS -->
+<section class="sg-section" id="icons">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Icons</h2>
+  <p class="sg-section-desc">Lucide inline SVG sprite — zero external dependencies. All icons self-contained in the HTML file. Decorative icons carry <code>aria-hidden="true"</code>.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Common Icons</div>
+    <div class="sg-demo sg-demo--white"><div class="sg-icon-grid">
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-home"/></svg><span>home</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-settings"/></svg><span>settings</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-user"/></svg><span>user</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-search"/></svg><span>search</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-bell"/></svg><span>bell</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" style="color:var(--color-success)" aria-hidden="true"><use href="#icon-check-circle"/></svg><span>check-circle</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" style="color:var(--color-warning)" aria-hidden="true"><use href="#icon-alert-triangle"/></svg><span>alert-triangle</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" style="color:var(--color-danger)" aria-hidden="true"><use href="#icon-alert-circle"/></svg><span>alert-circle</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" style="color:var(--color-info)" aria-hidden="true"><use href="#icon-info"/></svg><span>info</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-plus"/></svg><span>plus</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" style="color:var(--color-danger)" aria-hidden="true"><use href="#icon-trash-2"/></svg><span>trash-2</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-edit-3"/></svg><span>edit-3</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-download"/></svg><span>download</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-upload"/></svg><span>upload</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-filter"/></svg><span>filter</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-arrow-right"/></svg><span>arrow-right</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-chevron-down"/></svg><span>chevron-down</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-external-link"/></svg><span>external-link</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-x"/></svg><span>x</span></div>
+      <div class="sg-icon-item"><svg class="ds-icon" aria-hidden="true"><use href="#icon-more-horizontal"/></svg><span>more-horiz</span></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Sizing</div>
+    <div class="sg-demo sg-demo--white"><div style="display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-end">
+      <div style="text-align:center"><svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-layers"/></svg><div style="font-size:11px;color:var(--text-tertiary);margin-top:6px">14px · Inline/badge</div></div>
+      <div style="text-align:center"><svg class="ds-icon" style="width:16px;height:16px" aria-hidden="true"><use href="#icon-layers"/></svg><div style="font-size:11px;color:var(--text-tertiary);margin-top:6px">16px · Body text</div></div>
+      <div style="text-align:center"><svg class="ds-icon" aria-hidden="true"><use href="#icon-layers"/></svg><div style="font-size:11px;color:var(--text-tertiary);margin-top:6px">18px · Button/standalone</div></div>
+      <div style="text-align:center"><svg class="ds-icon ds-icon--lg" aria-hidden="true"><use href="#icon-layers"/></svg><div style="font-size:11px;color:var(--text-tertiary);margin-top:6px">20px · Section header</div></div>
+    </div></div></div>
+</section>
+
+<!-- MOTION -->
+<section class="sg-section" id="motion">
+  <span class="sg-section-eyebrow">Foundations</span>
+  <h2 class="sg-section-title">Motion</h2>
+  <p class="sg-section-desc">Motion communicates state change, not personality. All animations respect <code>prefers-reduced-motion</code>.</p>
+  <div class="sg-demo sg-demo--white">
+    <table class="sg-token-table"><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody>
+      <tr><td><span class="sg-token">--duration-fast</span></td><td><code>120ms</code></td><td>Micro-interactions, badge appearance</td></tr>
+      <tr><td><span class="sg-token">--duration-base</span></td><td><code>180ms</code></td><td>Button hover, card lift, input focus</td></tr>
+      <tr><td><span class="sg-token">--duration-slow</span></td><td><code>240ms</code></td><td>Panel expand, drawer, page transitions</td></tr>
+      <tr><td><span class="sg-token">--ease-out</span></td><td><code>cubic-bezier(0, 0, 0.2, 1)</code></td><td>All transitions</td></tr>
+    </tbody></table>
+    <div style="margin-top:16px;padding:12px 16px;background:var(--color-warning-subtle);border-left:3px solid var(--color-warning);border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:13px"><strong>Permitted:</strong> opacity, box-shadow, border-color, background-color, transform: translateY &nbsp;·&nbsp; <strong>Never:</strong> bounce, elastic, spring, parallax</div>
+  </div>
+</section>
+
+<!-- BUTTONS -->
+<section class="sg-section" id="buttons">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Buttons</h2>
+  <p class="sg-section-desc">Class pattern: <code>ds-btn ds-btn--[variant] ds-btn--[size]</code>. One primary button per view. Primary is always navy; secondary is white with a gray border.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">All Variants (Medium)</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <button class="ds-btn ds-btn--primary">Primary</button>
+      <button class="ds-btn ds-btn--secondary">Secondary</button>
+      <button class="ds-btn ds-btn--outline">Outline</button>
+      <button class="ds-btn ds-btn--ghost">Ghost</button>
+      <button class="ds-btn ds-btn--danger">Danger</button>
+      <button class="ds-btn ds-btn--link">Link</button>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Sizes</div>
+    <div class="sg-demo"><div class="sg-demo-row" style="align-items:center">
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--sm">Small</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">28px · r4 · 12px</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary">Medium</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">36px · r6 · 14px</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--lg">Large</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">42px · r6 · 14px</div></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">States</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary">Default</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Default</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--state-hover">Hover</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Hover</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--state-focus">Focus</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Focus</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--state-active">Active</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Active</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary" disabled>Disabled</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Disabled</div></div>
+      <div style="text-align:center"><button class="ds-btn ds-btn--primary ds-btn--loading"><span class="ds-btn-spinner" aria-hidden="true"></span>Loading</button><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">Loading</div></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">With Icons</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <button class="ds-btn ds-btn--primary"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-plus"/></svg>Add member</button>
+      <button class="ds-btn ds-btn--secondary"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-download"/></svg>Export</button>
+      <button class="ds-btn ds-btn--danger"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-trash-2"/></svg>Delete</button>
+      <button class="ds-btn ds-btn--ghost" aria-label="More options"><svg class="ds-icon" aria-hidden="true"><use href="#icon-more-horizontal"/></svg></button>
+    </div></div></div>
+</section>
+
+<!-- BADGES -->
+<section class="sg-section" id="badges">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Badges &amp; Chips</h2>
+  <p class="sg-section-desc">Badges for status and metadata. Chips for interactive filter states. Use semantic variants that match the actual meaning.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Semantic Badges</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <span class="ds-badge ds-badge--neutral">Neutral</span>
+      <span class="ds-badge ds-badge--primary">Primary</span>
+      <span class="ds-badge ds-badge--success">Active</span>
+      <span class="ds-badge ds-badge--info">New</span>
+      <span class="ds-badge ds-badge--warning">Pending</span>
+      <span class="ds-badge ds-badge--danger">Critical</span>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Pill Variant</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <span class="ds-badge ds-badge--pill ds-badge--neutral">Draft</span>
+      <span class="ds-badge ds-badge--pill ds-badge--success">Published</span>
+      <span class="ds-badge ds-badge--pill ds-badge--warning">In Review</span>
+      <span class="ds-badge ds-badge--pill ds-badge--danger">Blocked</span>
+      <span class="ds-badge ds-badge--pill ds-badge--info">Beta</span>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Chips (Interactive)</div>
+    <div class="sg-demo"><div class="sg-demo-row">
+      <button class="ds-chip" role="checkbox" aria-checked="false">All</button>
+      <button class="ds-chip ds-chip--selected" role="checkbox" aria-checked="true"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-check"/></svg>Active</button>
+      <button class="ds-chip" role="checkbox" aria-checked="false">Pending</button>
+      <button class="ds-chip" role="checkbox" aria-checked="false">Archived</button>
+    </div></div></div>
+</section>
+
+<!-- FORMS -->
+<section class="sg-section" id="forms">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Forms</h2>
+  <p class="sg-section-desc">Input heights align with button heights (sm/md/lg). Labels always appear above. Errors are inline below the field and announced to screen readers.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Text Inputs</div>
+    <div class="sg-demo sg-demo--white" style="max-width:520px"><div style="display:flex;flex-direction:column;gap:16px">
+      <div class="ds-field"><label class="ds-label" for="ex-name">Full name <span style="color:var(--color-danger)">*</span></label><input class="ds-input" type="text" id="ex-name" placeholder="Jane Smith"><span class="ds-field-hint">As it appears on your account</span></div>
+      <div class="ds-field"><label class="ds-label" for="ex-email">Email address</label><input class="ds-input ds-input--error" type="email" id="ex-email" value="jane@" aria-invalid="true" aria-describedby="email-err"><span class="ds-field-error" id="email-err" role="alert"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-alert-circle"/></svg>Enter a valid email address</span></div>
+      <div class="ds-field"><label class="ds-label" for="ex-dis">API key</label><input class="ds-input" type="text" id="ex-dis" value="sk_prod_••••••••••••••••" disabled><span class="ds-field-hint">Contact your admin to regenerate</span></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Sizes</div>
+    <div class="sg-demo sg-demo--white" style="max-width:400px"><div style="display:flex;flex-direction:column;gap:12px">
+      <div class="ds-field"><label class="ds-label" for="ex-sm">Small (28px)</label><input class="ds-input ds-input--sm" type="text" id="ex-sm" placeholder="Small input"></div>
+      <div class="ds-field"><label class="ds-label" for="ex-md">Medium (36px)</label><input class="ds-input" type="text" id="ex-md" placeholder="Medium input"></div>
+      <div class="ds-field"><label class="ds-label" for="ex-lg">Large (42px)</label><input class="ds-input ds-input--lg" type="text" id="ex-lg" placeholder="Large input"></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Select &amp; Textarea</div>
+    <div class="sg-demo sg-demo--white" style="max-width:520px"><div style="display:flex;flex-direction:column;gap:16px">
+      <div class="ds-field"><label class="ds-label" for="ex-role">Role</label><div class="ds-select-wrap"><select class="ds-select ds-input" id="ex-role"><option>Select a role</option><option>Admin</option><option>Editor</option><option>Viewer</option></select></div></div>
+      <div class="ds-field"><label class="ds-label" for="ex-notes">Notes</label><textarea class="ds-textarea" id="ex-notes" placeholder="Add context here…"></textarea><span class="ds-field-hint">Optional — up to 500 characters</span></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Checkbox, Radio &amp; Switch</div>
+    <div class="sg-demo sg-demo--white"><div style="display:flex;gap:48px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:10px"><div class="sg-demo-label">Checkboxes</div>
+        <label class="ds-checkbox-wrap"><input type="checkbox" class="ds-checkbox" checked><span class="ds-checkbox-label">Enable notifications</span></label>
+        <label class="ds-checkbox-wrap"><input type="checkbox" class="ds-checkbox"><span class="ds-checkbox-label">Weekly digest</span></label>
+        <label class="ds-checkbox-wrap"><input type="checkbox" class="ds-checkbox" disabled><span class="ds-checkbox-label" style="color:var(--text-tertiary)">Disabled</span></label>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px"><div class="sg-demo-label">Radio</div>
+        <label class="ds-radio-wrap"><input type="radio" class="ds-radio-input" name="plan" checked><span class="ds-radio-label">Professional</span></label>
+        <label class="ds-radio-wrap"><input type="radio" class="ds-radio-input" name="plan"><span class="ds-radio-label">Enterprise</span></label>
+        <label class="ds-radio-wrap"><input type="radio" class="ds-radio-input" name="plan" disabled><span class="ds-radio-label" style="color:var(--text-tertiary)">Legacy (disabled)</span></label>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px"><div class="sg-demo-label">Switch</div>
+        <label class="ds-switch-wrap"><div class="ds-switch"><input type="checkbox" checked><div class="ds-switch-track"></div><div class="ds-switch-thumb"></div></div><span class="ds-switch-label">Active</span></label>
+        <label class="ds-switch-wrap"><div class="ds-switch"><input type="checkbox"><div class="ds-switch-track"></div><div class="ds-switch-thumb"></div></div><span class="ds-switch-label">Inactive</span></label>
+      </div>
+    </div></div></div>
+</section>
+
+<!-- CARDS -->
+<section class="sg-section" id="cards">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Cards</h2>
+  <p class="sg-section-desc">Grid: <code>repeat(auto-fill, minmax(290px, 1fr))</code> · 16px gap. Clickable cards lift 2px on hover. Non-clickable cards are static — no hover effect.</p>
+  <div class="sg-demo"><div class="ds-card-grid">
+    <div class="ds-card ds-card--clickable" tabindex="0" role="article">
+      <div class="ds-card-header"><div class="ds-card-logo" style="background:var(--color-accent)"><svg class="ds-icon" aria-hidden="true"><use href="#icon-bar-chart-2"/></svg></div><div><div class="ds-card-title">Analytics</div><div class="ds-card-subtitle">Updated 2h ago</div></div></div>
+      <div class="ds-card-body">Monitor key metrics across all projects in real time. Drill down by segment or date range.</div>
+      <div class="ds-card-footer"><span class="ds-card-meta"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-activity"/></svg>12 active users</span><span class="ds-badge ds-badge--success">Live</span></div>
+    </div>
+    <div class="ds-card ds-card--clickable" tabindex="0" role="article">
+      <div class="ds-card-header"><div class="ds-card-logo" style="background:#7C3AED"><svg class="ds-icon" aria-hidden="true"><use href="#icon-plug"/></svg></div><div><div class="ds-card-title">Integrations</div><div class="ds-card-subtitle">8 connected</div></div></div>
+      <div class="ds-card-body">Connect your existing tools. Support for Slack, GitHub, Jira, and 50+ platforms.</div>
+      <div class="ds-card-footer"><span class="ds-card-meta"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-clock"/></svg>Synced today</span><span class="ds-badge ds-badge--primary">8 active</span></div>
+    </div>
+    <div class="ds-card" role="article">
+      <div class="ds-card-header"><div class="ds-card-logo" style="background:var(--neutral-400)"><svg class="ds-icon" aria-hidden="true"><use href="#icon-archive"/></svg></div><div><div class="ds-card-title">Archive</div><div class="ds-card-subtitle">Read only</div></div></div>
+      <div class="ds-card-body">Access historical records and audit logs. Archived — no longer editable.</div>
+      <div class="ds-card-footer"><span class="ds-card-meta"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-lock"/></svg>Archived</span><span class="ds-badge ds-badge--neutral">Non-clickable</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- CALLOUTS -->
+<section class="sg-section" id="callouts">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Callouts</h2>
+  <p class="sg-section-desc">Inline contextual messages. Distinct from toasts — callouts do not dismiss automatically. Toasts are out of scope for v1.</p>
+  <div class="sg-demo sg-demo--white">
+    <div class="ds-callout ds-callout--info"><svg class="ds-icon ds-callout-icon" aria-hidden="true"><use href="#icon-info"/></svg><div class="ds-callout-body"><strong class="ds-callout-title">New feature available</strong><p>Advanced filtering is now available in your dashboard. Update preferences to enable it.</p></div></div>
+    <div class="ds-callout ds-callout--success"><svg class="ds-icon ds-callout-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><div class="ds-callout-body"><strong class="ds-callout-title">Configuration saved</strong><p>Your integration settings have been updated and are now active.</p></div></div>
+    <div class="ds-callout ds-callout--warning"><svg class="ds-icon ds-callout-icon" aria-hidden="true"><use href="#icon-alert-triangle"/></svg><div class="ds-callout-body"><strong class="ds-callout-title">API rate limit approaching</strong><p>You've used 85% of your monthly quota. Consider upgrading to avoid interruptions.</p></div></div>
+    <div class="ds-callout ds-callout--danger" style="margin-bottom:0"><svg class="ds-icon ds-callout-icon" aria-hidden="true"><use href="#icon-alert-circle"/></svg><div class="ds-callout-body"><strong class="ds-callout-title">Authentication failed</strong><p>Your API credentials are invalid or expired. Regenerate your keys to restore access.</p></div></div>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="sg-section" id="steps">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Steps</h2>
+  <p class="sg-section-desc">Horizontal for multi-step wizards. Vertical for process timelines and ordered sequences.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Horizontal Wizard</div>
+    <div class="sg-demo">
+      <ol class="ds-steps ds-steps--horizontal" aria-label="Setup progress">
+        <li class="ds-step ds-step--complete" aria-label="Step 1 complete"><span class="ds-step-indicator" aria-hidden="true"><svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-check"/></svg></span><span class="ds-step-label">Account</span></li>
+        <li class="ds-step ds-step--complete" aria-label="Step 2 complete"><span class="ds-step-indicator" aria-hidden="true"><svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-check"/></svg></span><span class="ds-step-label">Team</span></li>
+        <li class="ds-step ds-step--active" aria-current="step"><span class="ds-step-indicator" aria-hidden="true">3</span><span class="ds-step-label">Integrations</span></li>
+        <li class="ds-step ds-step--upcoming"><span class="ds-step-indicator" aria-hidden="true">4</span><span class="ds-step-label">Review</span></li>
+      </ol>
+    </div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Vertical Sequence</div>
+    <div class="sg-demo sg-demo--white" style="max-width:480px">
+      <ol class="ds-steps--vertical" aria-label="Deployment">
+        <li class="ds-step--v ds-step--complete"><span class="ds-step-indicator ds-step--complete" style="flex-shrink:0" aria-hidden="true"><svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-check"/></svg></span><div class="ds-step-v-content"><span class="ds-step-v-title">Build</span><span class="ds-step-v-desc">Dependencies installed, assets compiled in 43s.</span></div></li>
+        <li class="ds-step--v ds-step--active" aria-current="step"><span class="ds-step-indicator ds-step--active" style="flex-shrink:0" aria-hidden="true">2</span><div class="ds-step-v-content"><span class="ds-step-v-title">Deploy</span><span class="ds-step-v-desc">Pushing to production. Approx. 2 minutes remaining.</span></div></li>
+        <li class="ds-step--v ds-step--upcoming"><span class="ds-step-indicator ds-step--upcoming" style="flex-shrink:0" aria-hidden="true">3</span><div class="ds-step-v-content"><span class="ds-step-v-title" style="color:var(--text-tertiary)">Verify</span><span class="ds-step-v-desc" style="color:var(--text-tertiary)">Health checks and smoke tests run automatically.</span></div></li>
+      </ol>
+    </div></div>
+</section>
+
+<!-- TABS -->
+<section class="sg-section" id="tabs">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Tabs</h2>
+  <p class="sg-section-desc">Underline style only. Arrow keys navigate, Enter or Space activates. Panel content renders below the tab strip.</p>
+  <div class="sg-demo sg-demo--white">
+    <div class="ds-tabs" role="tablist" aria-label="Sections" id="demo-tabs">
+      <button class="ds-tab ds-tab--active" role="tab" aria-selected="true"  aria-controls="panel-a" id="tab-a" tabindex="0">Overview</button>
+      <button class="ds-tab"               role="tab" aria-selected="false" aria-controls="panel-b" id="tab-b" tabindex="-1">Activity</button>
+      <button class="ds-tab"               role="tab" aria-selected="false" aria-controls="panel-c" id="tab-c" tabindex="-1">Settings</button>
+      <button class="ds-tab"               role="tab" aria-selected="false" tabindex="-1" disabled style="opacity:.4;cursor:not-allowed">API <span class="ds-badge ds-badge--pill ds-badge--info" style="margin-left:4px">Soon</span></button>
+    </div>
+    <div class="ds-tab-panel ds-tab-panel--active" id="panel-a" role="tabpanel" aria-labelledby="tab-a"><p style="font-size:14px;color:var(--text-secondary)">Project overview — metrics, status, and key information.</p></div>
+    <div class="ds-tab-panel" id="panel-b" role="tabpanel" aria-labelledby="tab-b"><p style="font-size:14px;color:var(--text-secondary)">Activity feed — recent changes, commits, and team actions.</p></div>
+    <div class="ds-tab-panel" id="panel-c" role="tabpanel" aria-labelledby="tab-c"><p style="font-size:14px;color:var(--text-secondary)">Settings — configure project preferences and integrations.</p></div>
+  </div>
+</section>
+
+<!-- AVATARS -->
+<section class="sg-section" id="avatars">
+  <span class="sg-section-eyebrow">Components</span>
+  <h2 class="sg-section-title">Avatars</h2>
+  <p class="sg-section-desc">User identity representations. Sizes scale from 24px (inline) to 56px (profile). Avatar groups overlap with a 2px white border separator.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Sizes</div>
+    <div class="sg-demo sg-demo--white"><div class="sg-demo-row" style="align-items:flex-end">
+      <div style="text-align:center"><div class="avatar avatar--sm">JD</div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">sm · 24px</div></div>
+      <div style="text-align:center"><div class="avatar">JD</div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">default · 32px</div></div>
+      <div style="text-align:center"><div class="avatar avatar--lg">JD</div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">lg · 40px</div></div>
+      <div style="text-align:center"><div class="avatar avatar--xl">JD</div><div style="font-size:10px;color:var(--text-tertiary);margin-top:6px">xl · 56px</div></div>
+    </div></div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Colors &amp; Avatar Group</div>
+    <div class="sg-demo sg-demo--white"><div class="sg-demo-row">
+      <div class="avatar" style="background:#1D3557">JD</div>
+      <div class="avatar" style="background:#7C3AED">MC</div>
+      <div class="avatar" style="background:#059669">SW</div>
+      <div class="avatar" style="background:#DC2626">AT</div>
+      <div class="avatar" style="background:#0073E6">BK</div>
+      <div style="width:1px;background:var(--border-default);height:32px;margin:0 8px"></div>
+      <div class="avatar-group">
+        <div class="avatar" style="background:#1D3557">JD</div>
+        <div class="avatar" style="background:#7C3AED">MC</div>
+        <div class="avatar" style="background:#059669">SW</div>
+        <div class="avatar" style="background:#DC2626">+4</div>
+      </div>
+    </div></div></div>
+</section>
+
+<!-- STAT CARDS -->
+<section class="sg-section" id="stat-cards">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Stat Cards</h2>
+  <p class="sg-section-desc">KPI cards always appear at the top of dashboard views, before the data table. Use 3–4 cards per row. The featured variant highlights the primary metric.</p>
+  <div class="sg-demo">
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-card__label">Total Revenue</span>
+        <span class="stat-card__value">$48,291</span>
+        <div class="stat-card__delta stat-card__delta--up">
+          <svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-trending-up"/></svg>
+          12.4% vs last month
+        </div>
+      </div>
+      <div class="stat-card stat-card--featured">
+        <span class="stat-card__label">Active Users</span>
+        <span class="stat-card__value">1,284</span>
+        <div class="stat-card__delta stat-card__delta--up">
+          <svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-trending-up"/></svg>
+          8.1% vs last month
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Conversion Rate</span>
+        <span class="stat-card__value">8.7%</span>
+        <div class="stat-card__delta stat-card__delta--neutral">
+          No change this period
+        </div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Churn Rate</span>
+        <span class="stat-card__value">2.3%</span>
+        <div class="stat-card__delta stat-card__delta--down">
+          <svg class="ds-icon" style="width:14px;height:14px" aria-hidden="true"><use href="#icon-trending-down"/></svg>
+          0.4% vs last month
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA TABLE -->
+<section class="sg-section" id="data-table">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Data Table</h2>
+  <p class="sg-section-desc">The primary data display for list views. Always includes a scroll wrapper for horizontal overflow, sortable headers, row selection, and pagination. Pair with a Filter Bar above.</p>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">Filter Bar + Table (full pattern)</div>
+  <div class="sg-demo">
+    <!-- Filter bar sits directly above the table wrap -->
+    <div class="filter-bar">
+      <div class="filter-bar__search">
+        <div class="input-icon-wrap">
+          <svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-search"/></svg>
+          <input class="ds-input ds-input--sm" type="search" placeholder="Search users…">
+        </div>
+      </div>
+      <div class="filter-bar__filters">
+        <div class="ds-select-wrap">
+          <select class="ds-select ds-input ds-input--sm"><option>All status</option><option>Active</option><option>Pending</option><option>Inactive</option></select>
+        </div>
+        <div class="ds-select-wrap">
+          <select class="ds-select ds-input ds-input--sm"><option>All roles</option><option>Admin</option><option>Editor</option><option>Viewer</option></select>
+        </div>
+      </div>
+      <div class="filter-bar__actions">
+        <button class="ds-btn ds-btn--secondary ds-btn--sm">
+          <svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-download"/></svg>
+          Export
+        </button>
+        <button class="ds-btn ds-btn--primary ds-btn--sm">
+          <svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-plus"/></svg>
+          Add user
+        </button>
+      </div>
+    </div>
+
+    <div class="data-table-wrap">
+      <div class="data-table-head">
+        <span class="data-table-head__title">Team members <span class="ds-badge ds-badge--neutral" style="margin-left:8px">143</span></span>
+        <div class="data-table-head__actions">
+          <button class="ds-btn ds-btn--ghost ds-btn--sm">Manage columns</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" aria-label="Team members">
+          <thead>
+            <tr>
+              <th class="col-check"><input type="checkbox" aria-label="Select all rows"></th>
+              <th class="col-sortable" aria-sort="ascending">Name <svg class="ds-icon" style="width:11px;height:11px;vertical-align:middle;margin-left:3px;opacity:.5" aria-hidden="true"><use href="#icon-chevron-down"/></svg></th>
+              <th>Status</th>
+              <th>Role</th>
+              <th class="col-num">Revenue</th>
+              <th class="col-date">Joined</th>
+              <th class="col-action"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row--selected">
+              <td class="col-check"><input type="checkbox" checked aria-label="Select Jane Doe"></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="avatar avatar--sm" style="background:#1D3557">JD</div>
+                  <div>
+                    <div style="font-weight:500;font-size:14px">Jane Doe</div>
+                    <div style="font-size:12px;color:var(--text-tertiary)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fc969d9299bc99849d918c9099d29f9391">[email&#160;protected]</a></div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="ds-badge ds-badge--success">Active</span></td>
+              <td style="font-size:13px;color:var(--text-secondary)">Admin</td>
+              <td class="col-num" style="font-weight:500">$12,840</td>
+              <td class="col-date">Jan 12, 2026</td>
+              <td class="col-action">
+                <div style="display:flex;gap:2px;justify-content:flex-end">
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="Edit Jane Doe"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-edit-3"/></svg></button>
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="More options"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-more-horizontal"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select Marcus Chen"></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="avatar avatar--sm" style="background:#7C3AED">MC</div>
+                  <div>
+                    <div style="font-weight:500;font-size:14px">Marcus Chen</div>
+                    <div style="font-size:12px;color:var(--text-tertiary)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb868a99889e98ab8e938a869b878ec5888486">[email&#160;protected]</a></div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="ds-badge ds-badge--success">Active</span></td>
+              <td style="font-size:13px;color:var(--text-secondary)">Editor</td>
+              <td class="col-num" style="font-weight:500">$8,240</td>
+              <td class="col-date">Feb 3, 2026</td>
+              <td class="col-action">
+                <div style="display:flex;gap:2px;justify-content:flex-end">
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="Edit Marcus Chen"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-edit-3"/></svg></button>
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="More options"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-more-horizontal"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select Sarah Wilson"></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="avatar avatar--sm" style="background:#059669">SW</div>
+                  <div>
+                    <div style="font-weight:500;font-size:14px">Sarah Wilson</div>
+                    <div style="font-size:12px;color:var(--text-tertiary)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="24574556454c64415c45495448410a474b49">[email&#160;protected]</a></div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="ds-badge ds-badge--warning">Pending</span></td>
+              <td style="font-size:13px;color:var(--text-secondary)">Viewer</td>
+              <td class="col-num" style="font-weight:500">$4,120</td>
+              <td class="col-date">Mar 8, 2026</td>
+              <td class="col-action">
+                <div style="display:flex;gap:2px;justify-content:flex-end">
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="Edit Sarah Wilson"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-edit-3"/></svg></button>
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="More options"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-more-horizontal"/></svg></button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="col-check"><input type="checkbox" aria-label="Select Alex Torres"></td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div class="avatar avatar--sm" style="background:#64748B">AT</div>
+                  <div>
+                    <div style="font-weight:500;font-size:14px">Alex Torres</div>
+                    <div style="font-size:12px;color:var(--text-tertiary)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2948454c51694c51484459454c074a4644">[email&#160;protected]</a></div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="ds-badge ds-badge--neutral">Inactive</span></td>
+              <td style="font-size:13px;color:var(--text-secondary)">Member</td>
+              <td class="col-num" style="font-weight:500">$1,640</td>
+              <td class="col-date">Apr 15, 2026</td>
+              <td class="col-action">
+                <div style="display:flex;gap:2px;justify-content:flex-end">
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="Edit Alex Torres"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-edit-3"/></svg></button>
+                  <button class="ds-btn ds-btn--ghost ds-btn--sm" style="width:28px;padding:0" aria-label="More options"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-more-horizontal"/></svg></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="data-table-foot">
+        <span class="table-count">Showing 1–4 of 143 results</span>
+        <nav class="pagination" aria-label="Table pagination">
+          <button class="pagination__btn" disabled aria-label="Previous">‹</button>
+          <button class="pagination__btn pagination__btn--active" aria-current="page">1</button>
+          <button class="pagination__btn">2</button>
+          <button class="pagination__btn">3</button>
+          <span class="pagination__ellipsis">…</span>
+          <button class="pagination__btn">8</button>
+          <button class="pagination__btn" aria-label="Next">›</button>
+        </nav>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<!-- FILTER BAR -->
+<section class="sg-section" id="filter-bar">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Filter Bar</h2>
+  <p class="sg-section-desc">Sits between the page header and data table. Search anchors left, filters follow, actions push to the right with <code>margin-left: auto</code>.</p>
+  <div class="sg-demo sg-demo--white">
+    <div class="filter-bar" style="padding:0">
+      <div class="filter-bar__search">
+        <div class="input-icon-wrap">
+          <svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-search"/></svg>
+          <input class="ds-input ds-input--sm" type="search" placeholder="Search…">
+        </div>
+      </div>
+      <div class="filter-bar__filters">
+        <div class="ds-select-wrap"><select class="ds-select ds-input ds-input--sm"><option>All status</option><option>Active</option><option>Inactive</option></select></div>
+        <div class="ds-select-wrap"><select class="ds-select ds-input ds-input--sm"><option>All time</option><option>Last 7 days</option><option>Last 30 days</option></select></div>
+      </div>
+      <div class="filter-bar__actions">
+        <button class="ds-btn ds-btn--secondary ds-btn--sm"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-download"/></svg>Export</button>
+        <button class="ds-btn ds-btn--primary ds-btn--sm"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-plus"/></svg>New item</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE HEADER -->
+<section class="sg-section" id="page-header">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Page Header</h2>
+  <p class="sg-section-desc">Opens every dashboard screen. Title + optional description on the left, primary actions on the right. Breadcrumb appears above the title when navigation depth > 1.</p>
+  <div class="sg-demo sg-demo--white">
+    <div class="page-header-demo">
+      <div>
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="#" class="breadcrumb__link">Settings</a></li>
+          <li class="breadcrumb__item" aria-hidden="true">/</li>
+          <li class="breadcrumb__item"><span class="breadcrumb__current">Team</span></li>
+        </ol>
+        <h1 class="page-title-demo">Team members</h1>
+        <p class="page-desc-demo">Manage who has access to this workspace and their permissions.</p>
+      </div>
+      <div class="page-header-demo__actions">
+        <button class="ds-btn ds-btn--secondary">Settings</button>
+        <button class="ds-btn ds-btn--primary"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-plus"/></svg>Invite member</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<section class="sg-section" id="modals">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Modals</h2>
+  <p class="sg-section-desc">Used for confirmations, forms, and focused tasks. Four sizes — sm (480px), default (560px), lg (720px), xl (960px). Footer always: cancel left, primary action right.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Confirmation modal (sm)</div>
+    <div class="sg-demo">
+      <div class="modal-demo" style="max-width:480px">
+        <div class="modal__header">
+          <span class="modal__title">Delete this record?</span>
+          <button class="ds-btn ds-btn--ghost" style="width:28px;height:28px;padding:0" aria-label="Close"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-x"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div class="ds-callout ds-callout--danger" style="margin-bottom:0">
+            <svg class="ds-icon ds-callout-icon" aria-hidden="true"><use href="#icon-alert-circle"/></svg>
+            <div class="ds-callout-body"><p>This will permanently delete <strong>Jane Doe's</strong> account and all associated data. This action cannot be undone.</p></div>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button class="ds-btn ds-btn--secondary">Cancel</button>
+          <button class="ds-btn ds-btn--danger">Delete permanently</button>
+        </div>
+      </div>
+    </div></div>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">Form modal (default 560px)</div>
+    <div class="sg-demo">
+      <div class="modal-demo">
+        <div class="modal__header">
+          <span class="modal__title">Invite team member</span>
+          <button class="ds-btn ds-btn--ghost" style="width:28px;height:28px;padding:0" aria-label="Close"><svg class="ds-icon ds-icon--md" aria-hidden="true"><use href="#icon-x"/></svg></button>
+        </div>
+        <div class="modal__body">
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <div class="ds-field"><label class="ds-label" for="modal-email">Email address <span style="color:var(--color-danger)">*</span></label><input class="ds-input" type="email" id="modal-email" placeholder="colleague@company.com"></div>
+            <div class="ds-field"><label class="ds-label" for="modal-role">Role</label><div class="ds-select-wrap"><select class="ds-select ds-input" id="modal-role"><option>Viewer</option><option>Editor</option><option>Admin</option></select></div><span class="ds-field-hint">Editors can create and modify content.</span></div>
+          </div>
+        </div>
+        <div class="modal__footer">
+          <button class="ds-btn ds-btn--secondary">Cancel</button>
+          <button class="ds-btn ds-btn--primary">Send invite</button>
+        </div>
+      </div>
+    </div></div>
+</section>
+
+<!-- EMPTY STATES -->
+<section class="sg-section" id="empty-states">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Empty States</h2>
+  <p class="sg-section-desc">Every data view needs an empty state. Three variants: no data (first use), no results (filtered), and load error. Each includes a contextual CTA.</p>
+  <div class="sg-demo" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--border-default);border-radius:var(--radius-xl);overflow:hidden">
+    <div style="background:var(--surface-base)">
+      <div class="empty-state">
+        <div class="empty-state__icon"><svg class="ds-icon ds-icon--lg" aria-hidden="true"><use href="#icon-users"/></svg></div>
+        <h3 class="empty-state__title">No team members yet</h3>
+        <p class="empty-state__desc">Invite your first team member to start collaborating.</p>
+        <button class="ds-btn ds-btn--primary ds-btn--sm"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-plus"/></svg>Invite member</button>
+      </div>
+    </div>
+    <div style="background:var(--surface-base)">
+      <div class="empty-state">
+        <div class="empty-state__icon"><svg class="ds-icon ds-icon--lg" aria-hidden="true"><use href="#icon-filter"/></svg></div>
+        <h3 class="empty-state__title">No results found</h3>
+        <p class="empty-state__desc">Try adjusting your filters or search terms.</p>
+        <button class="ds-btn ds-btn--secondary ds-btn--sm">Clear filters</button>
+      </div>
+    </div>
+    <div style="background:var(--surface-base)">
+      <div class="empty-state">
+        <div class="empty-state__icon" style="background:var(--color-danger-subtle);color:var(--color-danger)"><svg class="ds-icon ds-icon--lg" aria-hidden="true"><use href="#icon-alert-circle"/></svg></div>
+        <h3 class="empty-state__title">Failed to load data</h3>
+        <p class="empty-state__desc">There was a problem fetching your data. Please try again.</p>
+        <button class="ds-btn ds-btn--secondary ds-btn--sm">Try again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKELETON -->
+<section class="sg-section" id="skeleton">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Skeleton / Loading</h2>
+  <p class="sg-section-desc">Match the skeleton layout exactly to the content it replaces — users shouldn't feel a layout shift when real data loads. Shimmer animation runs at 1.5s infinite.</p>
+  <div class="sg-subsection"><div class="sg-subsection-title">Stat card skeletons</div>
+    <div class="sg-demo">
+      <div class="stat-grid">
+        <div class="skeleton-stat"><div class="skeleton__line skeleton__line--label" style="width:55%;margin-bottom:12px"></div><div class="skeleton__line skeleton__line--title" style="height:28px;margin-bottom:10px"></div><div class="skeleton__line skeleton__line--short"></div></div>
+        <div class="skeleton-stat"><div class="skeleton__line skeleton__line--label" style="width:55%;margin-bottom:12px"></div><div class="skeleton__line skeleton__line--title" style="height:28px;margin-bottom:10px"></div><div class="skeleton__line skeleton__line--short"></div></div>
+        <div class="skeleton-stat"><div class="skeleton__line skeleton__line--label" style="width:55%;margin-bottom:12px"></div><div class="skeleton__line skeleton__line--title" style="height:28px;margin-bottom:10px"></div><div class="skeleton__line skeleton__line--short"></div></div>
+        <div class="skeleton-stat"><div class="skeleton__line skeleton__line--label" style="width:55%;margin-bottom:12px"></div><div class="skeleton__line skeleton__line--title" style="height:28px;margin-bottom:10px"></div><div class="skeleton__line skeleton__line--short"></div></div>
+      </div>
+    </div></div>
+  <div class="sg-subsection"><div class="sg-subsection-title">Table row skeletons</div>
+    <div class="sg-demo" style="padding:0">
+      <div class="data-table-wrap" style="box-shadow:none;border-radius:0">
+        <div class="table-scroll">
+          <table class="data-table" aria-label="Loading...">
+            <thead><tr>
+              <th class="col-check"><input type="checkbox" disabled></th>
+              <th>Name</th><th>Status</th><th>Role</th>
+              <th class="col-num">Revenue</th><th class="col-date">Joined</th>
+              <th class="col-action"><span class="sr-only">Actions</span></th>
+            </tr></thead>
+            <tbody>
+              <tr><td class="col-check"><div class="skeleton__block skeleton__block--avatar" style="width:16px;height:16px;border-radius:3px"></div></td><td><div style="display:flex;align-items:center;gap:10px"><div class="skeleton__block skeleton__block--avatar"></div><div><div class="skeleton__line" style="width:100px;margin-bottom:4px"></div><div class="skeleton__line" style="width:140px;height:10px"></div></div></div></td><td><div class="skeleton__block skeleton__block--badge"></div></td><td><div class="skeleton__line" style="width:56px"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:64px;margin-left:auto"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:80px;margin-left:auto"></div></td><td><div class="skeleton__block skeleton__block--btn" style="width:56px;margin-left:auto"></div></td></tr>
+              <tr><td class="col-check"><div class="skeleton__block skeleton__block--avatar" style="width:16px;height:16px;border-radius:3px"></div></td><td><div style="display:flex;align-items:center;gap:10px"><div class="skeleton__block skeleton__block--avatar"></div><div><div class="skeleton__line" style="width:120px;margin-bottom:4px"></div><div class="skeleton__line" style="width:160px;height:10px"></div></div></div></td><td><div class="skeleton__block skeleton__block--badge"></div></td><td><div class="skeleton__line" style="width:48px"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:64px;margin-left:auto"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:80px;margin-left:auto"></div></td><td><div class="skeleton__block skeleton__block--btn" style="width:56px;margin-left:auto"></div></td></tr>
+              <tr><td class="col-check"><div class="skeleton__block skeleton__block--avatar" style="width:16px;height:16px;border-radius:3px"></div></td><td><div style="display:flex;align-items:center;gap:10px"><div class="skeleton__block skeleton__block--avatar"></div><div><div class="skeleton__line" style="width:90px;margin-bottom:4px"></div><div class="skeleton__line" style="width:130px;height:10px"></div></div></div></td><td><div class="skeleton__block skeleton__block--badge"></div></td><td><div class="skeleton__line" style="width:56px"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:64px;margin-left:auto"></div></td><td style="text-align:right"><div class="skeleton__line" style="width:80px;margin-left:auto"></div></td><td><div class="skeleton__block skeleton__block--btn" style="width:56px;margin-left:auto"></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div></div>
+</section>
+
+<!-- TOASTS -->
+<section class="sg-section" id="toasts">
+  <span class="sg-section-eyebrow">Dashboard</span>
+  <h2 class="sg-section-title">Toasts</h2>
+  <p class="sg-section-desc">Transient feedback — auto-dismiss after 4s. Fixed bottom-right, stack upward. Left border encodes semantic meaning. Unlike callouts, toasts are never persistent.</p>
+  <div class="sg-demo sg-demo--white">
+    <div style="display:flex;flex-direction:column;gap:0;max-width:380px">
+      <div class="toast toast--success"><svg class="toast__icon ds-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><span class="toast__message">Changes saved successfully.</span><button class="ds-btn ds-btn--ghost" style="height:auto;padding:2px;width:24px;flex-shrink:0" aria-label="Dismiss"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-x"/></svg></button></div>
+      <div class="toast toast--info"><svg class="toast__icon ds-icon" aria-hidden="true"><use href="#icon-info"/></svg><span class="toast__message">Your export is being prepared.</span><button class="ds-btn ds-btn--ghost" style="height:auto;padding:2px;width:24px;flex-shrink:0" aria-label="Dismiss"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-x"/></svg></button></div>
+      <div class="toast toast--warning"><svg class="toast__icon ds-icon" aria-hidden="true"><use href="#icon-alert-triangle"/></svg><span class="toast__message">API rate limit approaching (85%).</span><button class="ds-btn ds-btn--ghost" style="height:auto;padding:2px;width:24px;flex-shrink:0" aria-label="Dismiss"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-x"/></svg></button></div>
+      <div class="toast toast--error" style="margin-bottom:0"><svg class="toast__icon ds-icon" aria-hidden="true"><use href="#icon-alert-circle"/></svg><span class="toast__message">Failed to connect. Check your network.</span><button class="ds-btn ds-btn--ghost" style="height:auto;padding:2px;width:24px;flex-shrink:0" aria-label="Dismiss"><svg class="ds-icon ds-icon--sm" aria-hidden="true"><use href="#icon-x"/></svg></button></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI SURFACE COMPONENTS -->
+<section class="sg-section" id="ai-surfaces">
+  <span class="sg-section-eyebrow">AI &amp; Agents</span>
+  <h2 class="sg-section-title">AI Surface Components</h2>
+  <p class="sg-section-desc">New component patterns for interfaces that contain, generate, or are operated by AI agents. Every pattern is attribution-first — users and other agents always know when content is AI-generated.</p>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">Streaming Text</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">For LLM output that appears progressively. The blinking cursor communicates that the response is live. Uses <code>aria-live="polite"</code> so screen readers and agent parsers track updates in real time.</p>
+    <div class="sg-demo sg-demo--white">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <div class="ai-thinking">
+          <div class="ai-thinking__dots"><span></span><span></span><span></span></div>
+        </div>
+        <span style="font-size:12px;color:var(--text-tertiary);font-family:var(--font-mono)">streaming…</span>
+      </div>
+      <div class="ai-stream" aria-live="polite" role="region" aria-label="AI response">
+        Based on your Q1 data, revenue grew 12.4% month-over-month, driven primarily by enterprise account expansions. Churn rate held steady at 2.3%, which is below your 3% target. The conversion rate dip to 8.7% warrants attention — it correlates with the onboarding flow change deployed March 14th.<span class="ai-stream__cursor" aria-hidden="true"></span>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border-default)">
+        <div class="ai-attribution">
+          <svg class="ai-attribution__icon ds-icon" aria-hidden="true"><use href="#icon-sparkles"/></svg>
+          <span>Generated by AI</span>
+          <span class="ai-attribution__sep">·</span>
+          <button class="ds-btn ds-btn--link" style="font-size:12px">Edit</button>
+          <button class="ds-btn ds-btn--link" style="font-size:12px">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">AI Thinking State</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">Distinct from a data loading spinner. Communicates that an agent is reasoning — not just fetching. The pulse timing and accent color connect it to the AI surface language, not the generic loading system.</p>
+    <div class="sg-demo sg-demo--white">
+      <div style="display:flex;gap:48px;flex-wrap:wrap;align-items:flex-start">
+        <div>
+          <div class="sg-demo-label">Inline</div>
+          <div class="ai-thinking" role="status" aria-label="AI is thinking">
+            <div class="ai-thinking__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+            <span class="ai-thinking__label">Analyzing your data…</span>
+          </div>
+        </div>
+        <div>
+          <div class="sg-demo-label">In a card</div>
+          <div style="background:var(--surface-base);border:1px solid var(--border-default);border-radius:var(--radius-xl);padding:20px 24px;min-width:260px">
+            <div style="font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:12px">AI Summary</div>
+            <div class="ai-thinking" role="status" aria-label="Generating summary">
+              <div class="ai-thinking__dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <span class="ai-thinking__label">Generating summary…</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sg-demo-label">In a button</div>
+          <button class="ds-btn ds-btn--primary" aria-busy="true" style="gap:10px">
+            <div class="ai-thinking__dots" aria-hidden="true" style="display:flex;gap:3px">
+              <span style="width:5px;height:5px;border-radius:50%;background:#fff;display:block;animation:ai-pulse 1.2s ease-in-out infinite"></span>
+              <span style="width:5px;height:5px;border-radius:50%;background:#fff;display:block;animation:ai-pulse 1.2s ease-in-out infinite;animation-delay:.2s"></span>
+              <span style="width:5px;height:5px;border-radius:50%;background:#fff;display:block;animation:ai-pulse 1.2s ease-in-out infinite;animation-delay:.4s"></span>
+            </div>
+            Generating…
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">AI Attribution</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">Marks AI-generated content consistently. Pill format keeps it compact. Appears any time content originates from an AI agent — whether inline, on a card, or at the top of a content block. Always includes at minimum "Generated by AI."</p>
+    <div class="sg-demo sg-demo--white">
+      <div class="sg-demo-row" style="flex-wrap:wrap;gap:12px">
+        <div class="ai-attribution">
+          <svg class="ai-attribution__icon ds-icon" aria-hidden="true"><use href="#icon-sparkles"/></svg>
+          <span>Generated by AI</span>
+        </div>
+        <div class="ai-attribution">
+          <svg class="ai-attribution__icon ds-icon" aria-hidden="true"><use href="#icon-sparkles"/></svg>
+          <span>Generated by AI</span>
+          <span class="ai-attribution__sep">·</span>
+          <button class="ds-btn ds-btn--link" style="font-size:12px">Edit</button>
+        </div>
+        <div class="ai-attribution">
+          <svg class="ai-attribution__icon ds-icon" aria-hidden="true"><use href="#icon-sparkles"/></svg>
+          <span>Generated by AI</span>
+          <span class="ai-attribution__sep">·</span>
+          <button class="ds-btn ds-btn--link" style="font-size:12px">Edit</button>
+          <button class="ds-btn ds-btn--link" style="font-size:12px">Regenerate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">AI Content Block</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">A full container for AI-generated content. The accent top border and subtle blue header background distinguish it from standard cards. Accept, Edit, and Regenerate actions give users control. The <code>data-ai-generated</code> attribute makes it machine-readable for other agents parsing the DOM.</p>
+    <div class="sg-demo">
+      <div class="ai-content" data-ai-generated="true">
+        <div class="ai-content__header">
+          <div class="ai-attribution" style="background:transparent;border:none;padding:0">
+            <svg class="ai-attribution__icon ds-icon" aria-hidden="true"><use href="#icon-sparkles"/></svg>
+            <span>AI-generated summary</span>
+          </div>
+          <div class="ai-content__actions">
+            <button class="ds-btn ds-btn--ghost ds-btn--sm">Regenerate</button>
+            <button class="ds-btn ds-btn--ghost ds-btn--sm">Edit</button>
+            <button class="ds-btn ds-btn--primary ds-btn--sm">Accept</button>
+          </div>
+        </div>
+        <div class="ai-content__body">
+          <p style="margin-bottom:12px">Revenue grew <strong>12.4%</strong> month-over-month to <strong>$48,291</strong>, driven by three enterprise account expansions in the financial services vertical. This is the strongest Q1 performance since 2023.</p>
+          <p style="margin-bottom:12px">Active user count reached <strong>1,284</strong>, up 8.1%. Churn held at <strong>2.3%</strong> — below the 3% internal target for the third consecutive month.</p>
+          <p style="margin:0">Recommended action: investigate the conversion rate dip from 9.4% → 8.7% observed after the March 14th onboarding change. Early signals suggest a friction point at the workspace setup step.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-subsection"><div class="sg-subsection-title">Agent-Readable Data Attributes</div>
+    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6">Standard <code>data-*</code> attributes that every agent-interactive element should carry. These allow AI agents operating the UI to understand intent, risk level, and content provenance without visual inference.</p>
+    <div class="sg-demo sg-demo--white">
+      <pre class="sg-code" style="margin:0"><span class="c">/* Action intent */</span>
+<span class="p">data-action</span>=<span class="s">"[verb]"</span>               <span class="c">// "save" | "delete" | "export" | "invite"</span>
+<span class="p">data-destructive</span>=<span class="s">"true"</span>              <span class="c">// flags irreversible consequences</span>
+<span class="p">data-requires-confirmation</span>=<span class="s">"true"</span>   <span class="c">// agent must confirm before executing</span>
+
+<span class="c">/* Content provenance */</span>
+<span class="p">data-ai-generated</span>=<span class="s">"true"</span>            <span class="c">// content created by an AI agent</span>
+<span class="p">data-source</span>=<span class="s">"[system-name]"</span>         <span class="c">// origin system of displayed data</span>
+<span class="p">data-last-updated</span>=<span class="s">"2026-06-12T..."</span>  <span class="c">// ISO 8601 refresh timestamp</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- DARK MODE -->
+<section class="sg-section" id="dark-mode">
+  <span class="sg-section-eyebrow">Theming</span>
+  <h2 class="sg-section-title">Dark Mode</h2>
+  <p class="sg-section-desc">Token architecture is fully prepared. Visual implementation is scheduled for v2. No component API changes required — only token values switch.</p>
+  <div class="sg-coming-soon">
+    <div class="sg-coming-soon-badge"><svg class="ds-icon" style="width:12px;height:12px" aria-hidden="true"><use href="#icon-moon"/></svg>Coming in v2</div>
+    <h3>Dark mode tokens are ready</h3>
+    <p>All component styles use CSS custom properties. Set <code>data-theme="dark"</code> on the root element to activate — zero component changes needed.</p>
+  </div>
+  <pre class="sg-code" style="margin-top:16px"><span class="c">/* One-line toggle */</span>
+<span class="k">document</span>.<span class="p">documentElement</span>.<span class="k">setAttribute</span>(<span class="s">'data-theme'</span>, <span class="s">'dark'</span>);
+
+<span class="k">[data-theme="dark"]</span> {
+  <span class="p">--surface-page</span>:   <span class="v">#0F172A</span>;  <span class="p">--surface-base</span>:   <span class="v">#1E293B</span>;
+  <span class="p">--text-primary</span>:   <span class="v">#F1F5F9</span>;  <span class="p">--border-default</span>: <span class="v">#334155</span>;
+  <span class="c">/* ... all tokens defined in DESIGN_SYSTEM.md */</span>
+}</pre>
+</section>
+
+<!-- ACCESSIBILITY -->
+<section class="sg-section" id="accessibility">
+  <span class="sg-section-eyebrow">Standards</span>
+  <h2 class="sg-section-title">Accessibility</h2>
+  <p class="sg-section-desc">All components meet WCAG 2.1 AA. Focus rings use a 2px accent outline. Minimum touch target is 44px on mobile.</p>
+  <div class="sg-demo sg-demo--white">
+    <table class="sg-token-table"><thead><tr><th>Color pair</th><th>Ratio</th><th>Level</th></tr></thead><tbody>
+      <tr><td><span style="display:inline-flex;align-items:center;gap:8px"><span class="sg-token-dot" style="background:#24272D"></span>Primary text on white</span></td><td><strong>15.1:1</strong></td><td><span class="ds-badge ds-badge--success">AAA</span></td></tr>
+      <tr><td><span style="display:inline-flex;align-items:center;gap:8px"><span class="sg-token-dot" style="background:#475569"></span>Secondary text on white</span></td><td><strong>5.9:1</strong></td><td><span class="ds-badge ds-badge--success">AA</span></td></tr>
+      <tr><td><span style="display:inline-flex;align-items:center;gap:8px"><span class="sg-token-dot" style="background:#FFFFFF;border:1px solid #e2e8f0"></span>White on Primary #1D3557</span></td><td><strong>10.2:1</strong></td><td><span class="ds-badge ds-badge--success">AAA</span></td></tr>
+      <tr><td><span style="display:inline-flex;align-items:center;gap:8px"><span class="sg-token-dot" style="background:#FFFFFF;border:1px solid #e2e8f0"></span>White on Accent #0073E6</span></td><td><strong>4.6:1</strong></td><td><span class="ds-badge ds-badge--success">AA</span></td></tr>
+      <tr><td><span style="display:inline-flex;align-items:center;gap:8px"><span class="sg-token-dot" style="background:#DC2626"></span>Danger text on white</span></td><td><strong>4.5:1</strong></td><td><span class="ds-badge ds-badge--success">AA</span></td></tr>
+    </tbody></table>
+  </div>
+  <div class="sg-demo" style="margin-top:16px"><div class="sg-demo-row">
+    <button class="ds-btn ds-btn--primary ds-btn--state-focus">Focused button</button>
+    <input class="ds-input" type="text" placeholder="Focused input" style="outline:2px solid var(--color-accent);outline-offset:0;box-shadow:none;border-color:var(--color-accent);max-width:200px">
+    <span style="font-size:13px;color:var(--text-secondary)">2px solid accent · 2px offset</span>
+  </div></div>
+</section>
+
+</main></div>
+
+<!-- ⌘K COMMAND PALETTE -->
+<div id="cmd-overlay" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
+  <div id="cmd-modal">
+    <div id="cmd-search-wrap">
+      <svg class="ds-icon" style="color:var(--text-tertiary);flex-shrink:0" aria-hidden="true"><use href="#icon-search"/></svg>
+      <input id="cmd-input" type="text" placeholder="Search documentation…" autocomplete="off" spellcheck="false" aria-label="Search">
+      <span class="cmd-key" style="flex-shrink:0">Esc</span>
+    </div>
+    <div id="cmd-results" role="listbox"></div>
+    <div id="cmd-footer">
+      <span class="cmd-hint"><span class="cmd-key">↑</span><span class="cmd-key">↓</span>navigate</span>
+      <span class="cmd-hint"><span class="cmd-key">↵</span>jump to</span>
+      <span class="cmd-hint"><span class="cmd-key">Esc</span>close</span>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+/* ── Hamburger Drawer ── */
+(function(){
+  const sidebar = document.querySelector('.sg-sidebar');
+  const scrim   = document.getElementById('sidebar-scrim');
+  const hamburger = document.getElementById('hamburger-btn');
+  if (!hamburger) return;
+
+  function openDrawer() {
+    sidebar.classList.add('drawer-open');
+    scrim.classList.add('drawer-open');
+    hamburger.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    sidebar.classList.remove('drawer-open');
+    scrim.classList.remove('drawer-open');
+    hamburger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  }
+  hamburger.addEventListener('click', () =>
+    sidebar.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
+  );
+  scrim.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+  // Close on nav link tap (mobile)
+  document.querySelectorAll('.sg-nav-link').forEach(l =>
+    l.addEventListener('click', () => { if(window.innerWidth <= 900) closeDrawer(); })
+  );
+})();
+
+/* ── Tabs ── */
+const tabList = document.getElementById('demo-tabs');
+if (tabList) {
+  const tabs = Array.from(tabList.querySelectorAll('[role="tab"]:not([disabled])'));
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', e => {
+      const i = tabs.indexOf(document.activeElement);
+      if (e.key === 'ArrowRight') { e.preventDefault(); tabs[(i+1)%tabs.length].focus(); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); tabs[(i-1+tabs.length)%tabs.length].focus(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateTab(document.activeElement); }
+    });
+  });
+  function activateTab(tab) {
+    tabs.forEach(t => { t.classList.remove('ds-tab--active'); t.setAttribute('aria-selected','false'); t.tabIndex=-1; });
+    document.querySelectorAll('.ds-tab-panel').forEach(p => p.classList.remove('ds-tab-panel--active'));
+    tab.classList.add('ds-tab--active'); tab.setAttribute('aria-selected','true'); tab.tabIndex=0;
+    const p = document.getElementById(tab.getAttribute('aria-controls'));
+    if (p) p.classList.add('ds-tab-panel--active');
+  }
+}
+
+/* ── Scrollspy ── */
+const spy = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.sg-nav-link').forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.sg-nav-link[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-15% 0px -70% 0px' });
+document.querySelectorAll('.sg-section[id]').forEach(s => spy.observe(s));
+
+/* ── ⌘K Command Palette ── */
+const CMD_ITEMS = [
+  { group:'Overview',    label:'Getting Started',  href:'#overview',       icon:'home' },
+  { group:'Overview',    label:'Token Reference',  href:'#tokens-css',     icon:'layers' },
+  { group:'Foundations', label:'Colors',           href:'#colors',         icon:'info' },
+  { group:'Foundations', label:'Typography',       href:'#typography',     icon:'edit-3' },
+  { group:'Foundations', label:'Spacing',          href:'#spacing',        icon:'more-horizontal' },
+  { group:'Foundations', label:'Radius',           href:'#radius',         icon:'info' },
+  { group:'Foundations', label:'Elevation',        href:'#elevation',      icon:'layers' },
+  { group:'Foundations', label:'Icons',            href:'#icons',          icon:'search' },
+  { group:'Foundations', label:'Motion',           href:'#motion',         icon:'activity' },
+  { group:'Components',  label:'Buttons',          href:'#buttons',        icon:'plus' },
+  { group:'Components',  label:'Badges & Chips',   href:'#badges',         icon:'check-circle' },
+  { group:'Components',  label:'Avatars',           href:'#avatars',        icon:'user' },
+  { group:'Components',  label:'Forms',            href:'#forms',          icon:'edit-3' },
+  { group:'Components',  label:'Cards',            href:'#cards',          icon:'layers' },
+  { group:'Components',  label:'Callouts',         href:'#callouts',       icon:'alert-circle' },
+  { group:'Components',  label:'Steps',            href:'#steps',          icon:'arrow-right' },
+  { group:'Components',  label:'Tabs',             href:'#tabs',           icon:'more-horizontal' },
+  { group:'Dashboard',   label:'Stat Cards',       href:'#stat-cards',     icon:'activity' },
+  { group:'Dashboard',   label:'Data Table',       href:'#data-table',     icon:'filter' },
+  { group:'Dashboard',   label:'Filter Bar',       href:'#filter-bar',     icon:'search' },
+  { group:'Dashboard',   label:'Page Header',      href:'#page-header',    icon:'layers' },
+  { group:'Dashboard',   label:'Modals',           href:'#modals',         icon:'layers' },
+  { group:'Dashboard',   label:'Empty States',     href:'#empty-states',   icon:'inbox' },
+  { group:'Dashboard',   label:'Skeleton',         href:'#skeleton',       icon:'more-horizontal' },
+  { group:'Dashboard',   label:'Toasts',           href:'#toasts',         icon:'bell' },
+  { group:'AI & Agents', label:'AI Surface Components', href:'#ai-surfaces', icon:'sparkles' },
+  { group:'Theming',     label:'Dark Mode',        href:'#dark-mode',      icon:'moon' },
+  { group:'Theming',     label:'Accessibility',    href:'#accessibility',  icon:'check-circle' },
+];
+
+const overlay  = document.getElementById('cmd-overlay');
+const modal    = document.getElementById('cmd-modal');
+const input    = document.getElementById('cmd-input');
+const results  = document.getElementById('cmd-results');
+let activeIdx  = -1;
+let filtered   = [];
+
+function openPalette() {
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  input.value = '';
+  activeIdx = -1;
+  renderItems('');
+  requestAnimationFrame(() => input.focus());
+}
+function closePalette() {
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+}
+function renderItems(q) {
+  const query = q.toLowerCase().trim();
+  filtered = query ? CMD_ITEMS.filter(i => i.label.toLowerCase().includes(query) || i.group.toLowerCase().includes(query)) : CMD_ITEMS;
+  activeIdx = filtered.length ? 0 : -1;
+
+  let html = '';
+  let lastGroup = '';
+  filtered.forEach((item, idx) => {
+    if (item.group !== lastGroup) {
+      html += `<div class="cmd-group-label">${item.group}</div>`;
+      lastGroup = item.group;
+    }
+    html += `<div class="cmd-item${idx === activeIdx ? ' cmd-active' : ''}" role="option" data-idx="${idx}" data-href="${item.href}">
+      <div class="cmd-item-icon"><svg style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round" aria-hidden="true"><use href="#icon-${item.icon}"/></svg></div>
+      <span>${item.label}</span>
+    </div>`;
+  });
+  results.innerHTML = html || '<div style="padding:20px;text-align:center;font-size:13px;color:var(--text-tertiary)">No results</div>';
+
+  results.querySelectorAll('.cmd-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { activeIdx = +el.dataset.idx; highlight(); });
+    el.addEventListener('click', () => navigate(el.dataset.href));
+  });
+}
+function highlight() {
+  results.querySelectorAll('.cmd-item').forEach((el,i) => el.classList.toggle('cmd-active', i === activeIdx));
+  const active = results.querySelector('.cmd-active');
+  if (active) active.scrollIntoView({ block:'nearest' });
+}
+function navigate(href) {
+  closePalette();
+  const target = document.querySelector(href);
+  if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+/* Open triggers */
+const mobileSearch = document.getElementById('cmd-trigger-mobile');
+if (mobileSearch) mobileSearch.addEventListener('click', openPalette);
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); overlay.classList.contains('open') ? closePalette() : openPalette(); }
+  if (!overlay.classList.contains('open')) return;
+  if (e.key === 'Escape') { closePalette(); return; }
+  if (e.key === 'ArrowDown') { e.preventDefault(); activeIdx = Math.min(activeIdx + 1, filtered.length - 1); highlight(); }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); activeIdx = Math.max(activeIdx - 1, 0); highlight(); }
+  if (e.key === 'Enter' && activeIdx >= 0) { navigate(filtered[activeIdx].href); }
+});
+overlay.addEventListener('click', e => { if (e.target === overlay) closePalette(); });
+input.addEventListener('input', e => { activeIdx = -1; renderItems(e.target.value); });
+</script>
+</body></html>
