@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="./support.js"></script>
+<template id="__bundler_thumbnail" data-bg-color="#fafafb">
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="800" fill="#fafafb"/>
+<g transform="translate(600 400)" fill="none" stroke="#3b5bff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+<circle r="168" stroke-dasharray="11 15"/>
+<circle r="112" stroke-opacity="0.38"/>
+<path d="M-150 -40 q37.5 -34 75 0 t75 0 t75 0 t75 0"/>
+<path d="M-150 40 q37.5 -34 75 0 t75 0 t75 0 t75 0"/>
+</g>
+</svg>
+</template>
+<script>
+(function(){
+  var T="<sc-if value=\"{{ isEnabled }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px solid color-mix(in oklch, var(--ok) 24%, var(--cm));color:var(--ok);background:color-mix(in oklch, var(--ok) 8%, var(--cm))\"><span style=\"width:5px;height:5px;border-radius:50%;background:currentColor\"><\/span>Enabled<\/span><\/sc-if><sc-if value=\"{{ isDisabled }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px solid transparent;color:var(--muted);background:var(--bg-3)\"><span style=\"width:5px;height:5px;border-radius:50%;border:1.5px solid currentColor\"><\/span>Disabled<\/span><\/sc-if><sc-if value=\"{{ isDraft }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px dashed var(--line-strong);color:var(--muted);background:var(--bg)\"><span style=\"width:5px;height:5px;border-radius:50%;background:var(--faint)\"><\/span>Draft<\/span><\/sc-if><sc-if value=\"{{ isReview }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px solid color-mix(in oklch, var(--warn) 28%, var(--cm));color:var(--warn);background:color-mix(in oklch, var(--warn) 10%, var(--cm))\"><span style=\"width:5px;height:5px;border-radius:50%;background:currentColor\"><\/span>Needs review<\/span><\/sc-if><sc-if value=\"{{ isScheduled }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px solid var(--accent-line);color:var(--accent-ink);background:var(--accent-wash)\"><span style=\"width:5px;height:5px;border-radius:50%;background:currentColor\"><\/span>Scheduled<\/span><\/sc-if><sc-if value=\"{{ isArchived }}\" hint-placeholder-val=\"{{ true }}\"><span style=\"display:inline-flex;align-items:center;gap:6px;height:21px;padding:0 8px;border-radius:6px;font-size:11.5px;font-weight:560;letter-spacing:.01em;white-space:nowrap;border:1px solid var(--line);color:var(--faint);background:var(--bg-2)\"><span style=\"width:5px;height:5px;border-radius:50%;background:currentColor\"><\/span>Archived<\/span><\/sc-if>", J="class Component extends DCLogic {\n  renderVals() {\n    const s = this.props.status || 'enabled';\n    return {\n      isEnabled: s === 'enabled',\n      isDisabled: s === 'disabled',\n      isDraft: s === 'draft',\n      isReview: s === 'review',\n      isScheduled: s === 'scheduled',\n      isArchived: s === 'archived',\n    };\n  }\n}", P="{\"$preview\":{\"width\":140,\"height\":40},\"status\":{\"editor\":\"enum\",\"options\":[\"enabled\",\"disabled\",\"draft\",\"review\",\"scheduled\",\"archived\"],\"default\":\"enabled\",\"tsType\":\"string\"}}";
+  function reg(){
+    if(!window.__dcUpdate){ return setTimeout(reg,0); }
+    try{
+      window.__dcUpdate('StatusBadge','props',P,false);
+      window.__dcUpdate('StatusBadge','html',T,false);
+      window.__dcUpdate('StatusBadge','js',J,false);
+      if(window.__dcRegistry && window.__dcRegistry['StatusBadge']) window.__dcRegistry['StatusBadge'].fetched=true;
+    }catch(e){ console.error('StatusBadge preregister failed', e); }
+  }
+  reg();
+})();
+</script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  :root{
+    --accent:#3b5bff;--accent-ink:#2742d6;--accent-wash:color-mix(in oklch, var(--accent) 9%, var(--cm));--accent-line:color-mix(in oklch, var(--accent) 22%, var(--cm));
+    --ink:#16181d;--ink-2:#383c44;--muted:#6b7280;--faint:#9aa1ac;--line:#e8e9ec;--line-2:#eff0f2;--bg:#ffffff;--bg-2:#fafafb;--bg-3:#f4f5f7;--paper:#ffffff;
+    --ok:#1f9d62;--warn:#c2820b;--danger:#d44a3f;
+    --cm:#ffffff;--on-ink:#ffffff;--ink-hover:#000000;--line-strong:#d7d9de;--code-bg:#15171c;--grid-node:rgba(35,45,75,.05);
+    --radius:12px;--radius-sm:8px;--radius-lg:16px;
+    --shadow-sm:0 1px 2px rgba(20,22,28,.04),0 1px 1px rgba(20,22,28,.03);
+    --shadow-md:0 6px 24px -10px rgba(20,22,28,.18),0 2px 6px -2px rgba(20,22,28,.06);
+    --shadow-lg:0 24px 60px -18px rgba(20,22,28,.26);
+  }
+  [data-theme="dark"]{
+    --ink:#eceef2;--ink-2:#b7bcc6;--muted:#868d99;--faint:#5b626d;--line:#282c34;--line-2:#20242b;--bg:#15181e;--bg-2:#0d0f13;--bg-3:#1d212a;--paper:#16191f;
+    --cm:#15181e;--on-ink:#14171c;--ink-hover:#ffffff;--line-strong:#3a3f4a;--code-bg:#0b0d11;--grid-node:rgba(150,175,220,.055);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4),0 1px 1px rgba(0,0,0,.3);
+    --shadow-md:0 8px 26px -10px rgba(0,0,0,.6),0 2px 8px -2px rgba(0,0,0,.4);
+    --shadow-lg:0 26px 64px -18px rgba(0,0,0,.72);
+  }
+  ::selection{background:var(--accent-wash)}
+  *::-webkit-scrollbar{width:10px;height:10px}
+  *::-webkit-scrollbar-thumb{background:#dcdee2;border-radius:20px;border:3px solid transparent;background-clip:padding-box}
+  *::-webkit-scrollbar-thumb:hover{background:#c4c7cd;background-clip:padding-box;border:3px solid transparent}
+  [data-theme="dark"] *::-webkit-scrollbar-thumb{background:#2b3039}
+  @keyframes pmup{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  @keyframes pmtoast{from{opacity:0;transform:translateY(10px) translateX(-50%)}to{opacity:1;transform:translateY(0) translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="min-height:100vh;font-family:'Geist',system-ui,-apple-system,sans-serif;color:var(--ink);background-color:var(--bg-2);background-image:radial-gradient(var(--grid-node) 1px, transparent 1.4px);background-size:23px 23px;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased">
+
+  <header style="position:sticky;top:0;z-index:40;background:color-mix(in oklch, var(--bg) 86%, transparent);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)">
+    <div style="width:100%;max-width:1320px;margin:0 auto;padding:0 28px">
+      <div style="display:flex;align-items:center;gap:20px;height:60px">
+        <div onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none">
+          <div style="width:28px;height:28px;border-radius:7px;background:var(--accent);display:grid;place-items:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9" stroke-dasharray="1.6 2.1"></circle><path d="M6 10.4c2-1.3 4 1.3 6 0s4-1.3 6 0"></path><path d="M6 13.6c2-1.3 4 1.3 6 0s4-1.3 6 0"></path></svg>
+          </div>
+          <div style="font-weight:600;font-size:16px;letter-spacing:-.02em">Postmark</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:2px;margin-left:6px">
+          <button onClick="{{ goHome }}" style="padding:7px 12px;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ navRulesBg }};color:{{ navRulesFg }}">Rules</button>
+          <button onClick="{{ goDepartments }}" style="padding:7px 12px;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ navDeptBg }};color:{{ navDeptFg }}">Departments</button>
+          <button onClick="{{ goFiles }}" style="padding:7px 12px;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ navFileBg }};color:{{ navFileFg }}">Files</button>
+          <button onClick="{{ openRequests }}" style="display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ navReqBg }};color:{{ navReqFg }}">Requests<sc-if value="{{ reqPending }}" hint-placeholder-val="{{ false }}"><span style="display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--warn);color:#fff;font-size:11px;font-weight:700;font-family:'Geist Mono',monospace">{{ reqPending }}</span></sc-if></button>
+          <button onClick="{{ goArchive }}" style="padding:7px 12px;border:none;border-radius:8px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;background:{{ navArchBg }};color:{{ navArchFg }}">Archive</button>
+        </div>
+        <div style="flex:1"></div>
+        <div style="display:flex;align-items:center;gap:9px;height:38px;padding:0 12px;background:var(--bg-3);border:1px solid transparent;border-radius:10px;color:var(--muted);width:332px">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+          <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Search rules &amp; records…" style="border:none;background:none;outline:none;font:inherit;font-size:14px;color:var(--ink);width:100%">
+          <span style="display:inline-flex;align-items:center;font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint);border:1px solid var(--line);border-radius:5px;padding:1px 5px;background:var(--bg);line-height:1.4;flex:none">⌘K</span>
+        </div>
+        <button onClick="{{ toggleTheme }}" style="width:36px;height:36px;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--bg-3);color:var(--ink)" title="Toggle theme">
+          <sc-if value="{{ notDark }}" hint-placeholder-val="{{ true }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if><sc-if value="{{ isDark }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+        </button>
+        <button style="position:relative;width:36px;height:36px;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--bg-3);color:var(--ink)" title="Notifications">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+          <span style="position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--accent);border:1.5px solid var(--bg)"></span>
+        </button>
+        <button style="width:36px;height:36px;border-radius:9px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--bg-3);color:var(--ink)" title="Apps">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.6"></rect><rect x="14" y="3" width="7" height="7" rx="1.6"></rect><rect x="3" y="14" width="7" height="7" rx="1.6"></rect><rect x="14" y="14" width="7" height="7" rx="1.6"></rect></svg>
+        </button>
+        <div style="width:33px;height:33px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-size:12.5px;font-weight:600;letter-spacing:-.01em;cursor:pointer;margin-left:2px;user-select:none">AP</div>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+  <main style="width:100%;max-width:1320px;margin:0 auto;padding:30px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <div style="display:flex;align-items:center;gap:44px;margin:10px 0 36px;padding:4px 0">
+      <div style="flex:none;display:grid;place-items:center;color:var(--accent)">
+        <svg width="140" height="140" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><circle cx="12" cy="12" r="9.4" stroke-dasharray="1.5 2.05"></circle><circle cx="12" cy="12" r="6.4" stroke-opacity=".4"></circle><path d="M5.2 10.1c2.27-1.4 4.53 1.4 6.8 0s4.53-1.4 6.8 0"></path><path d="M5.2 13.9c2.27-1.4 4.53 1.4 6.8 0s4.53-1.4 6.8 0"></path></svg>
+      </div>
+      <div style="min-width:0">
+        <h1 style="font-size:44px;font-weight:700;letter-spacing:-.04em;line-height:1.02;margin:0">Postmark routes<br>every <span style="color:var(--accent)">memo</span>.</h1>
+        <p style="font-size:16.5px;color:var(--muted);margin:16px 0 0;max-width:58ch;line-height:1.5">Every department memo is evaluated the instant <b style="color: var(--ink); font-weight: 600;">Send</b> is clicked; Postmark decides who receives it and which case or client files it lands in.</p>
+        <div style="display:flex;gap:11px;margin-top:22px">
+          <button onClick="{{ startNew }}" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 19px;border-radius:11px;border:none;cursor:pointer;font:inherit;font-size:14.5px;font-weight:560;letter-spacing:-.01em;background:var(--ink);color:var(--on-ink)" style-hover="background:var(--ink-hover)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>New rule
+          </button>
+          <button onClick="{{ goArchive }}" style="display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:11px;cursor:pointer;font:inherit;font-size:14.5px;font-weight:540;letter-spacing:-.01em;background:var(--bg);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-sm)" style-hover="border-color:var(--line-strong);background:var(--bg-2)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h18v4H3zM5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"></path></svg>View archive
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:218px 1fr;gap:32px;align-items:start">
+      <aside style="position:sticky;top:84px;display:flex;flex-direction:column;gap:22px">
+        <div>
+          <div style="font-size:11.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:9px">Status</div>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <sc-for list="{{ statusFacets }}" as="f" hint-placeholder-count="6">
+              <button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:6px 9px;border:none;border-radius:7px;font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }}">
+                <span style="flex:1;min-width:0">{{ f.label }}</span>
+                <span style="font-size:12px;color:var(--faint);font-family:'Geist Mono',monospace">{{ f.count }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:9px">Condition type</div>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <sc-for list="{{ typeFacets }}" as="f" hint-placeholder-count="5">
+              <button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:6px 9px;border:none;border-radius:7px;font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }}">
+                <span style="flex:1;min-width:0">{{ f.label }}</span>
+                <span style="font-size:12px;color:var(--faint);font-family:'Geist Mono',monospace">{{ f.count }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:9px">Action</div>
+          <div style="display:flex;flex-direction:column;gap:1px">
+            <sc-for list="{{ actionFacets }}" as="f" hint-placeholder-count="3">
+              <button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:6px 9px;border:none;border-radius:7px;font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }}">
+                <span style="flex:1;min-width:0">{{ f.label }}</span>
+                <span style="font-size:12px;color:var(--faint);font-family:'Geist Mono',monospace">{{ f.count }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </aside>
+
+      <div style="min-width:0">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+          <div style="font-size:13.5px;color:var(--muted)">Showing <b style="color:var(--ink);font-weight:600">{{ shownCount }}</b> of <b style="color:var(--ink);font-weight:600">814</b> rules · sorted by execution order</div>
+          <div style="flex:1"></div>
+          <select value="{{ sort }}" onChange="{{ onSort }}" style="height:33px;padding:0 30px 0 11px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm)">
+            <option value="priority">Execution order</option>
+            <option value="hits">Most matched</option>
+            <option value="updated">Recently updated</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </div>
+
+        <sc-if value="{{ activeChips.length }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+            <sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="1">
+              <span style="display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 6px 0 10px;background:var(--bg);border:1px solid var(--line);border-radius:7px;font-size:12.5px;color:var(--ink-2);font-weight:500">{{ c.label }}<button onClick="{{ c.onClear }}" style="border:none;background:none;color:var(--faint);cursor:pointer;display:grid;place-items:center;padding:3px;border-radius:4px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></span>
+            </sc-for>
+            <button onClick="{{ clearAll }}" style="border:none;background:none;color:var(--accent-ink);font:inherit;font-size:12.5px;font-weight:540;cursor:pointer;padding:4px 6px">Clear all</button>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="7">
+            <div onClick="{{ r.onOpen }}" style="display:flex;align-items:center;gap:16px;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);cursor:pointer;transition:.13s" style-hover="border-color:var(--line-strong);box-shadow:var(--shadow-md)">
+              <div style="flex:none;width:34px;height:34px;border-radius:8px;background:var(--bg-3);border:1px solid var(--line-2);display:grid;place-items:center;font-family:'Geist Mono',monospace;font-size:13px;font-weight:600;color:var(--ink-2)">{{ r.priorityLabel }}</div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="font-weight:600;font-size:14.5px;letter-spacing:-.01em">{{ r.name }}</span>
+                  <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ r.code }}</span>
+                  <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--faint)">{{ r.slug }}</span>
+                </div>
+                <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--ink-2);margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.condLine }}</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-top:8px;flex-wrap:wrap">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                  <sc-for list="{{ r.routeChips }}" as="t" hint-placeholder-count="2"><span style="font-size:11.5px;font-weight:560;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:6px;padding:1px 8px">{{ t }}</span></sc-for>
+                  <sc-if value="{{ r.hasFile }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:560;color:var(--ink-2);background:var(--bg-3);border:1px solid var(--line);border-radius:6px;padding:1px 8px 1px 7px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg>{{ r.fileChip }}</span></sc-if>
+                </div>
+              </div>
+              <div style="flex:none;display:flex;align-items:center;gap:16px">
+                <div style="text-align:right">
+                  <div style="font-family:'Geist Mono',monospace;font-size:13px;font-weight:600;color:var(--ink-2)">{{ r.matchesLabel }}</div>
+                  <div style="font-size:9.5px;color:var(--faint);letter-spacing:.04em">30-DAY HITS</div>
+                </div>
+                <dc-import name="StatusBadge" status="{{ r.status }}" hint-size="96px,22px"></dc-import>
+                <div onClick="{{ r.onToggle }}" title="Enable / disable" style="width:38px;height:22px;border-radius:999px;background:{{ r.switchBg }};position:relative;cursor:pointer;transition:.15s;flex:none">
+                  <span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:.15s;transform:{{ r.switchKnob }}"></span>
+                </div>
+                <div style="position:relative">
+                  <button onClick="{{ r.onMenu }}" style="width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center" style-hover="background:var(--bg-3);color:var(--ink)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="19" r="1.6"></circle></svg></button>
+                  <sc-if value="{{ r.menuOpen }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;top:38px;right:0;z-index:30;min-width:176px;background:var(--bg);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-lg);padding:5px">
+                      <sc-for list="{{ r.menu }}" as="m" hint-placeholder-count="4">
+                        <button onClick="{{ m.onClick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:8px 9px;border:none;border-radius:7px;font:inherit;font-size:13px;font-weight:500;cursor:pointer;background:transparent;color:{{ m.color }}" style-hover="background:var(--bg-3)">{{ m.label }}</button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:70px 20px;color:var(--muted)">
+            <div style="width:52px;height:52px;border-radius:14px;background:var(--bg-3);display:grid;place-items:center;margin:0 auto 16px;color:var(--faint)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg></div>
+            No rules match these filters.
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:1120px;margin:0 auto;padding:24px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <button onClick="{{ backToList }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:14px" style-hover="color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>{{ backLabel }}</button>
+
+    <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;border-bottom:1px solid var(--line)">
+      <div style="width:60px;height:60px;border-radius:15px;flex:none;display:grid;place-items:center;background:var(--accent-wash);border:1px solid var(--accent-line);color:var(--accent)">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9" stroke-dasharray="1.6 2.1"></circle><path d="M6 10.4c2-1.3 4 1.3 6 0s4-1.3 6 0"></path><path d="M6 13.6c2-1.3 4 1.3 6 0s4-1.3 6 0"></path></svg>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <h1 style="font-size:24px;font-weight:650;letter-spacing:-.025em;margin:0">{{ sel.name }}</h1>
+          <span style="font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:6px;padding:1px 7px">{{ sel.code }}</span>
+          <dc-import name="StatusBadge" status="{{ sel.status }}" hint-size="96px,22px"></dc-import>
+        </div>
+        <div style="font-family:'Geist Mono',monospace;font-size:13px;color:var(--muted);margin-top:6px">{{ sel.slug }}</div>
+        <p style="font-size:15.5px;color:var(--ink-2);margin:12px 0 0;max-width:72ch;line-height:1.5">{{ sel.desc }}</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px;min-width:172px">
+        <button onClick="{{ onEditSel }}" style="display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 15px;border-radius:9px;border:none;cursor:pointer;font:inherit;font-size:14px;font-weight:540;background:var(--accent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg>Edit rule</button>
+        <button onClick="{{ onToggleSel }}" style="display:inline-flex;align-items:center;justify-content:center;gap:7px;height:38px;padding:0 15px;border-radius:9px;cursor:pointer;font:inherit;font-size:14px;font-weight:540;background:var(--bg);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-sm)">{{ sel.toggleLabel }}</button>
+        <div style="display:flex;gap:9px">
+          <button onClick="{{ onDupSel }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;cursor:pointer;font:inherit;font-size:13px;font-weight:540;background:transparent;color:var(--muted);border:none" style-hover="background:var(--bg-3);color:var(--ink)">Duplicate</button>
+          <button onClick="{{ onArchiveSel }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;cursor:pointer;font:inherit;font-size:13px;font-weight:540;background:var(--bg);color:var(--danger);border:1px solid color-mix(in oklch, var(--danger) 30%, var(--cm))">{{ sel.archiveLabel }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:start;margin-top:28px">
+      <div style="min-width:0">
+        <sc-if value="{{ sel.conflict }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:12px;padding:14px 16px;border-radius:11px;background:color-mix(in oklch, var(--warn) 10%, var(--cm));border:1px solid color-mix(in oklch, var(--warn) 28%, var(--cm));font-size:13.5px;color:var(--ink-2);line-height:1.5;margin-bottom:26px">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round" style="flex:none;margin-top:1px"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+            <div>This rule overlaps with <button onClick="{{ sel.onOpenConflict }}" style="border:none;background:none;font:inherit;color:var(--accent-ink);font-weight:600;cursor:pointer;border-bottom:1px solid var(--accent-line);padding:0">{{ sel.conflict }}</button> on overlapping conditions. Both may fire for the same memo — confirm the execution order is intentional.</div>
+          </div>
+        </sc-if>
+
+        <div style="margin-bottom:34px">
+          <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 6px">When a memo matches</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:14px">{{ sel.matchLabel }}</div>
+          <sc-for list="{{ sel.groups }}" as="g" hint-placeholder-count="2">
+            <sc-if value="{{ g.notFirst }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:center;gap:10px;margin:12px 2px"><div style="flex:1;height:1px;background:var(--line)"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:999px;padding:2px 11px">OR</span><div style="flex:1;height:1px;background:var(--line)"></div></div>
+            </sc-if>
+            <div style="border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow-sm);overflow:hidden">
+              <div style="padding:11px 16px;background:var(--bg-2);border-bottom:1px solid var(--line-2);font-size:12.5px;color:var(--muted)">Group {{ g.letter }} · <b style="color:var(--ink-2);font-weight:600">{{ g.joinLabel }}</b> of the following</div>
+              <sc-for list="{{ g.conds }}" as="c" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--line-2)">
+                  <span style="font-family:'Geist Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--bg-3);border:1px solid var(--line);border-radius:5px;padding:2px 6px;flex:none">{{ c.f }}</span>
+                  <span style="font-size:13px;color:var(--muted)">{{ c.o }}</span>
+                  <span style="font-size:13.5px;color:var(--ink);font-weight:560">{{ c.v }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="margin-bottom:10px">
+          <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 14px">Then Postmark will</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ sel.actions }}" as="a" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:13px;padding:13px 16px;border:1px solid var(--line);border-radius:11px;background:var(--paper);box-shadow:var(--shadow-sm)">
+                <div style="width:30px;height:30px;border-radius:8px;flex:none;display:grid;place-items:center;background:{{ a.icBg }};color:{{ a.icFg }}">
+                  <sc-if value="{{ a.isFile }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></sc-if>
+                  <sc-if value="{{ a.isRemove }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"></path></svg></sc-if>
+                  <sc-if value="{{ a.isRoute }}" hint-placeholder-val="{{ false }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></sc-if>
+                </div>
+                <span style="font-size:13.5px;font-weight:560;color:var(--ink-2);flex:none">{{ a.verb }}</span>
+                <div style="display:flex;gap:6px;flex-wrap:wrap">
+                  <sc-for list="{{ a.targets }}" as="t" hint-placeholder-count="2"><span style="font-size:12px;font-weight:560;color:{{ a.chipFg }};background:{{ a.chipBg }};border:1px solid {{ a.chipBorder }};border-radius:6px;padding:2px 9px">{{ t }}</span></sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <aside style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:6px 18px;box-shadow:var(--shadow-sm)">
+          <sc-for list="{{ sel.specs }}" as="s" hint-placeholder-count="6">
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:13px">
+              <span style="color:var(--muted)">{{ s.k }}</span>
+              <span style="color:var(--ink);font-weight:540;text-align:right;font-family:{{ s.font }}">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm)">
+          <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 6px">Version history</div>
+          <sc-for list="{{ sel.versions }}" as="v" hint-placeholder-count="3">
+            <div style="display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-2)">
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;color:{{ v.fg }};background:{{ v.bg }};border:1px solid {{ v.border }};border-radius:5px;padding:1px 6px;height:18px;flex:none">v{{ v.v }}</span>
+              <div style="min-width:0">
+                <div style="font-size:12.5px;color:var(--ink-2);line-height:1.45">{{ v.note }}</div>
+                <div style="font-size:11.5px;color:var(--faint);margin-top:2px">{{ v.meta }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:860px;margin:0 auto;padding:24px 28px 120px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <button onClick="{{ cancelEdit }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:14px" style-hover="color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Cancel</button>
+    <div style="margin-bottom:24px">
+      <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">{{ ed.eyebrow }}</div>
+      <h1 style="font-size:26px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">{{ ed.title }}</h1>
+    </div>
+
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:16px">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line-2);background:var(--bg-2);font-size:14.5px;font-weight:600;letter-spacing:-.01em">Basics</div>
+      <div style="padding:18px">
+        <div style="margin-bottom:18px">
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Rule name <span style="color:var(--danger)">*</span></label>
+          <input value="{{ ed.name }}" onInput="{{ ed.onName }}" placeholder="e.g. Subpoenas &amp; deposition notices" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm)">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 200px;gap:14px;margin-bottom:18px">
+          <div>
+            <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Slug</label>
+            <input value="{{ ed.slug }}" onInput="{{ ed.onSlug }}" placeholder="auto-generated from name" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-family:'Geist Mono',monospace;font-size:13px;color:var(--ink);box-shadow:var(--shadow-sm)">
+          </div>
+          <div>
+            <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Status</label>
+            <select value="{{ ed.status }}" onChange="{{ ed.onStatus }}" style="width:100%;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);font:inherit;font-size:14px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm)">
+              <option value="draft">Draft</option>
+              <option value="enabled">Enabled</option>
+              <option value="disabled">Disabled</option>
+              <option value="review">Needs review</option>
+              <option value="scheduled">Scheduled</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:18px">
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Description</label>
+          <textarea value="{{ ed.desc }}" onInput="{{ ed.onDesc }}" placeholder="Plain-English summary of what this rule does and why." style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm);resize:vertical;min-height:80px;line-height:1.55"></textarea>
+        </div>
+        <div style="display:grid;grid-template-columns:200px 1fr;gap:14px;align-items:end">
+          <div>
+            <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Execution order</label>
+            <input value="{{ ed.priority }}" onInput="{{ ed.onPriority }}" type="number" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-family:'Geist Mono',monospace;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm)">
+          </div>
+          <div style="font-size:12.5px;color:var(--muted);padding-bottom:11px;line-height:1.45">Lower numbers run first. Rules that restrict routing usually sit near the top.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:16px">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line-2);background:var(--bg-2);display:flex;align-items:center;gap:12px">
+        <span style="font-size:14.5px;font-weight:600;letter-spacing:-.01em">Conditions</span>
+        <span style="font-size:12.5px;color:var(--muted)">A memo matches when</span>
+        <div style="display:inline-flex;padding:3px;background:var(--bg-3);border-radius:9px;gap:2px;margin-left:auto">
+          <button onClick="{{ ed.onMatchAny }}" style="height:28px;padding:0 12px;border:none;border-radius:7px;font:inherit;font-size:12.5px;font-weight:540;cursor:pointer;background:{{ ed.anyBg }};color:{{ ed.anyFg }};box-shadow:{{ ed.anyShadow }}">Any group matches</button>
+          <button onClick="{{ ed.onMatchAll }}" style="height:28px;padding:0 12px;border:none;border-radius:7px;font:inherit;font-size:12.5px;font-weight:540;cursor:pointer;background:{{ ed.allBg }};color:{{ ed.allFg }};box-shadow:{{ ed.allShadow }}">All groups match</button>
+        </div>
+      </div>
+      <div style="padding:18px">
+        <sc-for list="{{ ed.groups }}" as="g" hint-placeholder-count="1">
+          <sc-if value="{{ g.notFirst }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:10px;margin:14px 2px"><div style="flex:1;height:1px;background:var(--line)"></div><span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:999px;padding:2px 11px">{{ ed.groupJoinWord }}</span><div style="flex:1;height:1px;background:var(--line)"></div></div>
+          </sc-if>
+          <div style="border:1px solid var(--line);border-radius:11px;overflow:hidden">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-2);border-bottom:1px solid var(--line-2)">
+              <span style="font-size:12.5px;font-weight:600;color:var(--ink-2)">Group {{ g.letter }}</span>
+              <div style="display:inline-flex;padding:2px;background:var(--bg-3);border-radius:7px;gap:2px">
+                <button onClick="{{ g.onAll }}" style="height:24px;padding:0 9px;border:none;border-radius:6px;font:inherit;font-size:11.5px;font-weight:540;cursor:pointer;background:{{ g.allBg }};color:{{ g.allFg }};box-shadow:{{ g.allShadow }}">Match all</button>
+                <button onClick="{{ g.onAny }}" style="height:24px;padding:0 9px;border:none;border-radius:6px;font:inherit;font-size:11.5px;font-weight:540;cursor:pointer;background:{{ g.anyBg }};color:{{ g.anyFg }};box-shadow:{{ g.anyShadow }}">Match any</button>
+              </div>
+              <div style="flex:1"></div>
+              <sc-if value="{{ g.canRemove }}" hint-placeholder-val="{{ false }}"><button onClick="{{ g.onRemove }}" style="border:none;background:none;color:var(--faint);cursor:pointer;display:grid;place-items:center;padding:5px;border-radius:6px" style-hover="color:var(--danger);background:var(--bg-3)" title="Remove group"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"></path></svg></button></sc-if>
+            </div>
+            <div style="padding:12px 14px;display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ g.conds }}" as="c" hint-placeholder-count="2">
+                <div style="display:grid;grid-template-columns:150px 150px 1fr 32px;gap:8px;align-items:center">
+                  <select value="{{ c.f }}" onChange="{{ c.onF }}" style="height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:inherit;font-size:13px;color:var(--ink);cursor:pointer">
+                    <option value="Content">Content</option>
+                    <option value="Topic">Topic</option>
+                    <option value="Addressed to">Addressed to</option>
+                    <option value="Sender dept">Sender dept</option>
+                    <option value="Person named">Person named</option>
+                  </select>
+                  <select value="{{ c.o }}" onChange="{{ c.onO }}" style="height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:inherit;font-size:13px;color:var(--ink);cursor:pointer">
+                    <option value="contains">contains</option>
+                    <option value="does not contain">does not contain</option>
+                    <option value="is">is</option>
+                    <option value="is not">is not</option>
+                    <option value="includes">includes</option>
+                    <option value="is one of">is one of</option>
+                  </select>
+                  <input value="{{ c.v }}" onInput="{{ c.onV }}" placeholder="value…" style="height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)">
+                  <sc-if value="{{ c.canRemove }}" hint-placeholder-val="{{ false }}"><button onClick="{{ c.onRemove }}" style="width:32px;height:32px;border:none;background:none;color:var(--faint);cursor:pointer;display:grid;place-items:center;border-radius:7px" style-hover="color:var(--danger);background:var(--bg-3)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></sc-if>
+                  <sc-if value="{{ c.cannotRemove }}" hint-placeholder-val="{{ false }}"><span></span></sc-if>
+                </div>
+              </sc-for>
+              <button onClick="{{ g.onAddCond }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line-strong);background:var(--bg);color:var(--muted);font:inherit;font-size:12.5px;font-weight:540;cursor:pointer;padding:7px 11px;border-radius:8px" style-hover="color:var(--ink);border-color:var(--accent-line)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add condition</button>
+            </div>
+          </div>
+        </sc-for>
+        <button onClick="{{ ed.onAddGroup }}" style="margin-top:14px;display:inline-flex;align-items:center;gap:7px;border:none;background:var(--bg-3);color:var(--ink-2);font:inherit;font-size:13px;font-weight:540;cursor:pointer;padding:9px 13px;border-radius:9px" style-hover="background:var(--accent-wash);color:var(--accent-ink)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add condition group (OR)</button>
+      </div>
+    </div>
+
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px">
+      <div style="padding:14px 18px;border-bottom:1px solid var(--line-2);background:var(--bg-2);font-size:14.5px;font-weight:600;letter-spacing:-.01em">Actions</div>
+      <div style="padding:18px;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ ed.actions }}" as="a" hint-placeholder-count="1">
+          <div style="display:grid;grid-template-columns:190px 1fr 32px;gap:8px;align-items:center">
+            <select value="{{ a.t }}" onChange="{{ a.onType }}" style="height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:inherit;font-size:13px;color:var(--ink);cursor:pointer">
+              <option value="route">Route to</option>
+              <option value="add">Also send to</option>
+              <option value="remove">Remove from routing</option>
+              <option value="file">Auto-file to</option>
+            </select>
+            <input value="{{ a.targetsText }}" onInput="{{ a.onTargets }}" placeholder="Departments or files, comma-separated" style="height:38px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)">
+            <sc-if value="{{ a.canRemove }}" hint-placeholder-val="{{ false }}"><button onClick="{{ a.onRemove }}" style="width:32px;height:32px;border:none;background:none;color:var(--faint);cursor:pointer;display:grid;place-items:center;border-radius:7px" style-hover="color:var(--danger);background:var(--bg-3)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></button></sc-if>
+            <sc-if value="{{ a.cannotRemove }}" hint-placeholder-val="{{ false }}"><span></span></sc-if>
+          </div>
+        </sc-for>
+        <button onClick="{{ ed.onAddAction }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;border:1px dashed var(--line-strong);background:var(--bg);color:var(--muted);font:inherit;font-size:12.5px;font-weight:540;cursor:pointer;padding:7px 11px;border-radius:8px" style-hover="color:var(--ink);border-color:var(--accent-line)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Add action</button>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;padding-top:22px;border-top:1px solid var(--line)">
+      <sc-if value="{{ ed.nameError }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:var(--danger);font-weight:540">Give the rule a name to save.</span></sc-if>
+      <div style="flex:1"></div>
+      <button onClick="{{ cancelEdit }}" style="height:40px;padding:0 16px;border-radius:9px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:540;cursor:pointer" style-hover="background:var(--bg-3);color:var(--ink)">Cancel</button>
+      <button onClick="{{ saveEdit }}" style="height:40px;padding:0 20px;border-radius:9px;border:none;background:var(--accent);color:#fff;font:inherit;font-size:14px;font-weight:560;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)">{{ ed.saveLabel }}</button>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:1200px;margin:0 auto;padding:30px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <div style="margin-bottom:22px">
+      <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">{{ map.eyebrow }}</div>
+      <h1 style="font-size:30px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">{{ map.title }}</h1>
+      <p style="font-size:15px;color:var(--muted);margin:8px 0 0;max-width:66ch;line-height:1.5">{{ map.lede }}</p>
+    </div>
+    <div style="display:grid;grid-template-columns:288px 1fr;gap:32px;align-items:start">
+      <aside style="position:sticky;top:84px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);padding:7px;max-height:calc(100vh - 104px);overflow:auto">
+        <sc-for list="{{ map.dests }}" as="d" hint-placeholder-count="8">
+          <button onClick="{{ d.onClick }}" style="display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:9px 11px;border:none;border-radius:9px;font:inherit;cursor:pointer;background:{{ d.bg }}">
+            <span style="width:8px;height:8px;border-radius:3px;background:{{ d.dot }};flex:none"></span>
+            <span style="flex:1;min-width:0;font-size:13.5px;font-weight:540;color:{{ d.fg }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.name }}</span>
+            <span style="font-family:'Geist Mono',monospace;font-size:11.5px;font-weight:600;color:{{ d.countFg }};background:{{ d.countBg }};border-radius:6px;padding:1px 7px;flex:none">{{ d.count }}</span>
+          </button>
+        </sc-for>
+      </aside>
+      <div style="min-width:0">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px">
+          <div style="width:46px;height:46px;border-radius:11px;flex:none;display:grid;place-items:center;background:var(--bg-3);border:1px solid var(--line-2);color:var(--ink-2)">
+            <sc-if value="{{ map.isFile }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg></sc-if>
+            <sc-if value="{{ map.isDept }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h.01M15 9h.01M9 13h.01M15 13h.01M9 17h.01M15 17h.01"></path></svg></sc-if>
+          </div>
+          <div style="flex:1;min-width:0">
+            <h2 style="font-size:20px;font-weight:640;letter-spacing:-.02em;margin:0">{{ map.sel.name }}</h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px">
+              <sc-for list="{{ map.sel.stats }}" as="st" hint-placeholder-count="3">
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);background:var(--bg-3);border:1px solid var(--line);border-radius:7px;padding:3px 9px"><b style="color:var(--ink);font-weight:600;font-family:'Geist Mono',monospace">{{ st.n }}</b>{{ st.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ map.isDept }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ map.onReview }}" style="flex:none;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 15px;border-radius:9px;cursor:pointer;font:inherit;font-size:14px;font-weight:540;background:var(--bg);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow-sm)" style-hover="border-color:var(--line-strong);background:var(--bg-2)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>{{ map.reviewLabel }}</button>
+          </sc-if>
+        </div>
+        <sc-for list="{{ map.sel.groups }}" as="grp" hint-placeholder-count="3">
+          <div style="margin-bottom:26px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
+              <span style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint)">{{ grp.title }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);background:var(--bg-3);border-radius:5px;padding:1px 6px">{{ grp.count }}</span>
+            </div>
+            <sc-if value="{{ grp.empty }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--faint);padding:10px 2px">No rules.</div></sc-if>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ grp.rules }}" as="r" hint-placeholder-count="2">
+                <div onClick="{{ r.onOpen }}" style="display:flex;align-items:center;gap:13px;padding:12px 14px;background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-sm);cursor:pointer" style-hover="border-color:var(--line-strong);box-shadow:var(--shadow-md)">
+                  <div style="flex:none;width:30px;height:30px;border-radius:7px;background:var(--bg-3);border:1px solid var(--line-2);display:grid;place-items:center;font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;color:var(--ink-2)">{{ r.priorityLabel }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                      <span style="font-weight:600;font-size:14px;letter-spacing:-.01em">{{ r.name }}</span>
+                      <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ r.code }}</span>
+                    </div>
+                    <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--ink-2);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.condLine }}</div>
+                  </div>
+                  <dc-import name="StatusBadge" status="{{ r.status }}" hint-size="96px,22px"></dc-import>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M9 18l6-6-6-6"></path></svg>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isArchive }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:1120px;margin:0 auto;padding:30px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <div style="margin-bottom:22px">
+      <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">Lifecycle</div>
+      <h1 style="font-size:30px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">Archive</h1>
+      <p style="font-size:15px;color:var(--muted);margin:8px 0 0;max-width:64ch;line-height:1.5">Retired rules. They no longer evaluate memos, but their full history is retained for audit. Restore one to return it to the library as <b style="color:var(--ink);font-weight:600">Disabled</b>.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ archivedRows }}" as="r" hint-placeholder-count="3">
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm)">
+          <div style="flex:none;width:38px;height:38px;border-radius:9px;background:var(--bg-3);border:1px solid var(--line-2);display:grid;place-items:center;color:var(--faint)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="4" width="18" height="4" rx="1"></rect><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"></path></svg></div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-weight:600;font-size:14.5px;letter-spacing:-.01em">{{ r.name }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ r.code }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--faint)">{{ r.slug }}</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:5px">{{ r.archivedMeta }}</div>
+          </div>
+          <button onClick="{{ r.onOpen }}" style="height:34px;padding:0 13px;border-radius:8px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:13px;font-weight:540;cursor:pointer" style-hover="background:var(--bg-3);color:var(--ink)">View</button>
+          <button onClick="{{ r.onRestore }}" style="display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 13px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13px;font-weight:540;cursor:pointer;box-shadow:var(--shadow-sm)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 4v4h4"></path></svg>Restore</button>
+        </div>
+      </sc-for>
+      <sc-if value="{{ archiveEmpty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;padding:70px 20px;color:var(--muted)">Nothing archived.</div></sc-if>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isRequests }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:1200px;margin:0 auto;padding:30px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <div style="display:flex;align-items:flex-start;gap:20px;margin-bottom:22px">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">Lifecycle</div>
+        <h1 style="font-size:30px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">Requests</h1>
+        <p style="font-size:15px;color:var(--muted);margin:8px 0 0;max-width:64ch;line-height:1.5">Every proposed change runs the same path: <b style="color:var(--ink);font-weight:600">submitted → approved → configured → tested → live</b>. Approve, build, and prove a rule works before it ever evaluates real mail.</p>
+      </div>
+      <button onClick="{{ startRequest }}" style="flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:10px;border:none;cursor:pointer;font:inherit;font-size:14px;font-weight:560;background:var(--accent);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>Request a rule</button>
+    </div>
+    <div style="display:grid;grid-template-columns:218px 1fr;gap:32px;align-items:start">
+      <aside style="position:sticky;top:84px">
+        <div style="font-size:11.5px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:9px">Stage</div>
+        <div style="display:flex;flex-direction:column;gap:1px">
+          <sc-for list="{{ reqFacets }}" as="f" hint-placeholder-count="7">
+            <button onClick="{{ f.onClick }}" style="display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:6px 9px;border:none;border-radius:7px;font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }}">
+              <span style="flex:1;min-width:0">{{ f.label }}</span>
+              <span style="font-size:12px;color:var(--faint);font-family:'Geist Mono',monospace">{{ f.count }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </aside>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ reqRows }}" as="r" hint-placeholder-count="5">
+          <div onClick="{{ r.onOpen }}" style="display:flex;align-items:center;gap:16px;padding:15px 16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);cursor:pointer" style-hover="border-color:var(--line-strong);box-shadow:var(--shadow-md)">
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font-weight:600;font-size:14.5px;letter-spacing:-.01em">{{ r.title }}</span>
+                <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ r.id }}</span>
+                <span style="font-size:11px;font-weight:600;color:{{ r.typeFg }};background:{{ r.typeBg }};border:1px solid {{ r.typeBorder }};border-radius:6px;padding:1px 7px">{{ r.typeLabel }}</span>
+              </div>
+              <div style="font-size:12.5px;color:var(--muted);margin-top:6px">Requested by {{ r.requester }} · {{ r.created }}</div>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:560;color:{{ r.stageFg }};background:{{ r.stageBg }};border:1px solid {{ r.stageBorder }};border-radius:7px;padding:3px 10px;flex:none"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>{{ r.stageLabel }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M9 18l6-6-6-6"></path></svg>
+          </div>
+        </sc-for>
+        <sc-if value="{{ reqEmpty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;padding:60px 20px;color:var(--muted)">No requests in this stage.</div></sc-if>
+      </div>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isReqDetail }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:1020px;margin:0 auto;padding:24px 28px 90px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <button onClick="{{ backToRequests }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:14px" style-hover="color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Requests</button>
+    <div style="display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:6px">
+      <span style="font-family:'Geist Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:6px;padding:2px 7px">{{ req.id }}</span>
+      <span style="font-size:11.5px;font-weight:600;color:{{ req.typeFg }};background:{{ req.typeBg }};border:1px solid {{ req.typeBorder }};border-radius:6px;padding:2px 8px">{{ req.typeLabel }}</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:560;color:{{ req.stageFg }};background:{{ req.stageBg }};border:1px solid {{ req.stageBorder }};border-radius:7px;padding:2px 10px"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>{{ req.stageLabel }}</span>
+    </div>
+    <h1 style="font-size:24px;font-weight:650;letter-spacing:-.025em;margin:0">{{ req.title }}</h1>
+    <div style="font-size:13px;color:var(--muted);margin-top:8px">Requested by <b style="color:var(--ink-2);font-weight:600">{{ req.requester }}</b> · {{ req.created }} · approver {{ req.approver }}</div>
+
+    <div style="display:flex;align-items:flex-start;margin:26px 0 30px">
+      <sc-for list="{{ req.steps }}" as="st" hint-placeholder-count="5">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;position:relative;min-width:0">
+          <sc-if value="{{ st.notFirst }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:13px;right:50%;width:100%;height:2px;background:{{ st.connBg }}"></div></sc-if>
+          <div style="position:relative;z-index:1;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:{{ st.nodeBg }};border:1.5px solid {{ st.nodeBorder }};color:{{ st.nodeFg }};font-size:12px;font-weight:700;font-family:'Geist Mono',monospace">
+            <sc-if value="{{ st.isDone }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+            <sc-if value="{{ st.isRejected }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></sc-if>
+            <sc-if value="{{ st.isCurrent }}" hint-placeholder-val="{{ false }}">{{ st.num }}</sc-if>
+            <sc-if value="{{ st.isTodo }}" hint-placeholder-val="{{ false }}">{{ st.num }}</sc-if>
+          </div>
+          <div style="margin-top:8px;font-size:12px;font-weight:540;color:{{ st.labelColor }};text-align:center">{{ st.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 290px;gap:36px;align-items:start">
+      <div style="min-width:0">
+        <div style="margin-bottom:24px">
+          <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 10px">Why this is requested</div>
+          <p style="font-size:14.5px;color:var(--ink-2);line-height:1.6;margin:0;padding:14px 16px;border-left:3px solid var(--accent);background:var(--bg-3);border-radius:0 10px 10px 0">{{ req.justification }}</p>
+        </div>
+
+        <sc-if value="{{ req.hasChange }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:24px">
+            <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 10px">Proposed change</div>
+            <div style="border:1px solid var(--line);border-radius:11px;background:var(--paper);box-shadow:var(--shadow-sm);padding:15px 16px">
+              <sc-if value="{{ req.change.isDraft }}" hint-placeholder-val="{{ false }}">
+                <div style="font-weight:600;font-size:14.5px;letter-spacing:-.01em">{{ req.change.name }}</div>
+                <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--ink-2);margin-top:7px;line-height:1.5">{{ req.change.condLine }}</div>
+                <div style="display:flex;align-items:center;gap:7px;margin-top:10px;flex-wrap:wrap">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                  <sc-for list="{{ req.change.routeChips }}" as="t" hint-placeholder-count="1"><span style="font-size:11.5px;font-weight:560;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:6px;padding:1px 8px">{{ t }}</span></sc-for>
+                  <sc-for list="{{ req.change.fileChips }}" as="t" hint-placeholder-count="0"><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:560;color:var(--ink-2);background:var(--bg-3);border:1px solid var(--line);border-radius:6px;padding:1px 8px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg>{{ t }}</span></sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ req.change.isRule }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                  <span style="font-weight:600;font-size:14.5px;letter-spacing:-.01em">{{ req.change.name }}</span>
+                  <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ req.change.code }}</span>
+                  <dc-import name="StatusBadge" status="{{ req.change.status }}" hint-size="96px,22px"></dc-import>
+                </div>
+                <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--ink-2);margin-top:8px;line-height:1.5">{{ req.change.condLine }}</div>
+                <button onClick="{{ req.change.onOpenRule }}" style="margin-top:11px;border:none;background:none;font:inherit;font-size:13px;color:var(--accent-ink);font-weight:560;cursor:pointer;padding:0;border-bottom:1px solid var(--accent-line)">Open rule →</button>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ req.isReview }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:24px">
+            <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 10px">Requested dispositions</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ req.dispositions }}" as="d" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);box-shadow:var(--shadow-sm)">
+                  <span style="font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:6px;padding:2px 8px;flex:none">{{ d.actionLabel }}</span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:560;font-size:14px">{{ d.name }} <span style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--faint)">{{ d.code }}</span></div>
+                    <sc-if value="{{ d.hasNote }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:var(--muted);margin-top:3px">{{ d.note }}</div></sc-if>
+                  </div>
+                  <button onClick="{{ d.onOpen }}" style="border:none;background:none;color:var(--faint);cursor:pointer;display:grid;place-items:center;padding:4px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg></button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ req.canTest }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-bottom:24px">
+            <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 4px">Test before enabling</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Run a sample memo through this rule to confirm it routes the way you expect.</div>
+            <div style="border:1px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:var(--shadow-sm);padding:16px">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px">
+                <div><label style="display:block;font-size:12px;font-weight:560;color:var(--muted);margin-bottom:5px">Sender department</label><input value="{{ req.smSender }}" onInput="{{ req.onSenderS }}" style="width:100%;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)"></div>
+                <div><label style="display:block;font-size:12px;font-weight:560;color:var(--muted);margin-bottom:5px">Topic</label><input value="{{ req.smTopic }}" onInput="{{ req.onTopicS }}" placeholder="e.g. Subpoena" style="width:100%;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)"></div>
+                <div><label style="display:block;font-size:12px;font-weight:560;color:var(--muted);margin-bottom:5px">Addressed to</label><input value="{{ req.smAddr }}" onInput="{{ req.onAddrS }}" placeholder="e.g. Litigation" style="width:100%;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)"></div>
+                <div><label style="display:block;font-size:12px;font-weight:560;color:var(--muted);margin-bottom:5px">Content contains</label><input value="{{ req.smContent }}" onInput="{{ req.onContentS }}" placeholder="paste memo text…" style="width:100%;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:0 11px;font:inherit;font-size:13px;color:var(--ink)"></div>
+              </div>
+              <button onClick="{{ req.onRunTest }}" style="margin-top:13px;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-size:13px;font-weight:540;cursor:pointer;box-shadow:var(--shadow-sm)" style-hover="border-color:var(--line-strong)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l14 9-14 9z"></path></svg>Run test</button>
+              <sc-if value="{{ req.hasResult }}" hint-placeholder-val="{{ false }}">
+                <sc-if value="{{ req.matched }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:13px;padding:12px 14px;border-radius:10px;background:color-mix(in oklch, var(--ok) 8%, var(--cm));border:1px solid color-mix(in oklch, var(--ok) 26%, var(--cm))">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ok)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>Matches — this memo would be routed.</div>
+                    <div style="display:flex;align-items:center;gap:7px;margin-top:9px;flex-wrap:wrap">
+                      <span style="font-size:12px;color:var(--muted)">Routes to</span>
+                      <sc-for list="{{ req.testResult.routedTo }}" as="t" hint-placeholder-count="1"><span style="font-size:11.5px;font-weight:560;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:6px;padding:1px 8px">{{ t }}</span></sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+              </sc-if>
+              <sc-if value="{{ req.noMatch }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:13px;padding:12px 14px;border-radius:10px;background:color-mix(in oklch, var(--warn) 9%, var(--cm));border:1px solid color-mix(in oklch, var(--warn) 26%, var(--cm))">
+                  <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--warn)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>No match — this sample would not be routed. Adjust the conditions or the sample.</div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ req.acts.length }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:18px;border-top:1px solid var(--line)">
+            <sc-for list="{{ req.acts }}" as="a" hint-placeholder-count="2">
+              <button onClick="{{ a.onClick }}" style="height:40px;padding:0 17px;border-radius:9px;cursor:pointer;font:inherit;font-size:14px;font-weight:560;background:{{ a.bg }};color:{{ a.fg }};border:{{ a.border }};box-shadow:{{ a.shadow }}">{{ a.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+
+      <aside style="background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm)">
+        <div style="font-size:13px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin:0 0 4px">Activity</div>
+        <sc-for list="{{ req.activity }}" as="a" hint-placeholder-count="2">
+          <div style="display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line-2)">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:5px;flex:none"></div>
+            <div style="min-width:0"><div style="font-size:13px;color:var(--ink-2);line-height:1.45">{{ a.what }}</div><div style="font-size:11.5px;color:var(--faint);margin-top:2px">{{ a.meta }}</div></div>
+          </div>
+        </sc-for>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isRequest }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:720px;margin:0 auto;padding:24px 28px 120px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <button onClick="{{ cancelIntake }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:14px" style-hover="color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Cancel</button>
+    <div style="margin-bottom:22px">
+      <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">New request</div>
+      <h1 style="font-size:26px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">Request a rule change</h1>
+      <p style="font-size:14.5px;color:var(--muted);margin:8px 0 0;line-height:1.5">Tell us what you need. An admin reviews it, then configures and tests it before it goes live — you don’t have to know the exact logic.</p>
+    </div>
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);padding:20px">
+      <div style="display:grid;grid-template-columns:220px 1fr;gap:14px;margin-bottom:18px">
+        <div>
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">What kind of change?</label>
+          <select value="{{ intake.type }}" onChange="{{ intake.onType }}" style="width:100%;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);font:inherit;font-size:14px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm)">
+            <option value="new">Add a new rule</option>
+            <option value="edit">Edit an existing rule</option>
+            <option value="enable">Enable a rule</option>
+            <option value="disable">Disable a rule</option>
+            <option value="archive">Archive a rule</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Your department</label>
+          <select value="{{ intake.dept }}" onChange="{{ intake.onDept }}" style="width:100%;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);font:inherit;font-size:14px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm)">
+            <option value="Litigation">Litigation</option><option value="Corporate">Corporate</option><option value="Records & IG">Records &amp; IG</option><option value="Billing & Accounting">Billing &amp; Accounting</option><option value="HR">HR</option><option value="IT">IT</option><option value="Compliance & Ethics">Compliance &amp; Ethics</option><option value="Real Estate">Real Estate</option><option value="Tax">Tax</option><option value="Marketing & BD">Marketing &amp; BD</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:18px">
+        <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Title <span style="color:var(--danger)">*</span></label>
+        <input value="{{ intake.title }}" onInput="{{ intake.onTitle }}" placeholder="One line: what should happen" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm)">
+      </div>
+      <sc-if value="{{ intake.needsRule }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:18px">
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Which rule?</label>
+          <input value="{{ intake.ruleCode }}" onInput="{{ intake.onRuleCode }}" placeholder="Rule code, e.g. PM-0260" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-family:'Geist Mono',monospace;font-size:13px;color:var(--ink);box-shadow:var(--shadow-sm)">
+        </div>
+      </sc-if>
+      <sc-if value="{{ intake.isNew }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-bottom:18px">
+          <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">What should trigger it?</label>
+          <input value="{{ intake.sketch }}" onInput="{{ intake.onSketch }}" placeholder="e.g. memos containing &quot;privilege log&quot;" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm)">
+          <div style="font-size:12.5px;color:var(--muted);margin-top:6px">A rough idea is fine — an admin turns this into exact conditions.</div>
+        </div>
+      </sc-if>
+      <div>
+        <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Why is this needed? <span style="color:var(--danger)">*</span></label>
+        <textarea value="{{ intake.justification }}" onInput="{{ intake.onJustify }}" placeholder="Give the approver the context to say yes." style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);box-shadow:var(--shadow-sm);resize:vertical;min-height:92px;line-height:1.55"></textarea>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:22px">
+      <sc-if value="{{ intake.err }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:var(--danger);font-weight:540">Add a title and a reason to submit.</span></sc-if>
+      <div style="flex:1"></div>
+      <button onClick="{{ cancelIntake }}" style="height:40px;padding:0 16px;border-radius:9px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:540;cursor:pointer" style-hover="background:var(--bg-3);color:var(--ink)">Cancel</button>
+      <button onClick="{{ submitIntake }}" style="height:40px;padding:0 20px;border-radius:9px;border:none;background:var(--accent);color:#fff;font:inherit;font-size:14px;font-weight:560;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)">Submit for approval</button>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+  <main style="width:100%;max-width:940px;margin:0 auto;padding:24px 28px 120px;animation:pmup .4s cubic-bezier(.2,.7,.3,1)">
+    <button onClick="{{ cancelReview }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:none;color:var(--muted);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;padding:6px 0;margin-bottom:14px" style-hover="color:var(--ink)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"></path></svg>Back to {{ review.dept }}</button>
+    <div style="margin-bottom:22px">
+      <div style="font-size:12.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink)">Department review</div>
+      <h1 style="font-size:26px;font-weight:640;letter-spacing:-.03em;line-height:1.1;margin:6px 0 0">Review rules for {{ review.dept }}</h1>
+      <p style="font-size:14.5px;color:var(--muted);margin:8px 0 0;line-height:1.5">For each rule that touches {{ review.dept }}, choose what should happen. Anything other than <b style="color:var(--ink);font-weight:600">Keep</b> is bundled into one request for approval.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+      <sc-for list="{{ review.items }}" as="it" hint-placeholder-count="3">
+        <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 15px;background:var(--paper);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow-sm)">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <span style="font-weight:600;font-size:14px;letter-spacing:-.01em">{{ it.name }}</span>
+              <span style="font-family:'Geist Mono',monospace;font-size:10.5px;font-weight:600;color:var(--muted);background:var(--bg-3);border:1px solid var(--line-2);border-radius:5px;padding:0 5px;line-height:16px">{{ it.code }}</span>
+              <dc-import name="StatusBadge" status="{{ it.status }}" hint-size="96px,22px"></dc-import>
+              <span style="font-size:11px;font-weight:600;color:{{ it.relFg }};background:{{ it.relBg }};border:1px solid {{ it.relBorder }};border-radius:6px;padding:1px 8px">{{ it.rel }}</span>
+            </div>
+            <div style="font-family:'Geist Mono',monospace;font-size:11.5px;color:var(--ink-2);margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.condLine }}</div>
+            <div style="display:flex;align-items:center;gap:7px;margin-top:7px;flex-wrap:wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+              <sc-for list="{{ it.routeChips }}" as="t" hint-placeholder-count="2"><span style="font-size:11px;font-weight:560;color:var(--accent-ink);background:var(--accent-wash);border:1px solid var(--accent-line);border-radius:6px;padding:1px 7px">{{ t }}</span></sc-for>
+              <sc-if value="{{ it.hasFile }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:560;color:var(--ink-2);background:var(--bg-3);border:1px solid var(--line);border-radius:6px;padding:1px 7px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"></path></svg>{{ it.fileChip }}</span></sc-if>
+            </div>
+            <input value="{{ it.note }}" onInput="{{ it.onNote }}" placeholder="Add a note (optional)" style="width:100%;margin-top:10px;height:32px;border:1px solid var(--line);border-radius:7px;background:var(--bg);padding:0 10px;font:inherit;font-size:12.5px;color:var(--ink)">
+          </div>
+          <select value="{{ it.action }}" onChange="{{ it.onAction }}" style="flex:none;width:130px;height:38px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font:inherit;font-size:13px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-sm);align-self:flex-start">
+            <option value="keep">Keep as-is</option>
+            <option value="edit">Request edit</option>
+            <option value="disable">Disable</option>
+            <option value="enable">Enable</option>
+            <option value="archive">Archive</option>
+          </select>
+        </div>
+      </sc-for>
+      <sc-if value="{{ review.empty }}" hint-placeholder-val="{{ false }}"><div style="text-align:center;padding:40px 20px;color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:11px">No rules currently apply to this department.</div></sc-if>
+    </div>
+    <div style="background:var(--paper);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);padding:18px;margin-bottom:20px">
+      <label style="display:block;font-size:13.5px;font-weight:560;margin-bottom:7px">Propose a new rule for this department</label>
+      <input value="{{ review.newRuleNote }}" onInput="{{ review.onNewRule }}" placeholder="Optional: describe a rule that’s missing" style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink)">
+      <label style="display:block;font-size:13.5px;font-weight:560;margin:16px 0 7px">Notes for the approver</label>
+      <textarea value="{{ review.justification }}" onInput="{{ review.onJustify }}" placeholder="Summarize why these changes are needed." style="width:100%;border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);resize:vertical;min-height:72px;line-height:1.55"></textarea>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="font-size:13px;color:var(--muted)"><b style="color:var(--ink);font-weight:600;font-family:'Geist Mono',monospace">{{ review.count }}</b> rules reviewed</div>
+      <div style="flex:1"></div>
+      <button onClick="{{ cancelReview }}" style="height:40px;padding:0 16px;border-radius:9px;border:none;background:transparent;color:var(--muted);font:inherit;font-size:14px;font-weight:540;cursor:pointer" style-hover="background:var(--bg-3);color:var(--ink)">Cancel</button>
+      <button onClick="{{ submitReview }}" style="height:40px;padding:0 20px;border-radius:9px;border:none;background:var(--accent);color:#fff;font:inherit;font-size:14px;font-weight:560;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.16)">Submit review</button>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ menuBackdrop }}" hint-placeholder-val="{{ false }}"><div onClick="{{ closeMenu }}" style="position:fixed;inset:0;z-index:25"></div></sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:9px;background:var(--ink);color:var(--on-ink);padding:11px 16px;border-radius:10px;box-shadow:var(--shadow-lg);font-size:13.5px;font-weight:540;animation:pmtoast .22s cubic-bezier(.2,.7,.3,1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>{{ toast }}
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    view: 'list',
+    mapMode: 'dept',
+    mapSel: null,
+    selectedId: null,
+    search: '',
+    statusFilter: 'all',
+    typeFilter: null,
+    actionFilter: null,
+    sort: 'priority',
+    theme: 'light',
+    menuOpenId: null,
+    editor: null,
+    editorReqId: null,
+    reqSelectedId: null,
+    reqStageFilter: 'all',
+    intake: null,
+    sample: null,
+    review: null,
+    toast: null,
+    requests: [
+      { id:'REQ-2041', title:'Route privilege-log memos to Litigation Support', type:'new', stage:'submitted', requester:{name:'T. Alvarez', dept:'Litigation'}, created:'2026-06-12', approver:null,
+        justification:'Privilege logs circulate to the full Litigation group but never reach Litigation Support, so logs aren’t indexed in the review platform. Adding Litigation Support as a recipient fixes that.',
+        draft:{ name:'Privilege logs to Litigation Support', slug:'privilege-logs-to-lit-support', desc:'Route privilege-log memos to Litigation Support for indexing.', status:'draft', priority:9, match:'any', groups:[{join:'any', conds:[{f:'Content',o:'contains',v:'privilege log'},{f:'Topic',o:'is',v:'Privilege log'}]}], actions:[{t:'add', targets:['Litigation Support']}] },
+        ruleCode:null, test:null, activity:[{at:'2026-06-12', who:'T. Alvarez', what:'Submitted request'}] },
+      { id:'REQ-2038', title:'Disable firm-wide announcements permanently', type:'disable', stage:'submitted', requester:{name:'C. Mbeki', dept:'Marketing & BD'}, created:'2026-06-11', approver:null,
+        justification:'The broadcast rule floods every department. Marketing now posts announcements to the intranet instead — retire the routing rule.',
+        draft:null, ruleCode:'PM-0820', test:null, activity:[{at:'2026-06-11', who:'C. Mbeki', what:'Submitted request'}] },
+      { id:'REQ-2035', title:'Add “right to sue” trigger to EEOC rule', type:'edit', stage:'approved', requester:{name:'D. Singh', dept:'HR'}, created:'2026-06-05', approver:'M. Okafor',
+        justification:'Right-to-sue letters are EEOC matters but don’t contain the literal text “EEOC”, so they slip past PM-0260.',
+        draft:{ name:'EEOC charges to Labor & Employment', slug:'eeoc-charges-to-labor', desc:'Discrimination charges, EEOC notices, and right-to-sue letters route to Labor & Employment and Compliance.', status:'enabled', priority:11, match:'any', groups:[{join:'any', conds:[{f:'Content',o:'contains',v:'EEOC'},{f:'Content',o:'contains',v:'discrimination charge'},{f:'Content',o:'contains',v:'right to sue'}]}], actions:[{t:'route', targets:['Labor & Employment','Compliance & Ethics']}] },
+        ruleCode:'PM-0260', test:null, activity:[{at:'2026-06-05', who:'D. Singh', what:'Submitted request'},{at:'2026-06-06', who:'M. Okafor', what:'Approved — ready to configure'}] },
+      { id:'REQ-2030', title:'Route ESI / e-discovery holds to IT', type:'new', stage:'configured', requester:{name:'A. Reyes', dept:'Litigation'}, created:'2026-05-30', approver:'M. Okafor',
+        justification:'E-discovery preservation needs IT to lock down mailboxes. Today those memos only reach Litigation.',
+        draft:{ name:'E-discovery holds to IT', slug:'ediscovery-holds-to-it', desc:'Memos about ESI or e-discovery preservation also route to IT to action mailbox holds.', status:'draft', priority:6, match:'any', groups:[{join:'any', conds:[{f:'Content',o:'contains',v:'e-discovery'},{f:'Content',o:'contains',v:'ESI'},{f:'Content',o:'contains',v:'preservation hold'}]}], actions:[{t:'add', targets:['IT']},{t:'file', targets:['Active litigation matter']}] },
+        ruleCode:null, test:null, activity:[{at:'2026-05-30', who:'A. Reyes', what:'Submitted request'},{at:'2026-05-31', who:'M. Okafor', what:'Approved'},{at:'2026-06-02', who:'R. Vance', what:'Configured conditions & actions'}] },
+      { id:'REQ-2026', title:'Enable year-end tax memos rule early', type:'enable', stage:'tested', requester:{name:'F. Adeyemi', dept:'Billing & Accounting'}, created:'2026-05-22', approver:'M. Okafor',
+        justification:'Year-end tax coordination is starting ahead of schedule this year; turn PM-0640 on now rather than waiting for the Q4 window.',
+        draft:null, ruleCode:'PM-0640', test:{ matched:true, sample:{senderDept:'Tax', topic:'Tax', content:'Year-end provision memo', addressedTo:'Corporate'}, routedTo:['Tax','Billing & Accounting'], filedTo:[], at:'2026-05-24' }, activity:[{at:'2026-05-22', who:'F. Adeyemi', what:'Submitted request'},{at:'2026-05-23', who:'M. Okafor', what:'Approved'},{at:'2026-05-24', who:'R. Vance', what:'Test passed — matched sample memo'}] },
+      { id:'REQ-2019', title:'Route FOIA requests to Records', type:'new', stage:'enabled', requester:{name:'M. Okafor', dept:'Records & IG'}, created:'2026-05-04', approver:'M. Okafor',
+        justification:'Public records requests were going only to Litigation.',
+        draft:null, ruleCode:'PM-0455', test:{matched:true, at:'2026-05-08'}, activity:[{at:'2026-05-04', who:'M. Okafor', what:'Submitted request'},{at:'2026-05-05', who:'L. Castellano', what:'Approved'},{at:'2026-05-08', who:'R. Vance', what:'Tested & enabled as PM-0455'}] },
+      { id:'REQ-2012', title:'Broaden trust-account terms', type:'edit', stage:'rejected', requester:{name:'F. Adeyemi', dept:'Billing & Accounting'}, created:'2026-04-28', approver:'L. Castellano',
+        justification:'Wanted to add the term “escrow” to the IOLTA rule.',
+        draft:null, ruleCode:'PM-0377', test:null, activity:[{at:'2026-04-28', who:'F. Adeyemi', what:'Submitted request'},{at:'2026-04-30', who:'L. Castellano', what:'Rejected — “escrow” is too broad; would capture unrelated real-estate memos'}] },
+      { id:'REQ-2009', title:'Records & IG — Q2 rule review', type:'review', stage:'submitted', requester:{name:'M. Okafor', dept:'Records & IG'}, created:'2026-06-09', approver:null,
+        justification:'Quarterly review of every rule that touches Records & Information Governance.',
+        draft:null, ruleCode:null, test:null,
+        dispositions:[ {ruleCode:'PM-0481', action:'keep', note:''}, {ruleCode:'PM-0492', action:'edit', note:'Also trigger on “matter closing memo”.'}, {ruleCode:'PM-0455', action:'enable', note:'Approve the FOIA draft — we’re ready for it.'} ],
+        activity:[{at:'2026-06-09', who:'M. Okafor', what:'Submitted department review'}] },
+    ],
+    rules: [
+      { code:'PM-0044', slug:'unrouted-fallback-to-mailroom', name:'Unrouted memos to Mailroom', status:'enabled', priority:1, match:'any', desc:'Catch-all safety net. Any memo that no other rule routed gets sent to the Mailroom for manual triage so nothing is silently dropped.', groups:[{join:'all', conds:[{f:'Addressed to', o:'is', v:'no department matched'}]}], actions:[{t:'route', targets:['Mailroom']}], owner:'System', updated:'2026-04-02', matches30d:91, versions:[{v:2,date:'2026-04-02',author:'System',note:'Reworded match for new engine'},{v:1,date:'2023-01-10',author:'System',note:'Created'}] },
+      { code:'PM-0501', slug:'ethics-wall-screening', name:'Ethics-wall screening', status:'enabled', priority:2, match:'any', desc:'When a screened attorney is named, contain the memo: strip every recipient except Compliance & Ethics, who review before any onward routing.', groups:[{join:'all', conds:[{f:'Person named', o:'is one of', v:'screened attorney list'}]}], actions:[{t:'remove', targets:['All other departments']},{t:'route', targets:['Compliance & Ethics']}], owner:'M. Okafor', updated:'2026-05-30', matches30d:14, versions:[{v:5,date:'2026-05-30',author:'M. Okafor',note:'Added two attorneys to screen list'},{v:4,date:'2026-02-11',author:'M. Okafor',note:'Tightened recipient strip'},{v:1,date:'2022-08-03',author:'IT Migration',note:'Imported from legacy'}] },
+      { code:'PM-0288', slug:'incident-breach-escalation', name:'Data-breach escalation', status:'enabled', priority:3, match:'any', desc:'Security incidents escalate immediately to IT, Compliance, and the Managing Partner’s Office, and open an incident response file.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'data breach'},{f:'Content', o:'contains', v:'ransomware'},{f:'Content', o:'contains', v:'security incident'}]}], actions:[{t:'route', targets:['IT','Compliance & Ethics',"Managing Partner's Office"]},{t:'file', targets:['Incident Response']}], owner:'R. Vance', updated:'2026-06-08', matches30d:3, versions:[{v:3,date:'2026-06-08',author:'R. Vance',note:'Added ransomware keyword'},{v:1,date:'2024-09-21',author:'R. Vance',note:'Created'}] },
+      { code:'PM-0199', slug:'court-filings-mirror-docketing', name:'Court filings mirror to Docketing', status:'enabled', priority:4, match:'any', desc:'Anything touching a court filing or filing deadline is always copied to Docketing so deadlines are calendared.', groups:[{join:'any', conds:[{f:'Topic', o:'is', v:'Court filing'},{f:'Content', o:'contains', v:'filing deadline'}]}], actions:[{t:'add', targets:['Docketing']}], conflictWith:'PM-0481', owner:'A. Reyes', updated:'2026-05-12', matches30d:204, versions:[{v:4,date:'2026-05-12',author:'A. Reyes',note:'Switched to add (not replace) recipients'},{v:1,date:'2023-03-15',author:'A. Reyes',note:'Created'}] },
+      { code:'PM-0481', slug:'litigation-subpoenas-to-docketing', name:'Subpoenas & deposition notices', status:'enabled', priority:5, match:'any', desc:'Subpoenas and deposition notices addressed to Litigation are also routed to Docketing and Records, and filed to the active litigation matter.', groups:[{join:'all', conds:[{f:'Topic', o:'is', v:'Subpoena'},{f:'Addressed to', o:'includes', v:'Litigation'}]},{join:'all', conds:[{f:'Content', o:'contains', v:'deposition notice'}]}], actions:[{t:'route', targets:['Docketing','Records & IG']},{t:'file', targets:['Active litigation matter']}], conflictWith:'PM-0199', owner:'A. Reyes', updated:'2026-05-28', matches30d:312, versions:[{v:4,date:'2026-05-28',author:'A. Reyes',note:'Added deposition-notice clause'},{v:3,date:'2025-11-02',author:'A. Reyes',note:'Added Records to recipients'},{v:1,date:'2023-06-09',author:'J. Park',note:'Created'}] },
+      { code:'PM-0150', slug:'hr-confidential-containment', name:'HR personnel containment', status:'enabled', priority:6, match:'all', desc:'Personnel and termination memos from HR are restricted to HR and the Managing Partner’s Office to prevent over-distribution of confidential employee matters.', groups:[{join:'all', conds:[{f:'Sender dept', o:'is', v:'Human Resources'},{f:'Content', o:'contains', v:'termination'}]}], actions:[{t:'remove', targets:['All other departments']},{t:'route', targets:['HR',"Managing Partner's Office"]}], owner:'D. Singh', updated:'2026-03-19', matches30d:22, versions:[{v:2,date:'2026-03-19',author:'D. Singh',note:'Added termination keyword'},{v:1,date:'2024-01-30',author:'D. Singh',note:'Created'}] },
+      { code:'PM-0490', slug:'new-matter-intake-to-conflicts', name:'New matter intake → Conflicts', status:'review', priority:7, match:'any', desc:'New matter and engagement memos go to Conflicts and Billing, and open a New Business Intake file. Flagged: overlaps the engagement-letter rule.', groups:[{join:'any', conds:[{f:'Topic', o:'is', v:'New matter'},{f:'Addressed to', o:'includes', v:'New Business Intake'}]}], actions:[{t:'route', targets:['New Business Intake','Billing & Accounting']},{t:'file', targets:['New Business Intake']}], conflictWith:'PM-0492', owner:'L. Castellano', updated:'2026-06-01', matches30d:48, versions:[{v:3,date:'2026-06-01',author:'L. Castellano',note:'Flagged for review — overlap with PM-0492'},{v:1,date:'2024-05-18',author:'L. Castellano',note:'Created'}] },
+      { code:'PM-0492', slug:'engagement-letters-to-billing', name:'Engagement letters to Billing', status:'review', priority:8, match:'any', desc:'Engagement letters and retainers route to Billing and Records. Under review because it overlaps with new-matter intake routing.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'engagement letter'},{f:'Content', o:'contains', v:'retainer'}]}], actions:[{t:'route', targets:['Billing & Accounting','Records & IG']}], conflictWith:'PM-0490', owner:'L. Castellano', updated:'2026-06-01', matches30d:37, versions:[{v:2,date:'2026-06-01',author:'L. Castellano',note:'Flagged — overlap with PM-0490'},{v:1,date:'2024-07-22',author:'F. Adeyemi',note:'Created'}] },
+      { code:'PM-0610', slug:'ip-prosecution-deadlines', name:'IP prosecution deadlines', status:'enabled', priority:9, match:'all', desc:'Patent and trademark memos mentioning a deadline or office action route to IP and Docketing.', groups:[{join:'any', conds:[{f:'Topic', o:'is', v:'Patent'},{f:'Topic', o:'is', v:'Trademark'}]},{join:'any', conds:[{f:'Content', o:'contains', v:'office action'},{f:'Content', o:'contains', v:'response deadline'}]}], actions:[{t:'route', targets:['Intellectual Property','Docketing']}], owner:'S. Yamamoto', updated:'2026-04-27', matches30d:64, versions:[{v:2,date:'2026-04-27',author:'S. Yamamoto',note:'Added office-action keyword'},{v:1,date:'2024-02-14',author:'S. Yamamoto',note:'Created'}] },
+      { code:'PM-0377', slug:'iolta-trust-to-accounting', name:'IOLTA & trust funds to Accounting', status:'enabled', priority:10, match:'any', desc:'Any mention of client trust funds or IOLTA accounts routes to Billing & Accounting for ledger reconciliation.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'IOLTA'},{f:'Content', o:'contains', v:'trust account'},{f:'Content', o:'contains', v:'client funds'}]}], actions:[{t:'route', targets:['Billing & Accounting']}], owner:'F. Adeyemi', updated:'2026-02-08', matches30d:55, versions:[{v:1,date:'2023-09-30',author:'F. Adeyemi',note:'Created'}] },
+      { code:'PM-0260', slug:'eeoc-charges-to-labor', name:'EEOC charges to Labor & Employment', status:'enabled', priority:11, match:'any', desc:'Discrimination charges and EEOC notices route to Labor & Employment and Compliance.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'EEOC'},{f:'Content', o:'contains', v:'discrimination charge'}]}], actions:[{t:'route', targets:['Labor & Employment','Compliance & Ethics']}], owner:'D. Singh', updated:'2026-01-22', matches30d:9, versions:[{v:1,date:'2024-06-11',author:'D. Singh',note:'Created'}] },
+      { code:'PM-0533', slug:'lease-abstracts-to-real-estate', name:'Lease abstracts to Real Estate', status:'enabled', priority:12, match:'any', desc:'Lease, estoppel, and abstract memos route to Real Estate and file to the property matter.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'lease'},{f:'Content', o:'contains', v:'estoppel'},{f:'Topic', o:'is', v:'Real estate'}]}], actions:[{t:'route', targets:['Real Estate']},{t:'file', targets:['Property matter']}], owner:'B. Nwosu', updated:'2026-03-05', matches30d:41, versions:[{v:1,date:'2024-10-08',author:'B. Nwosu',note:'Created'}] },
+      { code:'PM-0709', slug:'named-partner-courtesy-copy', name:'Named-partner courtesy copy', status:'enabled', priority:13, match:'any', desc:'When a named partner is referenced, courtesy-copy the Managing Partner’s Office.', groups:[{join:'all', conds:[{f:'Person named', o:'is one of', v:'named partners'}]}], actions:[{t:'add', targets:["Managing Partner's Office"]}], owner:'A. Reyes', updated:'2026-05-02', matches30d:73, versions:[{v:1,date:'2025-01-19',author:'A. Reyes',note:'Created'}] },
+      { code:'PM-0815', slug:'research-requests-to-library', name:'Research requests to Library', status:'enabled', priority:14, match:'any', desc:'Research request memos route to Library & Research.', groups:[{join:'all', conds:[{f:'Topic', o:'is', v:'Research request'}]}], actions:[{t:'route', targets:['Library & Research']}], owner:'C. Mbeki', updated:'2026-02-26', matches30d:33, versions:[{v:1,date:'2025-02-02',author:'C. Mbeki',note:'Created'}] },
+      { code:'PM-0099', slug:'access-requests-to-it-hr', name:'Access requests to IT & HR', status:'enabled', priority:15, match:'any', desc:'New-hire setup and access request memos route to IT and HR.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'access request'},{f:'Content', o:'contains', v:'new hire setup'}]}], actions:[{t:'route', targets:['IT','HR']}], owner:'R. Vance', updated:'2026-01-15', matches30d:27, versions:[{v:1,date:'2024-11-11',author:'R. Vance',note:'Created'}] },
+      { code:'PM-0701', slug:'ma-diligence-distribution', name:'M&A due-diligence distribution', status:'scheduled', priority:16, match:'all', desc:'During the active deal window, due-diligence memos addressed to Corporate also fan out to Tax, Real Estate, and IP, and file to the deal matter.', schedule:{from:'2026-06-01',to:'2026-09-15'}, groups:[{join:'all', conds:[{f:'Addressed to', o:'includes', v:'Corporate'},{f:'Topic', o:'is', v:'Due diligence'}]}], actions:[{t:'add', targets:['Tax','Real Estate','Intellectual Property']},{t:'file', targets:['Project Falcon (M&A)']}], owner:'L. Castellano', updated:'2026-05-29', matches30d:18, versions:[{v:2,date:'2026-05-29',author:'L. Castellano',note:'Set effective window for deal'},{v:1,date:'2026-05-20',author:'L. Castellano',note:'Created'}] },
+      { code:'PM-0640', slug:'year-end-tax-memos', name:'Year-end tax memos', status:'scheduled', priority:17, match:'all', desc:'In Q4, tax-topic memos route to Tax and Accounting for year-end coordination.', schedule:{from:'2026-10-01',to:'2026-12-31'}, groups:[{join:'all', conds:[{f:'Topic', o:'is', v:'Tax'}]}], actions:[{t:'route', targets:['Tax','Billing & Accounting']}], owner:'F. Adeyemi', updated:'2026-04-18', matches30d:0, versions:[{v:1,date:'2025-10-01',author:'F. Adeyemi',note:'Created'}] },
+      { code:'PM-0455', slug:'foia-requests-to-records', name:'Public records requests to Records', status:'draft', priority:18, match:'any', desc:'Draft: route FOIA and public records requests to Records and Litigation. Awaiting sign-off on the keyword list.', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:'FOIA'},{f:'Content', o:'contains', v:'public records request'}]}], actions:[{t:'route', targets:['Records & IG','Litigation']}], owner:'M. Okafor', updated:'2026-06-10', matches30d:0, versions:[{v:1,date:'2026-06-10',author:'M. Okafor',note:'Drafted'}] },
+      { code:'PM-0820', slug:'firmwide-announcements', name:'Firm-wide announcements', status:'disabled', priority:19, match:'all', desc:'Disabled: broadcast Marketing & BD announcements to every department. Paused pending a quieter distribution policy.', groups:[{join:'all', conds:[{f:'Sender dept', o:'is', v:'Marketing & BD'},{f:'Topic', o:'is', v:'Announcement'}]}], actions:[{t:'route', targets:['All departments']}], owner:'C. Mbeki', updated:'2026-05-21', matches30d:0, versions:[{v:2,date:'2026-05-21',author:'C. Mbeki',note:'Disabled — too noisy'},{v:1,date:'2025-03-12',author:'C. Mbeki',note:'Created'}] },
+      { code:'PM-0312', slug:'legacy-conflicts-clearance', name:'Legacy conflicts clearance', status:'archived', priority:99, match:'any', archivedDate:'2026-02-14', desc:'Superseded by PM-0490. Routed clearance memos to the old Conflicts queue.', groups:[{join:'all', conds:[{f:'Topic', o:'is', v:'Conflict check'}]}], actions:[{t:'route', targets:['Conflicts (legacy)']}], owner:'IT Migration', updated:'2026-02-14', matches30d:0, versions:[{v:3,date:'2026-02-14',author:'L. Castellano',note:'Archived — replaced by PM-0490'},{v:1,date:'2022-08-03',author:'IT Migration',note:'Imported'}] },
+      { code:'PM-0588', slug:'legacy-trademark-renewals', name:'Legacy trademark renewals', status:'archived', priority:99, match:'any', archivedDate:'2025-12-03', desc:'Folded into the IP prosecution-deadlines rule (PM-0610).', groups:[{join:'all', conds:[{f:'Content', o:'contains', v:'renewal deadline'}]}], actions:[{t:'route', targets:['Intellectual Property']}], owner:'S. Yamamoto', updated:'2025-12-03', matches30d:0, versions:[{v:2,date:'2025-12-03',author:'S. Yamamoto',note:'Archived — merged into PM-0610'},{v:1,date:'2024-03-30',author:'S. Yamamoto',note:'Created'}] },
+    ],
+  };
+
+  // ---- helpers ----
+  fieldType(f){ if(f==='Content'||f==='Topic') return 'content'; if(f==='Addressed to'||f==='Sender dept') return 'dept'; if(f==='Person named') return 'person'; return 'content'; }
+  condText(c){ return c.f + ' ' + c.o + ' \u201c' + c.v + '\u201d'; }
+  condLine(rule){ return rule.groups.map(g => g.conds.map(c => this.condText(c)).join(g.join==='all'?' AND ':' OR ')).join('   OR   '); }
+  routeTargets(rule){ const out=[]; rule.actions.forEach(a=>{ if(a.t==='route'||a.t==='add') a.targets.forEach(t=>{ if(out.indexOf(t)<0) out.push(t); }); }); return out; }
+  fileTargets(rule){ const out=[]; rule.actions.forEach(a=>{ if(a.t==='file') a.targets.forEach(t=>out.push(t)); }); return out; }
+  hasType(rule, type){ return rule.groups.some(g=>g.conds.some(c=>this.fieldType(c.f)===type)); }
+  hasAction(rule, t){ if(t==='file') return rule.actions.some(a=>a.t==='file'); if(t==='restrict') return rule.actions.some(a=>a.t==='remove'); return rule.actions.some(a=>a.t==='route'||a.t==='add'); }
+  byCode(code){ return this.state.rules.find(r=>r.code===code); }
+
+  flash(msg){ this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(()=>this.setState({toast:null}), 2200); }
+
+  // ---- nav ----
+  goHome = () => this.setState({ view:'list', menuOpenId:null });
+  goArchive = () => this.setState({ view:'archive', menuOpenId:null });
+  goDepartments = () => this.setState({ view:'map', mapMode:'dept', mapSel:null, menuOpenId:null });
+  goFiles = () => this.setState({ view:'map', mapMode:'file', mapSel:null, menuOpenId:null });
+  selectDest(name){ this.setState({ mapSel:name }); }
+  toggleTheme = () => this.setState(s=>({ theme: s.theme==='light'?'dark':'light' }));
+  onSearch = (e) => this.setState({ search: e.target.value });
+  onSort = (e) => this.setState({ sort: e.target.value });
+  closeMenu = () => this.setState({ menuOpenId:null });
+  backToList = () => this.setState({ view:'list', selectedId:null });
+  openDetail(code){ this.setState({ view:'detail', selectedId:code, menuOpenId:null }); }
+
+  setStatusFilter(k){ this.setState(s=>({ statusFilter: s.statusFilter===k?'all':k })); }
+  setTypeFilter(k){ this.setState(s=>({ typeFilter: s.typeFilter===k?null:k })); }
+  setActionFilter(k){ this.setState(s=>({ actionFilter: s.actionFilter===k?null:k })); }
+  clearAll = () => this.setState({ statusFilter:'all', typeFilter:null, actionFilter:null, search:'' });
+
+  toggleEnabled(code){ this.setState(s=>({ rules: s.rules.map(r=> r.code===code ? {...r, status: r.status==='enabled'?'disabled':'enabled'} : r), menuOpenId:null })); const r=this.byCode(code); this.flash(r && r.status==='enabled' ? 'Rule disabled' : 'Rule enabled'); }
+  archiveRule(code){ this.setState(s=>({ rules: s.rules.map(r=> r.code===code ? {...r, status:'archived', archivedDate:this.today()} : r), menuOpenId:null, view: s.selectedId===code? 'list':s.view })); this.flash('Rule archived'); }
+  restoreRule(code){ this.setState(s=>({ rules: s.rules.map(r=> r.code===code ? {...r, status:'disabled'} : r) })); this.flash('Rule restored as disabled'); }
+  duplicateRule(code){ const r=this.byCode(code); if(!r) return; const copy = JSON.parse(JSON.stringify(r)); copy.code = this.newCode(); copy.slug = r.slug+'-copy'; copy.name = r.name+' (copy)'; copy.status='draft'; copy.matches30d=0; copy.versions=[{v:1,date:this.today(),author:'You',note:'Duplicated from '+r.code}]; this.setState(s=>({ rules:[...s.rules, copy], menuOpenId:null, view:'editor', editor:this.toEditor(copy) })); this.flash('Duplicated — editing copy'); }
+
+  today(){ const d=new Date(); return d.toISOString().slice(0,10); }
+  newCode(){ return 'PM-'+String(820+Math.floor(Math.random()*179)).padStart(4,'0'); }
+  slugify(s){ return (s||'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+
+  // ---- editor ----
+  toEditor(rule){ return JSON.parse(JSON.stringify(rule)); }
+  blankRule(){ return { code:null, slug:'', name:'', desc:'', status:'draft', priority: this.state.rules.filter(r=>r.status!=='archived').length+1, match:'any', groups:[{join:'all', conds:[{f:'Content', o:'contains', v:''}]}], actions:[{t:'route', targets:[]}], owner:'You', updated:this.today(), matches30d:0, versions:[] }; }
+  startNew = () => this.setState({ view:'editor', editor:this.blankRule(), menuOpenId:null, _nameErr:false });
+  startEdit(code){ const r=this.byCode(code); this.setState({ view:'editor', editor:this.toEditor(r), menuOpenId:null, _nameErr:false }); }
+  cancelEdit = () => this.setState(s=>({ view: s.editor && s.editor.code && this.byCode(s.editor.code) ? 'detail':'list', selectedId: s.editor && s.editor.code, editor:null, _nameErr:false }));
+  mutEd(fn){ this.setState(s=>{ const ed=JSON.parse(JSON.stringify(s.editor)); fn(ed); return { editor:ed }; }); }
+  saveEdit = () => { const ed=this.state.editor; if(!ed.name || !ed.name.trim()){ this.setState({_nameErr:true}); return; }
+    const reqId = this.state.editorReqId;
+    if(reqId){ const save=JSON.parse(JSON.stringify(ed)); if(!save.slug) save.slug=this.slugify(save.name); save.priority=parseInt(save.priority,10)||1;
+      this.setState(s=>({ requests: s.requests.map(r=> r.id===reqId ? {...r, draft:save, stage:(r.stage==='approved'?'configured':r.stage), activity:[...r.activity,{at:this.today(),who:'You',what:'Configured conditions & actions'}]} : r), editor:null, editorReqId:null, view:'reqdetail', reqSelectedId:reqId, _nameErr:false }));
+      this.flash('Configuration saved'); return; }
+    const isNew = !ed.code || !this.byCode(ed.code); const save=JSON.parse(JSON.stringify(ed)); if(!save.slug) save.slug=this.slugify(save.name); save.priority = parseInt(save.priority,10)||1; save.updated=this.today(); if(isNew){ save.code = save.code || this.newCode(); save.versions=[{v:1,date:this.today(),author:'You',note:'Created'}]; } else { const prev=this.byCode(ed.code); const nextV=(prev.versions[0]?prev.versions[0].v:0)+1; save.versions=[{v:nextV,date:this.today(),author:'You',note:'Edited in Postmark'},...prev.versions]; } this.setState(s=>({ rules: isNew ? [...s.rules.filter(r=>r.code!==save.code), save] : s.rules.map(r=>r.code===save.code?save:r), view:'detail', selectedId:save.code, editor:null, _nameErr:false })); this.flash(isNew?'Rule created':'Changes saved'); };
+
+  // ---- requests / approval lifecycle ----
+  newReqId(){ return 'REQ-'+String(2042+Math.floor(Math.random()*400)); }
+  defaultSample(){ return { senderDept:'Litigation', topic:'', content:'', addressedTo:'', people:'' }; }
+  getReq(id){ return this.state.requests.find(r=>r.id===id); }
+  openRequests = () => this.setState({ view:'requests', menuOpenId:null });
+  setReqStageFilter(k){ this.setState(s=>({ reqStageFilter: s.reqStageFilter===k?'all':k })); }
+  openRequest(id){ this.setState({ view:'reqdetail', reqSelectedId:id, sample:this.defaultSample(), menuOpenId:null }); }
+  backToRequests = () => this.setState({ view:'requests' });
+  startRequest = () => this.setState({ view:'request', intake:{ type:'new', title:'', dept:'Litigation', requester:'You', ruleCode:'', justification:'', sketch:'' }, _intErr:false, menuOpenId:null });
+  cancelIntake = () => this.setState({ view:'requests', intake:null, _intErr:false });
+  mutIntake(fn){ this.setState(s=>{ const i=JSON.parse(JSON.stringify(s.intake)); fn(i); return { intake:i }; }); }
+  submitIntake = () => { const i=this.state.intake; if(!i.title.trim() || !i.justification.trim()){ this.setState({_intErr:true}); return; }
+    const id=this.newReqId(); const needsRule=(i.type==='new'||i.type==='edit');
+    let draft=null; if(i.type==='new'){ draft={ name:i.title, slug:this.slugify(i.title), desc:i.justification, status:'draft', priority:20, match:'any', groups:[{join:'any', conds:[{f:'Content', o:'contains', v:''}]}], actions:[{t:'route', targets:[]}] }; if(i.sketch) draft.groups[0].conds[0].v=i.sketch; }
+    const req={ id, title:i.title, type:i.type, stage:'submitted', requester:{name:i.requester||'You', dept:i.dept}, created:this.today(), approver:null, justification:i.justification, draft, ruleCode:(i.type!=='new'?i.ruleCode:null)||null, test:null, activity:[{at:this.today(), who:i.requester||'You', what:'Submitted request'}] };
+    this.setState(s=>({ requests:[req, ...s.requests], view:'reqdetail', reqSelectedId:id, intake:null, _intErr:false, sample:this.defaultSample() })); this.flash('Request submitted'); };
+
+  reqAct(id, patch, note){ this.setState(s=>({ requests: s.requests.map(r=> r.id===id ? {...r, ...patch, activity:[...r.activity, {at:this.today(), who:'You', what:note}]} : r) })); }
+  approveRequest(id){ this.reqAct(id, {stage:'approved', approver:'You'}, 'Approved'); this.flash('Request approved'); }
+  requestChanges(id){ this.reqAct(id, {}, 'Requested changes from submitter'); this.flash('Sent back for changes'); }
+  rejectRequest(id){ this.reqAct(id, {stage:'rejected'}, 'Rejected'); this.flash('Request rejected'); }
+  configureRequest(id){ const req=this.getReq(id); let draft=req.draft; if(!draft && req.ruleCode && this.byCode(req.ruleCode)) draft=this.toEditor(this.byCode(req.ruleCode)); if(!draft) draft=this.blankRule(); this.setState({ editor:JSON.parse(JSON.stringify(draft)), editorReqId:id, view:'editor', _nameErr:false }); }
+  mutSample(fn){ this.setState(s=>{ const sm=JSON.parse(JSON.stringify(s.sample||this.defaultSample())); fn(sm); return { sample:sm }; }); }
+  evalRule(rule, sm){ const test=(c)=>{ const val=(c.v||'').toLowerCase(); const not=c.o.indexOf('not')>=0; let res=false; if(c.f==='Content') res=(sm.content||'').toLowerCase().includes(val); else if(c.f==='Topic') res=(sm.topic||'').toLowerCase()===val; else if(c.f==='Addressed to') res=(sm.addressedTo||'').toLowerCase().includes(val); else if(c.f==='Sender dept') res=(sm.senderDept||'').toLowerCase()===val; else if(c.f==='Person named') res=(sm.people||'').toLowerCase().includes(val); return not?!res:res; }; const gr=rule.groups.map(g=> g.join==='all'? g.conds.every(test): g.conds.some(test)); return rule.match==='all'? gr.every(Boolean): gr.some(Boolean); }
+  runTest(id){ const req=this.getReq(id); const rule=req.draft||this.byCode(req.ruleCode); if(!rule) return; const sm=this.state.sample||this.defaultSample(); const matched=this.evalRule(rule, sm); const test={ matched, sample:JSON.parse(JSON.stringify(sm)), routedTo: matched?this.routeTargets(rule):[], filedTo: matched?this.fileTargets(rule):[], at:this.today() };
+    this.setState(s=>({ requests: s.requests.map(r=> r.id===id ? {...r, test, stage:(r.stage==='configured'||r.stage==='approved'?'tested':r.stage), activity:[...r.activity,{at:this.today(),who:'You',what: matched?'Test passed — matched sample memo':'Test run — no match on sample'}]} : r) })); this.flash(matched?'Test passed':'Test ran — no match'); }
+  enableRequest(id){ const req=this.getReq(id); let msg='Done'; this.setState(s=>{ let rules=s.rules;
+      if(req.type==='new'||req.type==='edit'){ const d=req.draft; if(d){ const save=JSON.parse(JSON.stringify(d)); save.status='enabled'; if(!save.slug) save.slug=this.slugify(save.name); save.owner=req.requester.name; save.updated=this.today(); save.matches30d=save.matches30d||0;
+          if(req.ruleCode && this.byCode(req.ruleCode)){ const prev=this.byCode(req.ruleCode); save.code=req.ruleCode; const nv=(prev.versions&&prev.versions[0]?prev.versions[0].v:0)+1; save.versions=[{v:nv,date:this.today(),author:req.requester.name,note:'Updated via '+req.id},...(prev.versions||[])]; rules=s.rules.map(r=>r.code===req.ruleCode?save:r); msg='Rule updated & enabled'; }
+          else { save.code=this.newCode(); save.priority=parseInt(save.priority,10)||20; save.versions=[{v:1,date:this.today(),author:req.requester.name,note:'Created via '+req.id}]; rules=[...s.rules, save]; msg='Rule created & enabled'; } } }
+      else if(req.type==='enable'){ rules=s.rules.map(r=>r.code===req.ruleCode?{...r,status:'enabled'}:r); msg='Rule enabled'; }
+      else if(req.type==='disable'){ rules=s.rules.map(r=>r.code===req.ruleCode?{...r,status:'disabled'}:r); msg='Rule disabled'; }
+      else if(req.type==='archive'){ rules=s.rules.map(r=>r.code===req.ruleCode?{...r,status:'archived',archivedDate:this.today()}:r); msg='Rule archived'; }
+      return { rules, requests: s.requests.map(r=>r.id===id?{...r, stage:'enabled', activity:[...r.activity,{at:this.today(),who:'You',what:'Applied & marked live'}]}:r) };
+    }); this.flash(msg); }
+  applyReview(id){ const req=this.getReq(id); this.setState(s=>{ let rules=s.rules; (req.dispositions||[]).forEach(d=>{ if(d.action==='enable') rules=rules.map(r=>r.code===d.ruleCode?{...r,status:'enabled'}:r); else if(d.action==='disable') rules=rules.map(r=>r.code===d.ruleCode?{...r,status:'disabled'}:r); else if(d.action==='archive') rules=rules.map(r=>r.code===d.ruleCode?{...r,status:'archived',archivedDate:this.today()}:r); });
+      return { rules, requests: s.requests.map(r=>r.id===id?{...r,stage:'enabled',activity:[...r.activity,{at:this.today(),who:'You',what:'Review applied'}]}:r) }; }); this.flash('Review applied'); }
+
+  // ---- department self-review ----
+  rulesApplicable(dept){ const a=this.state.rules.filter(r=>r.status!=='archived'); const mR=(r)=>r.actions.some(x=>(x.t==='route'||x.t==='add')&&(x.targets.indexOf(dept)>=0||x.targets.indexOf('All departments')>=0)); const mX=(r)=>r.actions.some(x=>x.t==='remove'&&(x.targets.indexOf(dept)>=0||x.targets.indexOf('All other departments')>=0)); const mF=(r)=>this.condLine(r).toLowerCase().indexOf(dept.toLowerCase())>=0; const seen={}; const out=[]; a.forEach(r=>{ if((mR(r)||mX(r)||mF(r))&&!seen[r.code]){ seen[r.code]=1; out.push(r); } }); return out; }
+  startReview(dept){ const items=this.rulesApplicable(dept).map(r=>({ ruleCode:r.code, name:r.name, status:r.status, action:'keep', note:'' })); this.setState({ view:'review', review:{ dept, items, justification:'', newRuleNote:'' }, _revErr:false, menuOpenId:null }); }
+  mutReview(fn){ this.setState(s=>{ const rv=JSON.parse(JSON.stringify(s.review)); fn(rv); return { review:rv }; }); }
+  cancelReview = () => this.setState({ view:'map', review:null, _revErr:false });
+  submitReview = () => { const rv=this.state.review; const id=this.newReqId(); const disp=rv.items.filter(it=>it.action!=='keep').map(it=>({ ruleCode:it.ruleCode, action:it.action, note:it.note })); const justify=(rv.justification||('Department review of '+rv.dept+'.'))+(rv.newRuleNote?(' Proposed new rule: '+rv.newRuleNote):'');
+    const req={ id, title:rv.dept+' — rule review', type:'review', stage:'submitted', requester:{name:'You', dept:rv.dept}, created:this.today(), approver:null, justification:justify, draft:null, ruleCode:null, test:null, dispositions:disp, activity:[{at:this.today(), who:'You', what:'Submitted department review'}] };
+    this.setState(s=>({ requests:[req, ...s.requests], view:'reqdetail', reqSelectedId:id, review:null })); this.flash('Review submitted for approval'); };
+
+  renderVals(){
+    const s = this.state;
+    const active = s.rules.filter(r=>r.status!=='archived');
+
+    // facets
+    const statusCounts = { all:active.length, enabled:0, disabled:0, review:0, scheduled:0, draft:0 };
+    active.forEach(r=>{ if(statusCounts[r.status]!==undefined) statusCounts[r.status]++; });
+    const facetStyle = (on)=> on ? { bg:'var(--bg-3)', fg:'var(--ink)' } : { bg:'transparent', fg:'var(--muted)' };
+    const mkStatus = (key,label)=>{ const st=facetStyle(s.statusFilter===key); return { label, count: statusCounts[key]!==undefined?statusCounts[key]:0, bg:st.bg, fg:st.fg, onClick:()=>this.setStatusFilter(key) }; };
+    const statusFacets = [ mkStatus('all','All rules'), mkStatus('enabled','Enabled'), mkStatus('disabled','Disabled'), mkStatus('review','Needs review'), mkStatus('scheduled','Scheduled'), mkStatus('draft','Draft') ];
+
+    const typeCount = (type)=> active.filter(r=>this.hasType(r,type)).length;
+    const mkType = (key,label)=>{ const st=facetStyle(s.typeFilter===key); return { label, count: typeCount(key), bg:st.bg, fg:st.fg, onClick:()=>this.setTypeFilter(key) }; };
+    const typeFacets = [ mkType('content','Content / topics'), mkType('dept','Departments'), mkType('person','People') ];
+
+    const actCount = (k)=> active.filter(r=>this.hasAction(r,k)).length;
+    const mkAct = (key,label)=>{ const st=facetStyle(s.actionFilter===key); return { label, count: actCount(key), bg:st.bg, fg:st.fg, onClick:()=>this.setActionFilter(key) }; };
+    const actionFacets = [ mkAct('route','Routes'), mkAct('file','Auto-files'), mkAct('restrict','Restricts') ];
+
+    // filter + sort
+    const q = s.search.trim().toLowerCase();
+    let list = active.filter(r=>{
+      if(s.statusFilter!=='all' && r.status!==s.statusFilter) return false;
+      if(s.typeFilter && !this.hasType(r,s.typeFilter)) return false;
+      if(s.actionFilter && !this.hasAction(r,s.actionFilter)) return false;
+      if(q){ const hay=(r.name+' '+r.code+' '+r.slug+' '+this.condLine(r)+' '+this.routeTargets(r).join(' ')+' '+this.fileTargets(r).join(' ')).toLowerCase(); if(hay.indexOf(q)<0) return false; }
+      return true;
+    });
+    if(s.sort==='priority') list.sort((a,b)=>a.priority-b.priority);
+    else if(s.sort==='hits') list.sort((a,b)=>b.matches30d-a.matches30d);
+    else if(s.sort==='updated') list.sort((a,b)=> b.updated.localeCompare(a.updated));
+    else if(s.sort==='name') list.sort((a,b)=> a.name.localeCompare(b.name));
+
+    const rows = list.map(r=>{
+      const isOn = r.status==='enabled';
+      const route = this.routeTargets(r);
+      const files = this.fileTargets(r);
+      const menu = [
+        { label:'View', color:'var(--ink)', onClick:()=>this.openDetail(r.code) },
+        { label:'Edit', color:'var(--ink)', onClick:()=>this.startEdit(r.code) },
+        { label:'Duplicate', color:'var(--ink)', onClick:()=>this.duplicateRule(r.code) },
+        { label: isOn?'Disable':'Enable', color:'var(--ink)', onClick:()=>this.toggleEnabled(r.code) },
+        { label:'Archive', color:'var(--danger)', onClick:()=>this.archiveRule(r.code) },
+      ];
+      return {
+        code:r.code, slug:r.slug, name:r.name, status:r.status,
+        priorityLabel: String(r.priority).padStart(2,'0'),
+        condLine: this.condLine(r),
+        routeChips: route.slice(0,3).concat(route.length>3?['+'+(route.length-3)]:[]),
+        hasFile: files.length>0, fileChip: files[0]||'',
+        matchesLabel: (r.status==='enabled'||r.status==='scheduled') ? r.matches30d.toLocaleString() : '—',
+        switchBg: isOn?'var(--accent)':'var(--line)',
+        switchKnob: isOn?'translateX(16px)':'none',
+        menuOpen: s.menuOpenId===r.code,
+        menu,
+        onOpen: ()=>this.openDetail(r.code),
+        onToggle: (e)=>{ e.stopPropagation(); this.toggleEnabled(r.code); },
+        onMenu: (e)=>{ e.stopPropagation(); this.setState(st=>({ menuOpenId: st.menuOpenId===r.code?null:r.code })); },
+      };
+    });
+
+    const activeChips = [];
+    if(s.statusFilter!=='all') activeChips.push({ label: 'Status: '+statusFacets.find(f=>f.onClick&&f.label).label, onClear:()=>this.setStatusFilter(s.statusFilter) });
+    // build chips precisely:
+    activeChips.length=0;
+    const statusLabels={enabled:'Enabled',disabled:'Disabled',review:'Needs review',scheduled:'Scheduled',draft:'Draft'};
+    if(s.statusFilter!=='all') activeChips.push({ label:'Status · '+statusLabels[s.statusFilter], onClear:()=>this.setStatusFilter(s.statusFilter) });
+    const typeLabels={content:'Content / topics',dept:'Departments',person:'People'};
+    if(s.typeFilter) activeChips.push({ label:'Condition · '+typeLabels[s.typeFilter], onClear:()=>this.setTypeFilter(s.typeFilter) });
+    const actLabels={route:'Routes',file:'Auto-files',restrict:'Restricts'};
+    if(s.actionFilter) activeChips.push({ label:'Action · '+actLabels[s.actionFilter], onClear:()=>this.setActionFilter(s.actionFilter) });
+
+    // archived
+    const archived = s.rules.filter(r=>r.status==='archived').sort((a,b)=>(b.archivedDate||'').localeCompare(a.archivedDate||''));
+    const archivedRows = archived.map(r=>({ code:r.code, slug:r.slug, name:r.name, archivedMeta:'Archived '+(r.archivedDate||r.updated)+' · '+r.versions.length+' versions retained', onOpen:()=>this.openDetail(r.code), onRestore:()=>this.restoreRule(r.code) }));
+
+    // detail
+    let sel = null;
+    const selRule = s.selectedId ? this.byCode(s.selectedId) : null;
+    if(selRule){
+      const letters='ABCDEFGH';
+      const groups = selRule.groups.map((g,gi)=>({ letter:letters[gi], joinLabel: g.join==='all'?'All':'Any', notFirst: gi>0, conds: g.conds.map(c=>({ f:c.f, o:c.o, v:c.v })) }));
+      const actVerb = {route:'Route to', add:'Also send to', remove:'Remove from routing', file:'Auto-file to'};
+      const actions = selRule.actions.map(a=>{
+        const remove=a.t==='remove', file=a.t==='file', route=a.t==='route'||a.t==='add';
+        return {
+          verb: actVerb[a.t], targets:a.targets,
+          isRoute: route, isRemove: remove, isFile: file,
+          icBg: remove?'color-mix(in oklch, var(--danger) 10%, var(--cm))':(file?'var(--bg-3)':'var(--accent-wash)'),
+          icFg: remove?'var(--danger)':(file?'var(--ink-2)':'var(--accent)'),
+          chipFg: remove?'var(--danger)':(file?'var(--ink-2)':'var(--accent-ink)'),
+          chipBg: remove?'color-mix(in oklch, var(--danger) 7%, var(--cm))':(file?'var(--bg-3)':'var(--accent-wash)'),
+          chipBorder: remove?'color-mix(in oklch, var(--danger) 26%, var(--cm))':(file?'var(--line)':'var(--accent-line)'),
+        };
+      });
+      const specs = [
+        { k:'Identifier', v:selRule.code, font:"'Geist Mono',monospace" },
+        { k:'Slug', v:selRule.slug, font:"'Geist Mono',monospace" },
+        { k:'Execution order', v:'#'+selRule.priority+' of 814', font:'inherit' },
+        { k:'Owner', v:selRule.owner, font:'inherit' },
+        { k:'Last updated', v:selRule.updated, font:'inherit' },
+        { k:'Matches (30d)', v:(selRule.status==='enabled'||selRule.status==='scheduled')?selRule.matches30d.toLocaleString():'—', font:"'Geist Mono',monospace" },
+      ];
+      if(selRule.schedule) specs.push({ k:'Effective', v:selRule.schedule.from+' → '+selRule.schedule.to, font:'inherit' });
+      const versions = selRule.versions.map((v,i)=>({ v:v.v, note:v.note, meta:v.author+' · '+v.date, fg: i===0?'#fff':'var(--muted)', bg: i===0?'var(--accent)':'var(--bg-3)', border: i===0?'var(--accent)':'var(--line)' }));
+      sel = {
+        name:selRule.name, code:selRule.code, slug:selRule.slug, status:selRule.status, desc:selRule.desc,
+        matchLabel: selRule.match==='any'?'A memo matches when any group below is satisfied.':'A memo matches only when every group below is satisfied.',
+        groups, actions, specs, versions,
+        conflict: selRule.conflictWith || null,
+        onOpenConflict: ()=> selRule.conflictWith && this.openDetail(selRule.conflictWith),
+        toggleLabel: selRule.status==='enabled'?'Disable rule':'Enable rule',
+        archiveLabel: selRule.status==='archived'?'Restore':'Archive',
+      };
+      var onEditSel=()=>this.startEdit(selRule.code);
+      var onToggleSel=()=>this.toggleEnabled(selRule.code);
+      var onDupSel=()=>this.duplicateRule(selRule.code);
+      var onArchiveSel=()=> selRule.status==='archived'? this.restoreRule(selRule.code): this.archiveRule(selRule.code);
+    }
+
+    // editor view-model
+    let ed = null;
+    if(s.editor){
+      const e = s.editor; const letters='ABCDEFGH';
+      const segStyle=(on)=> on?{bg:'var(--bg)',fg:'var(--ink)',shadow:'var(--shadow-sm)'}:{bg:'transparent',fg:'var(--muted)',shadow:'none'};
+      const any=segStyle(e.match==='any'), all=segStyle(e.match==='all');
+      const groups = e.groups.map((g,gi)=>{
+        const ga=segStyle(g.join==='all'), gy=segStyle(g.join==='any');
+        return {
+          letter:letters[gi], notFirst:gi>0, canRemove:e.groups.length>1,
+          allBg:ga.bg, allFg:ga.fg, allShadow:ga.shadow, anyBg:gy.bg, anyFg:gy.fg, anyShadow:gy.shadow,
+          onAll:()=>this.mutEd(d=>{d.groups[gi].join='all';}),
+          onAny:()=>this.mutEd(d=>{d.groups[gi].join='any';}),
+          onRemove:()=>this.mutEd(d=>{d.groups.splice(gi,1);}),
+          onAddCond:()=>this.mutEd(d=>{d.groups[gi].conds.push({f:'Content',o:'contains',v:''});}),
+          conds: g.conds.map((c,ci)=>({
+            f:c.f, o:c.o, v:c.v, canRemove:g.conds.length>1, cannotRemove:g.conds.length<=1,
+            onF:(ev)=>this.mutEd(d=>{d.groups[gi].conds[ci].f=ev.target.value;}),
+            onO:(ev)=>this.mutEd(d=>{d.groups[gi].conds[ci].o=ev.target.value;}),
+            onV:(ev)=>this.mutEd(d=>{d.groups[gi].conds[ci].v=ev.target.value;}),
+            onRemove:()=>this.mutEd(d=>{d.groups[gi].conds.splice(ci,1);}),
+          })),
+        };
+      });
+      const actions = e.actions.map((a,ai)=>({
+        t:a.t, targetsText:(a.targets||[]).join(', '), canRemove:e.actions.length>1, cannotRemove:e.actions.length<=1,
+        onType:(ev)=>this.mutEd(d=>{d.actions[ai].t=ev.target.value;}),
+        onTargets:(ev)=>this.mutEd(d=>{d.actions[ai].targets=ev.target.value.split(',').map(x=>x.trim()).filter(Boolean);}),
+        onRemove:()=>this.mutEd(d=>{d.actions.splice(ai,1);}),
+      }));
+      const isNew = !e.code || !this.byCode(e.code);
+      ed = {
+        eyebrow: isNew?'Create':'Edit', title: isNew?'New routing rule':('Edit '+e.code),
+        name:e.name, slug:e.slug, desc:e.desc, status:e.status, priority:e.priority,
+        anyBg:any.bg, anyFg:any.fg, anyShadow:any.shadow, allBg:all.bg, allFg:all.fg, allShadow:all.shadow,
+        groupJoinWord: e.match==='any'?'OR':'AND',
+        groups, actions, nameError: s._nameErr, saveLabel: isNew?'Create rule':'Save changes',
+        onName:(ev)=>this.mutEd(d=>{d.name=ev.target.value;}),
+        onSlug:(ev)=>this.mutEd(d=>{d.slug=ev.target.value;}),
+        onDesc:(ev)=>this.mutEd(d=>{d.desc=ev.target.value;}),
+        onStatus:(ev)=>this.mutEd(d=>{d.status=ev.target.value;}),
+        onPriority:(ev)=>this.mutEd(d=>{d.priority=ev.target.value;}),
+        onMatchAny:()=>this.mutEd(d=>{d.match='any';}),
+        onMatchAll:()=>this.mutEd(d=>{d.match='all';}),
+        onAddGroup:()=>this.mutEd(d=>{d.groups.push({join:'all',conds:[{f:'Content',o:'contains',v:''}]});}),
+        onAddAction:()=>this.mutEd(d=>{d.actions.push({t:'route',targets:[]});}),
+      };
+    }
+
+    const navOn = (active)=> active ? { bg:'var(--bg-3)', fg:'var(--ink)' } : { bg:'transparent', fg:'var(--muted)' };
+    const nr = navOn(s.view==='list'||s.view==='detail'||s.view==='editor'); const na = navOn(s.view==='archive');
+    const nd = navOn(s.view==='map' && s.mapMode==='dept'); const nf = navOn(s.view==='map' && s.mapMode==='file');
+
+    // ---- destinations map (Departments / Files) ----
+    const DEPARTMENTS = ['Billing & Accounting','Compliance & Ethics','Corporate','Docketing','HR','Intellectual Property','IT','Labor & Employment','Library & Research','Litigation',"Managing Partner's Office",'Marketing & BD','Mailroom','New Business Intake','Real Estate','Records & IG','Tax','Trusts & Estates'];
+    const isFileMode = s.mapMode==='file';
+    let destNames;
+    if(isFileMode){ const set=[]; active.forEach(r=>r.actions.forEach(a=>{ if(a.t==='file') a.targets.forEach(t=>{ if(set.indexOf(t)<0) set.push(t); }); })); destNames = set.sort(); }
+    else { destNames = DEPARTMENTS.slice(); }
+    const mRoute=(r,n)=> r.actions.some(a=>(a.t==='route'||a.t==='add') && (a.targets.indexOf(n)>=0 || a.targets.indexOf('All departments')>=0));
+    const mRestrict=(r,n)=> r.actions.some(a=> a.t==='remove' && (a.targets.indexOf(n)>=0 || a.targets.indexOf('All other departments')>=0));
+    const mFile=(r,n)=> r.actions.some(a=> a.t==='file' && a.targets.indexOf(n)>=0);
+    const mRef=(r,n)=> this.condLine(r).toLowerCase().indexOf(n.toLowerCase())>=0;
+    const selName = (s.mapSel && destNames.indexOf(s.mapSel)>=0) ? s.mapSel : (destNames[0]||'');
+    const mini = (r)=>({ code:r.code, name:r.name, status:r.status, priorityLabel:String(r.priority).padStart(2,'0'), condLine:this.condLine(r), onOpen:()=>this.openDetail(r.code) });
+    const dests = destNames.map(name=>{
+      const cnt = isFileMode ? active.filter(r=>mFile(r,name)).length : active.filter(r=>mRoute(r,name)||mRestrict(r,name)).length;
+      const on = name===selName;
+      return { name, count:cnt, on, bg:on?'var(--bg-3)':'transparent', fg:on?'var(--ink)':'var(--ink-2)', dot:on?'var(--accent)':'var(--line-strong)', countBg:on?'var(--bg)':'var(--bg-3)', countFg:on?'var(--ink-2)':'var(--faint)', onClick:()=>this.selectDest(name) };
+    });
+    let mapSel, mapStats, mapGroups;
+    if(isFileMode){
+      const here = active.filter(r=>mFile(r,selName));
+      mapStats = [{n:here.length, label: here.length===1?'rule files here':'rules file here'}];
+      mapGroups = [{ title:'Auto-files memos here', count:here.length, empty:here.length===0, rules:here.map(mini) }];
+    } else {
+      const routesIn = active.filter(r=>mRoute(r,selName));
+      const restricts = active.filter(r=>mRestrict(r,selName));
+      const referenced = active.filter(r=>mRef(r,selName) && !mRoute(r,selName) && !mRestrict(r,selName));
+      mapStats = [{n:routesIn.length,label:'route here'},{n:restricts.length,label:'restrict'},{n:referenced.length,label:'reference'}];
+      mapGroups = [
+        { title:'Routes memos here', count:routesIn.length, empty:routesIn.length===0, rules:routesIn.map(mini) },
+        { title:'Removes from routing', count:restricts.length, empty:restricts.length===0, rules:restricts.map(mini) },
+        { title:'Referenced in conditions', count:referenced.length, empty:referenced.length===0, rules:referenced.map(mini) },
+      ];
+    }
+    const map = {
+      isFile:isFileMode, isDept:!isFileMode,
+      eyebrow: isFileMode?'Auto-file targets':'Routing destinations',
+      title: isFileMode?'Files & cases':'Departments',
+      lede: isFileMode ? 'Each case or client file below, and every rule that auto-files memos into it. Select a file to see what lands there.' : 'Every department that rules route to, restrict, or reference. Select one to see exactly which rules touch its mail — and in what order they run.',
+      dests, sel:{ name:selName, stats:mapStats, groups:mapGroups },
+      onReview: isFileMode?null:()=>this.startReview(selName), reviewLabel:'Review these rules',
+    };
+
+    // ---- requests / approval pipeline ----
+    const stageInfo = (st)=>{ const m={ submitted:{label:'Awaiting approval', c:'var(--warn)'}, approved:{label:'Approved', c:'var(--accent-ink)'}, configured:{label:'Configured', c:'var(--accent-ink)'}, tested:{label:'Tested', c:'var(--ok)'}, enabled:{label:'Live', c:'var(--ok)'}, rejected:{label:'Rejected', c:'var(--danger)'} }; const x=m[st]||m.submitted; return { label:x.label, fg:x.c, bg:'color-mix(in oklch, '+x.c+' 9%, var(--cm))', border:'color-mix(in oklch, '+x.c+' 26%, var(--cm))' }; };
+    const typeInfo = (t)=>{ const m={ new:{label:'New rule', c:'var(--accent-ink)'}, edit:{label:'Edit rule', c:'var(--accent-ink)'}, enable:{label:'Enable', c:'var(--ok)'}, disable:{label:'Disable', c:'var(--muted)'}, archive:{label:'Archive', c:'var(--danger)'}, review:{label:'Dept review', c:'#8b46d6'} }; const x=m[t]||m.new; return { label:x.label, fg:x.c, bg:'color-mix(in oklch, '+x.c+' 10%, var(--cm))', border:'color-mix(in oklch, '+x.c+' 26%, var(--cm))' }; };
+    const stepsFor = (t)=> (t==='new'||t==='edit') ? ['Submitted','Approved','Configured','Tested','Live'] : (t==='review' ? ['Submitted','Approved','Applied'] : ['Submitted','Approved','Live']);
+    const stageIdx = (st,t)=>{ if(st==='submitted') return 0; if(st==='approved'||st==='rejected') return 1; if(t==='new'||t==='edit'){ if(st==='configured') return 2; if(st==='tested') return 3; if(st==='enabled') return 4; } else { if(st==='enabled') return 2; } return 0; };
+    const reqCounts = {}; s.requests.forEach(r=>{ reqCounts[r.stage]=(reqCounts[r.stage]||0)+1; });
+    const pendingCount = reqCounts.submitted||0;
+    const stageFilterDefs = [ ['all','All requests'], ['submitted','Awaiting approval'], ['approved','Approved'], ['configured','In config'], ['tested','Tested'], ['enabled','Live'], ['rejected','Rejected'] ];
+    const reqFacets = stageFilterDefs.map(d=>{ const k=d[0]; const on=s.reqStageFilter===k; const cnt = k==='all'? s.requests.length : (reqCounts[k]||0); const st=facetStyle(on); return { label:d[1], count:cnt, bg:st.bg, fg:st.fg, onClick:()=>this.setReqStageFilter(k) }; });
+    const reqRows = s.requests.filter(r=> s.reqStageFilter==='all' || r.stage===s.reqStageFilter).map(r=>{ const si=stageInfo(r.stage); const ti=typeInfo(r.type); return { id:r.id, title:r.title, requester:r.requester.name+' · '+r.requester.dept, created:r.created, stageLabel:si.label, stageFg:si.fg, stageBg:si.bg, stageBorder:si.border, typeLabel:ti.label, typeFg:ti.fg, typeBg:ti.bg, typeBorder:ti.border, onOpen:()=>this.openRequest(r.id) }; });
+    let req=null; const rr = s.reqSelectedId ? this.getReq(s.reqSelectedId) : null;
+    if(rr){ const si=stageInfo(rr.stage); const ti=typeInfo(rr.type); const steps=stepsFor(rr.type); const cur=stageIdx(rr.stage, rr.type); const rejected=rr.stage==='rejected';
+      const stepVM = steps.map((label,i)=>{ let state; if(rejected){ state = i<1?'done':(i===1?'rejected':'todo'); } else { state = i<cur?'done':(i===cur?'current':'todo'); } const done=state==='done', current=state==='current', rej=state==='rejected';
+        return { label, num:i+1, isDone:done, isCurrent:current, isRejected:rej, isTodo:state==='todo', notFirst:i>0,
+          nodeBg: done?'var(--accent)':(current?'var(--accent-wash)':(rej?'color-mix(in oklch, var(--danger) 12%, var(--cm))':'var(--bg)')),
+          nodeBorder: done?'var(--accent)':(current?'var(--accent)':(rej?'var(--danger)':'var(--line)')),
+          nodeFg: done?'#fff':(current?'var(--accent-ink)':(rej?'var(--danger)':'var(--faint)')),
+          labelColor: (done||current)?'var(--ink)':(rej?'var(--danger)':'var(--faint)'),
+          connBg: (done||current)?'var(--accent)':'var(--line)' }; });
+      let change=null; const draftRule=rr.draft;
+      if(draftRule){ change={ isDraft:true, isRule:false, name:draftRule.name, condLine:this.condLine(draftRule), routeChips:this.routeTargets(draftRule), fileChips:this.fileTargets(draftRule), hasFile:this.fileTargets(draftRule).length>0 }; }
+      else if(rr.ruleCode && this.byCode(rr.ruleCode)){ const tr=this.byCode(rr.ruleCode); change={ isDraft:false, isRule:true, code:tr.code, name:tr.name, status:tr.status, condLine:this.condLine(tr), onOpenRule:()=>this.openDetail(tr.code) }; }
+      const acts=[];
+      if(rr.stage==='submitted'){ acts.push({label:'Approve', primary:true, danger:false, onClick:()=>this.approveRequest(rr.id)}); if(rr.type!=='review') acts.push({label:'Request changes', primary:false, danger:false, onClick:()=>this.requestChanges(rr.id)}); acts.push({label:'Reject', primary:false, danger:true, onClick:()=>this.rejectRequest(rr.id)}); }
+      else if(rr.stage==='approved'){ if(rr.type==='new'||rr.type==='edit') acts.push({label:'Configure rule', primary:true, danger:false, onClick:()=>this.configureRequest(rr.id)}); else if(rr.type==='review') acts.push({label:'Apply review changes', primary:true, danger:false, onClick:()=>this.applyReview(rr.id)}); else acts.push({label: rr.type==='disable'?'Disable rule':(rr.type==='archive'?'Archive rule':'Enable rule'), primary:true, danger:false, onClick:()=>this.enableRequest(rr.id)}); }
+      else if(rr.stage==='configured'){ acts.push({label:'Re-open configuration', primary:false, danger:false, onClick:()=>this.configureRequest(rr.id)}); }
+      else if(rr.stage==='tested'){ acts.push({label: rr.type==='disable'?'Disable rule':(rr.type==='archive'?'Archive rule':'Enable rule'), primary:true, danger:false, onClick:()=>this.enableRequest(rr.id)}); }
+      const actsStyled = acts.map(a=>({ label:a.label, onClick:a.onClick, bg:a.primary?'var(--accent)':'var(--bg)', fg:a.primary?'#fff':(a.danger?'var(--danger)':'var(--ink)'), border:a.primary?'none':(a.danger?'1px solid color-mix(in oklch, var(--danger) 30%, var(--cm))':'1px solid var(--line)'), shadow:a.primary?'inset 0 1px 0 rgba(255,255,255,.16)':'var(--shadow-sm)' }));
+      const canTest = (rr.type!=='review') && (rr.stage==='configured'||rr.stage==='tested') && !!(rr.draft||this.byCode(rr.ruleCode));
+      const sm=s.sample||this.defaultSample();
+      const testResult = rr.test? { matched:rr.test.matched, routedTo:rr.test.routedTo||[], filedTo:rr.test.filedTo||[], noFile:(rr.test.filedTo||[]).length===0 } : null;
+      req={ id:rr.id, title:rr.title, justification:rr.justification, requester:rr.requester.name+' · '+rr.requester.dept, created:rr.created, approver:rr.approver||'—',
+        stageLabel:si.label, stageFg:si.fg, stageBg:si.bg, stageBorder:si.border, typeLabel:ti.label, typeFg:ti.fg, typeBg:ti.bg, typeBorder:ti.border,
+        steps:stepVM, change, hasChange:!!change, isReview:rr.type==='review',
+        dispositions:(rr.dispositions||[]).map(d=>{ const tr=this.byCode(d.ruleCode); const am={keep:'Keep as-is',edit:'Edit',enable:'Enable',disable:'Disable',archive:'Archive',add:'Add'}; return { code:d.ruleCode, name:tr?tr.name:d.ruleCode, actionLabel:am[d.action]||d.action, note:d.note, hasNote:!!d.note, onOpen:tr?()=>this.openDetail(d.ruleCode):(()=>{}) }; }),
+        acts:actsStyled, canTest, testResult, hasResult:!!testResult, matched: testResult?testResult.matched:false, noMatch: !!testResult && !testResult.matched,
+        smSender:sm.senderDept, smTopic:sm.topic, smContent:sm.content, smAddr:sm.addressedTo,
+        onSenderS:(ev)=>this.mutSample(d=>{d.senderDept=ev.target.value;}), onTopicS:(ev)=>this.mutSample(d=>{d.topic=ev.target.value;}), onContentS:(ev)=>this.mutSample(d=>{d.content=ev.target.value;}), onAddrS:(ev)=>this.mutSample(d=>{d.addressedTo=ev.target.value;}),
+        onRunTest:()=>this.runTest(rr.id),
+        activity:[...rr.activity].reverse().map(a=>({ what:a.what, meta:a.who+' · '+a.at })),
+      };
+    }
+    let intake=null; if(s.intake){ const i=s.intake; const needsRule=(i.type!=='new'); intake={ type:i.type, title:i.title, dept:i.dept, justification:i.justification, ruleCode:i.ruleCode, sketch:i.sketch, needsRule, isNew:i.type==='new', err:s._intErr,
+      onType:(ev)=>this.mutIntake(d=>{d.type=ev.target.value;}), onTitle:(ev)=>this.mutIntake(d=>{d.title=ev.target.value;}), onDept:(ev)=>this.mutIntake(d=>{d.dept=ev.target.value;}), onJustify:(ev)=>this.mutIntake(d=>{d.justification=ev.target.value;}), onRuleCode:(ev)=>this.mutIntake(d=>{d.ruleCode=ev.target.value;}), onSketch:(ev)=>this.mutIntake(d=>{d.sketch=ev.target.value;}) }; }
+    let review=null; if(s.review){ const rv=s.review; const rvDept=rv.dept;
+      const rvRoute=(r)=>r.actions.some(a=>(a.t==='route'||a.t==='add')&&(a.targets.indexOf(rvDept)>=0||a.targets.indexOf('All departments')>=0));
+      const rvRestrict=(r)=>r.actions.some(a=>a.t==='remove'&&(a.targets.indexOf(rvDept)>=0||a.targets.indexOf('All other departments')>=0));
+      review={ dept:rv.dept, justification:rv.justification, newRuleNote:rv.newRuleNote, count:rv.items.length, empty:rv.items.length===0,
+      items: rv.items.map((it,ix)=>{ const ru=this.byCode(it.ruleCode); const rel = ru?(rvRoute(ru)?'Routes here':(rvRestrict(ru)?'Restricts here':'Referenced')):'';
+        const relFg = rel==='Restricts here'?'var(--danger)':(rel==='Routes here'?'var(--accent-ink)':'var(--muted)');
+        const relBg = rel==='Restricts here'?'color-mix(in oklch, var(--danger) 8%, var(--cm))':(rel==='Routes here'?'var(--accent-wash)':'var(--bg-3)');
+        const relBorder = rel==='Restricts here'?'color-mix(in oklch, var(--danger) 24%, var(--cm))':(rel==='Routes here'?'var(--accent-line)':'var(--line)');
+        const route = ru?this.routeTargets(ru):[]; const files = ru?this.fileTargets(ru):[];
+        return { code:it.ruleCode, name:it.name, status:it.status, action:it.action, note:it.note,
+          condLine: ru?this.condLine(ru):'', rel, relFg, relBg, relBorder,
+          routeChips: route.slice(0,3).concat(route.length>3?['+'+(route.length-3)]:[]), hasFile:files.length>0, fileChip:files[0]||'',
+          onAction:(ev)=>this.mutReview(d=>{d.items[ix].action=ev.target.value;}), onNote:(ev)=>this.mutReview(d=>{d.items[ix].note=ev.target.value;}) }; }),
+      onJustify:(ev)=>this.mutReview(d=>{d.justification=ev.target.value;}), onNewRule:(ev)=>this.mutReview(d=>{d.newRuleNote=ev.target.value;}) }; }
+    const nreq = navOn(s.view==='requests'||s.view==='reqdetail'||s.view==='request');
+
+    return {
+      theme:s.theme, isDark:s.theme==='dark', notDark:s.theme!=='dark', search:s.search, sort:s.sort, toast:s.toast,
+      isList:s.view==='list', isDetail:s.view==='detail', isEditor:s.view==='editor', isArchive:s.view==='archive',
+      isMap:s.view==='map', map,
+      isRequests:s.view==='requests', isReqDetail:s.view==='reqdetail', isRequest:s.view==='request', isReview:s.view==='review',
+      reqFacets, reqRows, reqEmpty:reqRows.length===0, reqPending:pendingCount, req, intake, review,
+      navReqBg:nreq.bg, navReqFg:nreq.fg,
+      openRequests:this.openRequests, startRequest:this.startRequest, backToRequests:this.backToRequests,
+      cancelIntake:this.cancelIntake, submitIntake:this.submitIntake, cancelReview:this.cancelReview, submitReview:this.submitReview,
+      navRulesBg:nr.bg, navRulesFg:nr.fg, navArchBg:na.bg, navArchFg:na.fg,
+      navDeptBg:nd.bg, navDeptFg:nd.fg, navFileBg:nf.bg, navFileFg:nf.fg,
+      statusFacets, typeFacets, actionFacets,
+      rows, shownCount:rows.length, empty:rows.length===0, activeChips,
+      archivedRows, archiveEmpty:archivedRows.length===0,
+      menuBackdrop: s.menuOpenId!==null,
+      goHome:this.goHome, goArchive:this.goArchive, toggleTheme:this.toggleTheme,
+      goDepartments:this.goDepartments, goFiles:this.goFiles,      onSearch:this.onSearch, onSort:this.onSort, startNew:this.startNew,
+      clearAll:this.clearAll, closeMenu:this.closeMenu, backToList:this.backToList,
+      backLabel:'Rule library',
+      sel,
+      onEditSel: selRule?onEditSel:null, onToggleSel: selRule?onToggleSel:null, onDupSel: selRule?onDupSel:null, onArchiveSel: selRule?onArchiveSel:null,
+      ed, cancelEdit:this.cancelEdit, saveEdit:this.saveEdit,
+    };
+  }
+}
+</script>
+</body>
+</html>
